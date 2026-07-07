@@ -2172,8 +2172,8 @@ body.nav-open { overflow: hidden; }
   var loader = document.getElementById('loader');
   if(!loader) return;
   function hide(){ loader.classList.add('hidden'); document.body.style.overflow=''; }
-  // Hide after 300ms (just a quick flash of the logo)
-  setTimeout(hide, 300);
+  // Hide after 600ms (covers GSAP micro-delay)
+  setTimeout(hide, 600);
   // Always hide after 2s max
   setTimeout(hide, 2000);
 })();

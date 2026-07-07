@@ -15,46 +15,30 @@ document.addEventListener('DOMContentLoaded', () => {
     return el.querySelectorAll('.word-inner');
   }
 
-  // ─── HERO STAGGER ───
+  // ─── HERO STAGGER (micro-delay, smooth reveal) ───
   const heroContent = document.getElementById('heroContent');
   if (heroContent) {
-    // Reveal hero content before starting stagger
-    gsap.set(heroContent, { opacity: 1 });
-    const tl = gsap.timeline({ delay: 2.6 });
+    const tl = gsap.timeline({ delay: 0.3 });
 
     // Hero badge
-    tl.from('.hero-badge', { opacity: 0, y: 40, scale: 0.9, duration: 0.9, ease: 'power4.out' });
+    tl.from('.hero-badge', { opacity: 0.3, y: 8, duration: 0.5, ease: 'power2.out' });
 
-    // Hero title with split words
+    // Hero title - subtle stagger (no flash, elements visible already)
     const heroTitle = document.querySelector('.hero-title');
     if (heroTitle) {
       const words = heroTitle.querySelectorAll('.word-inner');
       if (words.length) {
         tl.from(words, {
-          opacity: 0,
-          y: 80,
-          rotateX: -40,
-          stagger: 0.04,
-          duration: 0.8,
-          ease: 'power3.out'
-        }, '-=0.5');
-      } else {
-        tl.from('.hero-title', { opacity: 0, y: 50, duration: 0.8, ease: 'power3.out' }, '-=0.5');
+          opacity: 0.3, y: 20, stagger: 0.035, duration: 0.7, ease: 'power2.out'
+        }, '-=0.2');
       }
     }
 
-    // Role text typewriter is handled by main.js
-    tl.from('.hero-role-wrapper', { opacity: 0, y: 20, duration: 0.5, ease: 'power2.out' }, '-=0.3');
-
-    // Subtitle
-    tl.from('.hero-subtitle', { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out' }, '-=0.2');
-
-    // Actions stagger
-    tl.from('.hero-actions .btn-primary', { opacity: 0, y: 20, scale: 0.95, duration: 0.5, ease: 'back.out(1.7)' }, '-=0.2');
-    tl.from('.hero-actions .btn-secondary', { opacity: 0, y: 20, scale: 0.95, stagger: 0.08, duration: 0.5, ease: 'back.out(1.7)' }, '-=0.35');
-
-    // Stats
-    tl.from('.hero-stats .stat', { opacity: 0, y: 40, stagger: 0.1, duration: 0.6, ease: 'power3.out' }, '-=0.1');
+    // Role + subtitle + actions: micro-lift (no full hide)
+    tl.from('.hero-role-wrapper', { opacity: 0.3, y: 10, duration: 0.4, ease: 'power2.out' }, '-=0.1');
+    tl.from('.hero-subtitle', { opacity: 0.3, y: 12, duration: 0.5, ease: 'power2.out' }, '-=0.05');
+    tl.from('.hero-actions', { opacity: 0.3, y: 10, duration: 0.4, ease: 'power2.out' }, '-=0.05');
+    tl.from('.hero-stats .stat', { opacity: 0.3, y: 15, stagger: 0.06, duration: 0.5, ease: 'power2.out' }, '-=0.05');
   }
 
   // ─── SCROLL-TRIGGERED WORD REVEAL ───

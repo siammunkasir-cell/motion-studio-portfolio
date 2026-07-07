@@ -150,7 +150,6 @@ ul{list-style:none}
   mask-image:radial-gradient(ellipse 80% 50% at 50% 50%,black,transparent 70%);
   -webkit-mask-image:radial-gradient(ellipse 80% 50% at 50% 50%,black,transparent 70%);
 }
-#heroContent{opacity:0}
 .hero-content{position:relative;z-index:2;max-width:860px;padding-top:16px}
 .hero-badge{
   display:inline-flex;align-items:center;gap:8px;
