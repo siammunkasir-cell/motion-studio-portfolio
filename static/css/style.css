@@ -727,3 +727,140 @@ ul{list-style:none}
   .whychoose-grid{grid-template-columns:1fr}
   .reviews-grid{grid-template-columns:1fr}
 }
+
+/* ═══════════════════════════════════════════
+   PREMIUM DESIGN ADDITIONS
+   ═══════════════════════════════════════════ */
+
+/* ─── MARQUEE ─── */
+.marquee-section{
+  position:relative;overflow:hidden;padding:28px 0;
+  background:var(--gradient-1);margin-top:-1px
+}
+.marquee-track{display:flex;white-space:nowrap;animation:marqueeScroll 30s linear infinite;gap:0}
+.marquee-track2{display:flex;white-space:nowrap;animation:marqueeScroll 40s linear infinite reverse;gap:0;margin-top:10px}
+.marquee-item{
+  display:inline-flex;align-items:center;gap:24px;
+  font-family:var(--font2);font-size:clamp(13px,1.4vw,17px);
+  font-weight:600;color:rgba(255,255,255,.85);
+  padding:0 32px;text-transform:uppercase;letter-spacing:.08em
+}
+.marquee-item .m-icon{font-size:10px;color:rgba(255,255,255,.4)}
+@keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ─── SECTION DIVIDER WAVES ─── */
+.section-divider{
+  position:relative;width:100%;height:60px;overflow:hidden;margin-top:-1px
+}
+.section-divider svg{position:absolute;bottom:0;width:100%;height:60px}
+.section-divider.top svg{top:0;bottom:auto;transform:scaleY(-1)}
+
+/* ─── GLASSMORPHISM ─── */
+.glass{
+  background:rgba(15,23,42,.6) !important;
+  backdrop-filter:blur(20px) !important;
+  -webkit-backdrop-filter:blur(20px) !important;
+  border:1px solid rgba(255,255,255,.06) !important;
+}
+
+/* ─── ANIMATED CARD BORDER ─── */
+.card-border-glow{
+  position:relative;overflow:hidden
+}
+.card-border-glow::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  padding:1px;background:linear-gradient(135deg,transparent 30%,rgba(59,130,246,.3),rgba(139,92,246,.3),transparent 70%);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+  transition:opacity .6s ease
+}
+.card-border-glow:hover::before{opacity:1;background:linear-gradient(135deg,transparent 10%,rgba(59,130,246,.6),rgba(139,92,246,.6),transparent 90%)}
+
+/* ─── SPOTLIGHT CARD HOVER ─── */
+.spotlight-card{position:relative;overflow:hidden}
+.spotlight-card .spotlight{
+  position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(59,130,246,.12),transparent 60%);
+  opacity:0;transition:opacity .4s;pointer-events:none
+}
+.spotlight-card:hover .spotlight{opacity:1}
+
+/* ─── GLOW TEXT ─── */
+.glow-text{
+  text-shadow:0 0 40px rgba(59,130,246,.15),0 0 80px rgba(139,92,246,.1)
+}
+.glow-text-sm{text-shadow:0 0 20px rgba(59,130,246,.1)}
+
+/* ─── MESH GRADIENT ─── */
+.mesh-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.mesh-blob{
+  position:absolute;width:50vw;height:50vw;border-radius:50%;
+  filter:blur(80px);opacity:.12;animation:meshFloat 20s ease infinite
+}
+.mesh-blob:nth-child(1){
+  top:-10%;left:-10%;
+  background:var(--accent1);animation-delay:0s
+}
+.mesh-blob:nth-child(2){
+  top:40%;right:-20%;
+  background:var(--accent2);animation-delay:-7s;width:40vw;height:40vw
+}
+.mesh-blob:nth-child(3){
+  bottom:-20%;left:30%;
+  background:var(--accent3);animation-delay:-14s;width:35vw;height:35vw
+}
+@keyframes meshFloat{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(3%,-4%) scale(1.05)}
+  66%{transform:translate(-2%,3%) scale(.95)}
+}
+
+/* ─── ANIMATED GRADIENT TEXT ─── */
+.gradient-text-shift{
+  background:linear-gradient(135deg,#3B82F6,#8B5CF6,#06B6D4,#3B82F6);
+  background-size:300% 300%;-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+  animation:gradientShift 5s ease infinite
+}
+@keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* ─── COUNTER RING ─── */
+.stat-ring{
+  position:relative;width:80px;height:80px;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 8px
+}
+.stat-ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.stat-ring svg circle{
+  fill:none;stroke-width:3;
+  stroke:rgba(59,130,246,.15)
+}
+.stat-ring svg circle:last-child{
+  stroke:url(#statGrad);stroke-dasharray:220;
+  stroke-dashoffset:220;transition:stroke-dashoffset 2s ease
+}
+.stat-ring.animated svg circle:last-child{stroke-dashoffset:30}
+
+/* ─── BUTTON RIPPLE ─── */
+.btn-ripple{position:relative;overflow:hidden}
+.btn-ripple .ripple{
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,.25);
+  transform:scale(0);animation:rippleAnim .6s ease-out;
+  pointer-events:none
+}
+@keyframes rippleAnim{to{transform:scale(4);opacity:0}}
+
+/* ─── STAGGER LIST ─── */
+.stagger-item{opacity:0;transform:translateY(24px);transition:opacity .5s,transform .5s}
+.stagger-item.visible{opacity:1;transform:translateY(0)}
+
+/* ─── LOADING SCREEN UPGRADE ─── */
+#loader .loader-svg{animation:loaderSpin 2s linear infinite}
+@keyframes loaderSpin{100%{transform:rotate(360deg)}}
+
+/* ─── RESPONSIVE TOUCHES ─── */
+@media(max-width:768px){
+  .mesh-blob{width:80vw;height:80vw}
+  .mesh-blob:nth-child(2){width:60vw;height:60vw}
+  .marquee-item{font-size:11px;padding:0 16px;gap:16px}
+}

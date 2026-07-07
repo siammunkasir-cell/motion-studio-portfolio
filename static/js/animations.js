@@ -243,6 +243,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ─── SPOTLIGHT CARDS (mousemove) ───
+  document.querySelectorAll('.spotlight-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
+    });
+  });
+
+  // ─── STAT RING ANIMATION ───
+  document.querySelectorAll('.stat-ring.animate-on-scroll').forEach(ring => {
+    ScrollTrigger.create({
+      trigger: ring,
+      start: 'top 90%',
+      onEnter: () => ring.classList.add('animated'),
+      once: true
+    });
+  });
+
+  // ─── STAGGER LIST ITEMS ───
+  document.querySelectorAll('.stagger-list').forEach(list => {
+    gsap.from(list.children, {
+      opacity: 0, y: 24, stagger: 0.06, duration: 0.5, ease: 'power2.out',
+      scrollTrigger: { trigger: list, start: 'top 92%', toggleActions: 'play none none none', once: true }
+    });
+  });
+
+  // ─── SECTION DIVIDER WAVE ANIMATION ───
+  gsap.utils.toArray('.section-divider').forEach(div => {
+    const wave = div.querySelector('path');
+    if (!wave) return;
+    const path = wave.getAttribute('d');
+    let progress = { val: 0 };
+    ScrollTrigger.create({
+      trigger: div.parentElement || div,
+      start: 'top center',
+      onEnter: () => {
+        gsap.to(progress, {
+          val: 1, duration: 1.2, ease: 'power1.inOut',
+          onUpdate: () => {
+            // Subtle wave shift (morph not applied for perf — visibility is enough)
+          }
+        });
+      },
+      once: true
+    });
+  });
+
   // ─── SCROLL REFRESH ───
   if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
 });

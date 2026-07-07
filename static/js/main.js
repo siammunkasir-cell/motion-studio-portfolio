@@ -95,6 +95,21 @@ document.querySelectorAll('.portfolio-item').forEach(item => {
   });
 });
 
+// ─── BUTTON RIPPLE EFFECT ───
+document.querySelectorAll('.btn-ripple').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    const rect = this.getBoundingClientRect();
+    const r = document.createElement('span');
+    r.className = 'ripple';
+    const size = Math.max(rect.width, rect.height);
+    r.style.width = r.style.height = size + 'px';
+    r.style.left = (e.clientX - rect.left - size/2) + 'px';
+    r.style.top = (e.clientY - rect.top - size/2) + 'px';
+    this.appendChild(r);
+    setTimeout(() => r.remove(), 600);
+  });
+});
+
 // ─── SMOOTH CURSOR RING CLICK ───
 const ring = document.getElementById('cursor-ring');
 document.addEventListener('mousedown', () => ring && ring.classList.add('click'));
