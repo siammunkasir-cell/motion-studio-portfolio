@@ -649,6 +649,111 @@ img, video { max-width: 100%; display: block; }
 .pricing-custom h3 { font-family: var(--font2); font-size: 1.5rem; margin-bottom: 0.5rem; }
 .pricing-custom p { color: var(--text2); margin-bottom: 1.5rem; }
 
+/* === À LA CARTE PRICING === */
+.pricing-alacarte { margin-top: 3rem; }
+.pricing-alacarte h3 {
+  font-family: var(--font2); font-size: 1.5rem; font-weight: 700;
+  text-align: center; margin-bottom: 0.5rem;
+}
+.pricing-alacarte-sub {
+  text-align: center; color: var(--text3); font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+.alacarte-table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  border-radius: 20px; overflow: hidden;
+  background: var(--card); border: 1px solid var(--border);
+}
+.alacarte-table th {
+  padding: 1.2rem 1rem; font-family: var(--font2);
+  font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.5px; text-align: center;
+  background: rgba(59,130,246,0.05);
+  border-bottom: 1px solid var(--border);
+}
+.alacarte-table th:first-child { text-align: left; padding-left: 1.5rem; }
+.alacarte-table td {
+  padding: 1rem; color: var(--text2); font-size: 0.9rem;
+  text-align: center; border-bottom: 1px solid var(--border);
+  transition: background 0.3s;
+}
+.alacarte-table tr:last-child td { border-bottom: none; }
+.alacarte-table td:first-child {
+  text-align: left; padding-left: 1.5rem;
+  font-weight: 600; color: var(--text);
+}
+.alacarte-table tr:hover td { background: rgba(59,130,246,0.03); }
+.alacarte-table .price-cell {
+  font-weight: 700; color: var(--text); font-size: 1rem;
+}
+.alacarte-table .price-period {
+  display: block; font-size: 0.75rem; font-weight: 400;
+  color: var(--text3); margin-top: 2px;
+}
+.alacarte-table .tier-header.growth { color: var(--accent2); }
+.alacarte-table .tier-header.empire { color: var(--accent4); }
+@media (max-width: 640px) {
+  .alacarte-table th,
+  .alacarte-table td { padding: 0.75rem 0.5rem; font-size: 0.8rem; }
+  .alacarte-table td:first-child,
+  .alacarte-table th:first-child { padding-left: 0.75rem; }
+  .alacarte-table .price-cell { font-size: 0.85rem; }
+}
+
+/* === BUNDLE PACKAGES === */
+.pricing-bundles { margin-top: 4rem; }
+.pricing-bundles h3 {
+  font-family: var(--font2); font-size: 1.5rem; font-weight: 700;
+  text-align: center; margin-bottom: 0.5rem;
+}
+.pricing-bundles-sub {
+  text-align: center; color: var(--text3); font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+.pricing-bundle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+.pricing-bundle-card {
+  padding: 2.5rem; background: var(--card); border: 1px solid var(--border);
+  border-radius: 24px; position: relative; transition: all 0.4s;
+  text-align: center;
+}
+.pricing-bundle-card:hover {
+  transform: translateY(-4px); border-color: rgba(59,130,246,0.2);
+}
+.pricing-bundle-card.featured {
+  border-color: var(--accent1);
+  background: linear-gradient(135deg, var(--card), rgba(59,130,246,0.05));
+}
+.pricing-bundle-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  padding: 0.3rem 1.2rem;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  border-radius: 100px; font-size: 0.8rem; font-weight: 600; color: #fff;
+}
+.bundle-save {
+  display: inline-block;
+  background: rgba(16,185,129,0.1); color: #10b981;
+  padding: 0.3rem 1rem; border-radius: 100px;
+  font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem;
+}
+.pricing-bundle-card .pricing-amount { font-size: 2.5rem; }
+.bundle-desc {
+  color: var(--text2); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.6;
+}
+.bundle-features {
+  list-style: none; padding: 0; margin-bottom: 2rem; text-align: left;
+}
+.bundle-features li {
+  padding: 0.6rem 0; color: var(--text2); font-size: 0.9rem;
+  display: flex; align-items: center; gap: 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+.bundle-features li:last-child { border-bottom: none; }
+.bundle-features li i { color: var(--accent4); font-size: 0.8rem; }
+
 /* === CONTACT === */
 .contact-wrapper { display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: start; }
 .contact-info-card { padding: 2rem; background: var(--card); border: 1px solid var(--border); border-radius: 20px; }
@@ -2002,7 +2107,7 @@ body.nav-open { overflow: hidden; }
     <div class="section-header reveal fade-up">
       <span class="section-tag">Investment</span>
       <h2 class="section-title">Pricing Plans</h2>
-      <p class="section-desc">Flexible project-based packages for every budget.</p>
+      <p class="section-desc">Choose à la carte services or save big with bundle packages.</p>
     </div>
 
     <div class="reveal fade-up" style="text-align:center;">
@@ -2011,106 +2116,120 @@ body.nav-open { overflow: hidden; }
       </div>
     </div>
 
-    <div class="pricing-grid">
-      <!-- STARTER -->
-      <div class="pricing-card reveal fade-up">
-        <div class="pricing-badge">Starter</div>
-        <div class="pricing-amount"><span class="currency">$</span>200</div>
-        <p class="pricing-period">per project</p>
-        <ul class="pricing-features">
-          <li><i class="fas fa-check"></i> 1 UGC Video</li>
-          <li><i class="fas fa-check"></i> Up to 30 Seconds</li>
-          <li><i class="fas fa-check"></i> 2 Revision Rounds</li>
-          <li><i class="fas fa-check"></i> 3-5 Day Delivery</li>
-          <li><i class="fas fa-check"></i> Script + Captions</li>
-          <li><i class="fas fa-check"></i> MP4 Export</li>
-          <li><i class="fas fa-check"></i> Full Usage Rights</li>
-        </ul>
-        <a href="#contact" class="btn-primary btn-full">Get Started</a>
-      </div>
+    <!-- À LA CARTE SERVICES -->
+    <div class="pricing-alacarte reveal fade-up">
+      <h3>À La Carte Services</h3>
+      <p class="pricing-alacarte-sub">Pick and choose the services you need. Mix &amp; match any tier.</p>
 
-      <!-- PROFESSIONAL -->
-      <div class="pricing-card featured reveal fade-up">
-        <div class="pricing-popular">Most Popular</div>
-        <div class="pricing-badge">Professional</div>
-        <div class="pricing-amount"><span class="currency">$</span>500</div>
-        <p class="pricing-period">per project</p>
-        <ul class="pricing-features">
-          <li><i class="fas fa-check"></i> 3 UGC Videos</li>
-          <li><i class="fas fa-check"></i> Up to 60 Seconds Each</li>
-          <li><i class="fas fa-check"></i> 5 Revision Rounds</li>
-          <li><i class="fas fa-check"></i> 3-5 Day Delivery</li>
-          <li><i class="fas fa-check"></i> Script + Hook Strategy</li>
-          <li><i class="fas fa-check"></i> Platform Optimization</li>
-          <li><i class="fas fa-check"></i> Captions + Hashtags</li>
-          <li><i class="fas fa-check"></i> Full Commercial Rights</li>
-        </ul>
-        <a href="#contact" class="btn-primary btn-full">Get Started</a>
-      </div>
-
-      <!-- PREMIUM -->
-      <div class="pricing-card reveal fade-up">
-        <div class="pricing-badge">Premium</div>
-        <div class="pricing-amount"><span class="currency">$</span>1,200</div>
-        <p class="pricing-period">per campaign</p>
-        <ul class="pricing-features">
-          <li><i class="fas fa-check"></i> Full UGC Campaign</li>
-          <li><i class="fas fa-check"></i> 8-10 Videos per Month</li>
-          <li><i class="fas fa-check"></i> Unlimited Revisions</li>
-          <li><i class="fas fa-check"></i> Priority 24hr Delivery</li>
-          <li><i class="fas fa-check"></i> Strategy + Research</li>
-          <li><i class="fas fa-check"></i> AI Script Generation</li>
-          <li><i class="fas fa-check"></i> Performance Analytics</li>
-          <li><i class="fas fa-check"></i> Multi-Platform Delivery</li>
-          <li><i class="fas fa-check"></i> Dedicated Support</li>
-        </ul>
-        <a href="#contact" class="btn-primary btn-full">Get Started</a>
-      </div>
-    </div>
-
-    <!-- FEATURE COMPARISON TABLE -->
-    <div class="pricing-comparison reveal fade-up">
-      <h3 style="font-family:var(--font2);font-size:22px;font-weight:700;text-align:center;margin-bottom:24px;">Feature Comparison</h3>
-      <table class="comparison-table">
+      <table class="alacarte-table">
         <thead>
           <tr>
-            <th>Feature</th>
-            <th>Starter</th>
-            <th class="featured-col">Professional</th>
-            <th>Premium</th>
+            <th>Service</th>
+            <th class="tier-header">Starter</th>
+            <th class="tier-header growth">Growth</th>
+            <th class="tier-header empire">Empire</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td colspan="4" class="comparison-section-title">Videos</td></tr>
-          <tr><td>Videos Included</td><td>1</td><td class="featured-col">3</td><td>8-10 / month</td></tr>
-          <tr><td>Max Duration</td><td>30 seconds</td><td class="featured-col">60 seconds each</td><td>Up to 90 seconds</td></tr>
-          <tr><td>Delivery Time</td><td>3-5 days</td><td class="featured-col">3-5 days</td><td>24-hour priority</td></tr>
-
-          <tr><td colspan="4" class="comparison-section-title">Revisions & Quality</td></tr>
-          <tr><td>Revisions</td><td>2 rounds</td><td class="featured-col">5 rounds</td><td>Unlimited</td></tr>
-          <tr><td>Script Writing</td><td><i class="fas fa-check"></i></td><td class="featured-col"><i class="fas fa-check"></i></td><td><i class="fas fa-check"></i></td></tr>
-          <tr><td>Captions & Subtitles</td><td><i class="fas fa-check"></i></td><td class="featured-col"><i class="fas fa-check"></i></td><td><i class="fas fa-check"></i></td></tr>
-          <tr><td>Hook Strategy</td><td><i class="fas fa-times"></i></td><td class="featured-col"><i class="fas fa-check"></i></td><td><i class="fas fa-check"></i></td></tr>
-
-          <tr><td colspan="4" class="comparison-section-title">Platform & Rights</td></tr>
-          <tr><td>Platform Optimization</td><td><i class="fas fa-times"></i></td><td class="featured-col"><i class="fas fa-check"></i></td><td><i class="fas fa-check"></i></td></tr>
-          <tr><td>Multi-Platform Delivery</td><td><i class="fas fa-times"></i></td><td class="featured-col"><i class="fas fa-times"></i></td><td><i class="fas fa-check"></i></td></tr>
-          <tr><td>Full Commercial Rights</td><td><i class="fas fa-check"></i></td><td class="featured-col"><i class="fas fa-check"></i></td><td><i class="fas fa-check"></i></td></tr>
-
-          <tr><td colspan="4" class="comparison-section-title">Strategy & Analytics</td></tr>
-          <tr><td>Strategy & Research</td><td><i class="fas fa-times"></i></td><td class="featured-col"><i class="fas fa-times"></i></td><td><i class="fas fa-check"></i></td></tr>
-          <tr><td>AI Script Generation</td><td><i class="fas fa-times"></i></td><td class="featured-col"><i class="fas fa-times"></i></td><td><i class="fas fa-check"></i></td></tr>
-          <tr><td>Performance Analytics</td><td><i class="fas fa-times"></i></td><td class="featured-col"><i class="fas fa-times"></i></td><td><i class="fas fa-check"></i></td></tr>
-          <tr><td>Dedicated Support</td><td>Email</td><td class="featured-col">Email + Chat</td><td>Priority 24/7</td></tr>
+          <tr>
+            <td>Social Media Management</td>
+            <td class="price-cell">$299 <span class="price-period">/mo</span></td>
+            <td class="price-cell">$499 <span class="price-period">/mo</span></td>
+            <td class="price-cell">$799 <span class="price-period">/mo</span></td>
+          </tr>
+          <tr>
+            <td>UGC Content</td>
+            <td class="price-cell">$199 <span class="price-period">/project</span></td>
+            <td class="price-cell">$399 <span class="price-period">/project</span></td>
+            <td class="price-cell">$699 <span class="price-period">/project</span></td>
+          </tr>
+          <tr>
+            <td>AI Automation</td>
+            <td class="price-cell">$299 <span class="price-period">/setup</span></td>
+            <td class="price-cell">$599 <span class="price-period">/setup</span></td>
+            <td class="price-cell">$999 <span class="price-period">/setup</span></td>
+          </tr>
+          <tr>
+            <td>AI Customer Support</td>
+            <td class="price-cell">$199 <span class="price-period">/mo</span></td>
+            <td class="price-cell">$399 <span class="price-period">/mo</span></td>
+            <td class="price-cell">$699 <span class="price-period">/mo</span></td>
+          </tr>
+          <tr>
+            <td>Brand Design</td>
+            <td class="price-cell">$299 <span class="price-period">/project</span></td>
+            <td class="price-cell">$399 <span class="price-period">/project</span></td>
+            <td class="price-cell">$999 <span class="price-period">/project</span></td>
+          </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- BUNDLE PACKAGES -->
+    <div class="pricing-bundles reveal fade-up">
+      <h3>Bundle Packages</h3>
+      <p class="pricing-bundles-sub">Get everything you need and save up to $2,196</p>
+
+      <div class="pricing-bundle-grid">
+        <!-- LAUNCH BUNDLE -->
+        <div class="pricing-bundle-card reveal fade-up">
+          <div class="pricing-badge">Launch</div>
+          <div class="bundle-save"><i class="fas fa-tag"></i> Save $297</div>
+          <div class="pricing-amount"><span class="currency">$</span>799</div>
+          <p class="pricing-period">per month</p>
+          <p class="bundle-desc">Everything you need to launch your brand's digital presence with essential AI tools and content.</p>
+          <ul class="bundle-features">
+            <li><i class="fas fa-check"></i> Social Media Management (Starter)</li>
+            <li><i class="fas fa-check"></i> UGC Content (Starter)</li>
+            <li><i class="fas fa-check"></i> AI Automation (Starter)</li>
+            <li><i class="fas fa-check"></i> AI Customer Support (Starter)</li>
+            <li><i class="fas fa-check"></i> Brand Design (Starter)</li>
+          </ul>
+          <a href="#contact" class="btn-primary btn-full">Get Started</a>
+        </div>
+
+        <!-- GROWTH BUNDLE -->
+        <div class="pricing-bundle-card featured reveal fade-up">
+          <div class="pricing-bundle-badge">Most Popular</div>
+          <div class="pricing-badge">Growth</div>
+          <div class="bundle-save"><i class="fas fa-tag"></i> Save $597</div>
+          <div class="pricing-amount"><span class="currency">$</span>1,299</div>
+          <p class="pricing-period">per month</p>
+          <p class="bundle-desc">Scale your operations with advanced content, deeper automation, and professional brand design.</p>
+          <ul class="bundle-features">
+            <li><i class="fas fa-check"></i> Social Media Management (Growth)</li>
+            <li><i class="fas fa-check"></i> UGC Content (Growth)</li>
+            <li><i class="fas fa-check"></i> AI Automation (Growth)</li>
+            <li><i class="fas fa-check"></i> AI Customer Support (Growth)</li>
+            <li><i class="fas fa-check"></i> Brand Design (Growth)</li>
+          </ul>
+          <a href="#contact" class="btn-primary btn-full">Get Started</a>
+        </div>
+
+        <!-- EMPIRE BUNDLE -->
+        <div class="pricing-bundle-card reveal fade-up">
+          <div class="pricing-badge">Empire</div>
+          <div class="bundle-save"><i class="fas fa-tag"></i> Save $2,196</div>
+          <div class="pricing-amount"><span class="currency">$</span>1,999</div>
+          <p class="pricing-period">per month</p>
+          <p class="bundle-desc">Full-scale enterprise-grade services with premium AI solutions and dedicated support.</p>
+          <ul class="bundle-features">
+            <li><i class="fas fa-check"></i> Social Media Management (Empire)</li>
+            <li><i class="fas fa-check"></i> UGC Content (Empire)</li>
+            <li><i class="fas fa-check"></i> AI Automation (Empire)</li>
+            <li><i class="fas fa-check"></i> AI Customer Support (Empire)</li>
+            <li><i class="fas fa-check"></i> Brand Design (Empire)</li>
+          </ul>
+          <a href="#contact" class="btn-primary btn-full">Get Started</a>
+        </div>
+      </div>
     </div>
 
     <!-- CUSTOM QUOTE -->
     <div class="pricing-custom reveal fade-up">
       <i class="fas fa-gem"></i>
-      <h3>Need Something Custom?</h3>
-      <p>Tell me about your project and I'll create a tailored package just for you.</p>
+      <h3>Need a Custom Solution?</h3>
+      <p>Tell me about your business needs and I'll create a tailored package just for you.</p>
       <a href="#contact" class="btn-secondary">Request Custom Quote <i class="fas fa-long-arrow-alt-right"></i></a>
     </div>
 
@@ -2142,20 +2261,24 @@ body.nav-open { overflow: hidden; }
         <div class="faq-answer"><p>I accept Visa, Mastercard, American Express, PayPal, Stripe, bank transfers, and cryptocurrency (Bitcoin/Ethereum). All transactions are processed securely. Invoices are provided for every payment.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">How do your project packages work? <i class="fas fa-chevron-down"></i></button>
-        <div class="faq-answer"><p>Each package is scoped to a specific project deliverable. You choose the tier that fits — Starter for quick edits, Professional for fully produced videos, or Premium for end-to-end campaigns. All packages are one-time projects with clear deliverables and timelines agreed before we start. No recurring commitments, just results.</p></div>
+        <button class="faq-question">How do your à la carte services work? <i class="fas fa-chevron-down"></i></button>
+        <div class="faq-answer"><p>Pick any service at any tier — Starter, Growth, or Empire. You can mix and match across categories. Each service is billed according to its tier pricing. There are no long-term commitments; you choose what you need, when you need it.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">Can I upgrade my plan mid-project? <i class="fas fa-chevron-down"></i></button>
-        <div class="faq-answer"><p>Absolutely. You can upgrade from Starter to Professional or from Professional to Premium at any time. You'll only pay the difference in price. Downgrades are handled on a case-by-case basis depending on work already completed.</p></div>
+        <button class="faq-question">What's the difference between à la carte and bundles? <i class="fas fa-chevron-down"></i></button>
+        <div class="faq-answer"><p>À la carte lets you pick individual services. Bundles combine all five services at a discounted monthly rate — the more you bundle, the more you save. Bundles are billed monthly and can be paused or cancelled anytime.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Can I upgrade my bundle tier? <i class="fas fa-chevron-down"></i></button>
+        <div class="faq-answer"><p>Absolutely. You can upgrade from Launch to Growth or Growth to Empire at any time. You'll only pay the difference in price. Downgrades are handled on a case-by-case basis depending on the billing cycle.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-question">Do you offer refunds? <i class="fas fa-chevron-down"></i></button>
         <div class="faq-answer"><p>Yes. I stand behind my work with a 14-day satisfaction guarantee. If the deliverables don't match the agreed scope, you'll receive a full refund. Partial refunds are available for partially completed milestone-based projects.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-question">What if I need more than what's in a package? <i class="fas fa-chevron-down"></i></button>
-        <div class="faq-answer"><p>Every package can be customized. Need extra revisions, faster delivery, or additional videos? Just ask. I'll provide a custom quote that fits your exact needs. Enterprise clients can request annual contracts with discounted rates.</p></div>
+        <button class="faq-question">What if I need a custom combination of services? <i class="fas fa-chevron-down"></i></button>
+        <div class="faq-answer"><p>Every service and bundle can be customized. Need a mix of tiers across services? Want annual billing with a discount? Just ask. I'll create a custom package that fits your exact business needs.</p></div>
       </div>
     </div>
   </div>

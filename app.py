@@ -1,4 +1,4 @@
-import os, json, uuid, re, hashlib, smtplib, csv, io, time
+import os, json, uuid, re, hashlib, smtplib, csv, io, time, threading
 from datetime import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -260,6 +260,11 @@ def admin_required(f):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def send_email_async(to, subject, html_body):
+    """Send email in a background thread so the request isn't blocked."""
+    th = threading.Thread(target=send_email, args=(to, subject, html_body), daemon=True)
+    th.start()
+
 def send_email(to, subject, html_body):
     smtp_user = ''
     smtp_pass = ''
@@ -392,9 +397,9 @@ def submit_inquiry():
             <hr style="border-color:#2a2a3e;margin:24px 0;">
             <p style="color:#666688;font-size:12px;">This is an automated confirmation. We'll reach out to you at <strong style="color:#a0a0b8;">{sanitize(data.get('email',''))}</strong>.</p>
         </div>"""
-        send_email(data.get('email'), f'Thank you for reaching out — Siam Munkasir', confirm_html)
-        
-        # Send notification to admin
+        send_email_async(data.get('email'), f'Thank you for reaching out — Siam Munkasir', confirm_html)
+
+        # Send notification to admin (async)
         notif_admin_email = ''
         try:
             with get_db() as db:
@@ -422,7 +427,7 @@ def submit_inquiry():
                 <p style="color:#999;font-size:12px;">IP: {ip} | {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}</p>
                 <a href="{request.host_url}admin/inquiries" style="display:inline-block;padding:12px 24px;background:#ff6b6b;color:#fff;text-decoration:none;border-radius:8px;margin-top:16px;">View in Dashboard</a>
             </div>"""
-            send_email(notif_admin_email, f'New Inquiry #{inquiry_id} — {sanitize(data.get("full_name",""))}', notif_html)
+            send_email_async(notif_admin_email, f'New Inquiry #{inquiry_id} — {sanitize(data.get("full_name",""))}', notif_html)
         
         return jsonify({'success': True, 'message': 'Your inquiry has been submitted successfully! We will get back to you soon.'})
     
