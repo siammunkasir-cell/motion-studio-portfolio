@@ -2161,21 +2161,30 @@ body.nav-open { overflow: hidden; }
    ============================================ */
 
 // --- LOADING SCREEN ---
-window.addEventListener('load', function() {
+(function() {
   let progress = 0;
   const fill = document.getElementById('loaderFill');
+  if (!fill) return;
   const interval = setInterval(function() {
-    progress += Math.random() * 15;
+    progress += Math.random() * 18 + 4;
     if (progress >= 100) {
       progress = 100;
       clearInterval(interval);
       setTimeout(function() {
         document.getElementById('loader').classList.add('hidden');
-      }, 400);
+        document.body.style.overflow = '';
+      }, 500);
     }
-    fill.style.width = progress + '%';
-  }, 200);
-});
+    fill.style.width = Math.min(progress, 100) + '%';
+  }, 150);
+  // Safety: hide loader after 4s max
+  setTimeout(function() {
+    if (document.getElementById('loader')) {
+      document.getElementById('loader').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+  }, 4000);
+})();
 
 // --- CUSTOM CURSOR ---
 const dot = document.getElementById('cursor-dot');
