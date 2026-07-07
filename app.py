@@ -170,6 +170,83 @@ def init_db():
         for k, v in defaults.items():
             db.execute("INSERT OR IGNORE INTO site_settings (key, value) VALUES (?, ?)", (k, v))
 
+        # ─── SEED DATA (only if tables are empty) ───
+        empty = db.execute("SELECT COUNT(*) FROM portfolio").fetchone()[0] == 0
+        if not empty:
+            return
+
+        # Portfolio
+        portfolio_items = [
+            ('Luxury Brand Reel', 'Motion Graphics', 'Cinematic brand film for a luxury fashion label', 'Chanel Style Co.', '2026-06', 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=375&fit=crop', '', 'cinematic,brand,luxury', '', 1),
+            ('AI UGC Campaign', 'UGC Content', 'AI-powered user-generated content campaign', 'TechBrand Inc.', '2026-05', 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=600&h=375&fit=crop', '', 'ugc,ai,campaign', '', 1),
+            ('Product Launch Video', 'Video Editing', 'High-energy product launch teaser', 'StartupX', '2026-04', 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=375&fit=crop', '', 'product,launch,editing', '', 1),
+            ('YouTube Channel Rebrand', 'Motion Design', 'Complete channel rebrand with intro/outro', 'Creator Hub', '2026-03', 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=600&h=375&fit=crop', '', 'youtube,rebrand,motion', '', 1),
+            ('Corporate Explainer', '2D Animation', 'Animated explainer for SaaS product', 'CloudSoft', '2026-02', 'https://images.unsplash.com/photo-1559028012-481c04fa702d?w=600&h=375&fit=crop', '', 'explainer,2d,saas', '', 1),
+            ('Social Media Package', 'Short-Form Video', '30-day social media content package', 'Influence Pro', '2026-01', 'https://images.unsplash.com/photo-1611605698335-8b1569810432?w=600&h=375&fit=crop', '', 'social,shortform,package', '', 1),
+        ]
+        for p in portfolio_items:
+            db.execute('''INSERT OR IGNORE INTO portfolio (title, category, description, client, date, image_url, video_url, tags, live_url, featured) VALUES (?,?,?,?,?,?,?,?,?,?)''', p)
+
+        # Services
+        services = [
+            ('AI Content Strategy', 'Data-driven content strategy powered by AI analytics and market research. I help brands identify high-impact content opportunities and create roadmaps that drive measurable results.', 'fa-robot', '$500+', '["Audit","Strategy","Calendar","AI Tools"]'),
+            ('UGC Production', 'Authentic user-generated content that builds trust and drives conversions. From concept to final edit, I produce scroll-stopping UGC that feels real and performs.', 'fa-users', '$300+', '["Scripting","Filming","Editing","Optimization"]'),
+            ('Motion Design', 'Professional motion graphics and animation for brands that want to stand out. Smooth transitions, cinematic effects, and pixel-perfect execution.', 'fa-film', '$800+', '["Storyboard","Animation","VFX","Sound Design"]'),
+            ('Short-Form Video', 'High-retention short-form content optimized for TikTok, Reels, and YouTube Shorts. Hook-driven editing that keeps viewers watching.', 'fa-bolt', '$200+', '["Trend Research","Editing","Captions","Thumbnails"]'),
+        ]
+        for s in services:
+            db.execute('''INSERT OR IGNORE INTO services (title, description, icon, price, features) VALUES (?,?,?,?,?)''', s)
+
+        # Testimonials (sample)
+        testimonials = [
+            ('Yuki Tanaka', 'Tokyo Studio One', 'Creative Lead', 'The attention to detail in every frame is remarkable. Truly world-class motion graphics.', 5, 'Japan', '2026-04-05'),
+            ('Hannah Bauer', 'Alpine Media', 'Marketing Lead', 'Our YouTube channel has never looked better. Video editing and motion graphics improved viewer retention significantly.', 5, 'Switzerland', '2026-03-28'),
+            ('Ahmed Hassan', 'Desert Rose Media', 'CEO', 'Professional, creative, and reliable. Outstanding content that resonated perfectly with our audience.', 5, 'UAE', '2026-03-20'),
+            ('Emma Wilson', 'Pacific Creative', 'Brand Director', 'The best decision we made this year. Our brand videos now look world-class.', 5, 'Australia', '2026-03-15'),
+            ('Lucas Andersen', 'Nordic Media House', 'Creative Director', 'Incredible talent and exceptional service. They go above and beyond every time.', 5, 'Denmark', '2026-03-10'),
+            ('Maria Santos', 'Brazil Media Group', 'Content Director', 'The social media content strategy was genius. Every video performs exceptionally well.', 5, 'Brazil', '2026-03-05'),
+        ]
+        for t in testimonials:
+            db.execute('''INSERT OR IGNORE INTO testimonials (client_name, company, role, content, rating, avatar_url, featured, created_at) VALUES (?,?,?,?,?,'',1,?)''', (t[0], t[1], t[2], t[3], t[4], t[6]))
+
+        # Reviews
+        reviews_data = [
+            ('Alex Johnson', 'United States', 5, 'Motion Graphics', 'The motion graphics work was absolutely phenomenal. They took our rough concept and turned it into a visually stunning animation.', '2026-06-01'),
+            ('Maria Garcia', 'Spain', 5, 'Video Editing', 'Incredible video editing skills. They transformed raw footage into a polished, professional video.', '2026-05-28'),
+            ('David Brown', 'United Kingdom', 5, 'Explainer Video', 'Our explainer video came out better than we imagined. Clear, engaging, and visually appealing.', '2026-05-25'),
+            ('Lisa Wang', 'Singapore', 5, 'Instagram Reels', 'The Instagram Reels content has been a game-changer. Engagement rates have tripled.', '2026-05-22'),
+            ('Mohammed Ali', 'UAE', 5, 'Brand Video', 'The brand video captured our essence perfectly. Cinematic, emotional, and professionally executed.', '2026-05-20'),
+            ('Sarah Johnson', 'Canada', 4, 'YouTube Editing', 'Great YouTube editing services. Well-paced, engaging, and excellent thumbnail designs.', '2026-05-18'),
+        ]
+        for r in reviews_data:
+            db.execute('''INSERT OR IGNORE INTO reviews (client_name, country, rating, service, review_text, review_date, is_verified) VALUES (?,?,?,?,?,?,1)''', r)
+
+        # FAQs
+        faqs = [
+            ('How long does a typical project take?', 'Timeline depends on scope. Short-form edits typically take 1-3 days, motion graphics projects 5-10 days, and full brand videos 2-4 weeks. I will provide a detailed timeline during our consultation.', 'General', 1),
+            ('What is your pricing structure?', 'Pricing varies based on project complexity, length, and usage rights. I offer both per-project and retainer packages. Contact me with your requirements for a customized quote.', 'Pricing', 2),
+            ('Do you offer revisions?', 'Yes! Each project includes up to 2 rounds of revisions to ensure the final product meets your expectations. Additional revisions can be arranged at a nominal fee.', 'General', 3),
+            ('What information do you need to get started?', 'Share your brand guidelines, reference materials, script/voiceover if available, and any specific requirements. The more context, the better I can tailor the output to your needs.', 'Process', 4),
+            ('Can you work with my existing team?', 'Absolutely. I collaborate seamlessly with marketing teams, agencies, and production houses. I can work within your existing workflow and brand guidelines.', 'Collaboration', 5),
+            ('What formats do you deliver in?', 'I deliver in all standard formats (MP4, MOV, GIF) optimized for your target platform. I also provide source files upon request for an additional fee.', 'Technical', 6),
+        ]
+        for f in faqs:
+            db.execute('''INSERT OR IGNORE INTO faqs (question, answer, category, sort_order, is_published) VALUES (?,?,?,?,1)''', f)
+
+        # Skills
+        skills = [
+            ('AI Content Strategy', 95, 'Strategy', 'fa-brain', 1),
+            ('UGC Production', 92, 'Content', 'fa-camera', 2),
+            ('Motion Design', 90, 'Design', 'fa-film', 3),
+            ('Video Editing', 95, 'Production', 'fa-cut', 4),
+            ('ChatGPT & Gemini', 90, 'AI', 'fa-comment', 5),
+            ('Scriptwriting', 88, 'Strategy', 'fa-pen', 6),
+            ('Brand Strategy', 85, 'Strategy', 'fa-bullseye', 7),
+            ('Social Media', 90, 'Marketing', 'fa-share-alt', 8),
+        ]
+        for sk in skills:
+            db.execute('''INSERT OR IGNORE INTO skills (name, percentage, category, icon, sort_order) VALUES (?,?,?,?,?)''', sk)
+
 def admin_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
