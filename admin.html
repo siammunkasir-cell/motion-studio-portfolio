@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Motion Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#151525;--card-hover:#1a1a30;--border:#1e1e35;--text:#f0f0f5;--text2:#a0a0b8;--text3:#6b6b80;--accent1:#ff6b6b;--accent2:#ffd93d;--radius:8px;--radius-lg:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+/* Login */
+.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px;width:100%;max-width:400px;text-align:center}
+.login-box h1{font-size:24px;margin-bottom:4px}
+.login-box p{color:var(--text2);font-size:14px;margin-bottom:24px}
+.login-box input{width:100%;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:15px;margin-bottom:12px;outline:none}
+.login-box input:focus{border-color:var(--accent1)}
+.login-box .error{color:var(--accent1);font-size:13px;margin-bottom:8px;display:none}
+.login-box button{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent1),#e55555);border:none;border-radius:var(--radius);color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+.login-box .logo{font-size:32px;margin-bottom:12px;color:var(--accent1)}
+/* Dashboard */
+.dashboard{display:none;min-height:100vh}
+.dash-header{background:var(--card);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.dash-header h2{font-size:16px;display:flex;align-items:center;gap:8px}
+.dash-header h2 i{color:var(--accent1)}
+.dash-header .user-info{display:flex;align-items:center;gap:12px}
+.dash-header .user-info span{font-size:12px;color:var(--text2)}
+.dash-header .logout-btn{background:rgba(255,107,107,.15);color:var(--accent1);border:1px solid rgba(255,107,107,.3);padding:6px 12px;border-radius:var(--radius);cursor:pointer;font-size:12px;font-weight:500}
+.dash-body{display:flex;min-height:calc(100vh-52px)}
+.dash-sidebar{width:200px;background:var(--card);border-right:1px solid var(--border);padding:12px 0;flex-shrink:0}
+.dash-sidebar .sec-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);padding:12px 16px 4px;font-weight:600}
+.dash-nav-btn{display:flex;align-items:center;gap:8px;padding:8px 16px;color:var(--text2);font-size:13px;cursor:pointer;border-left:3px solid transparent;transition:.15s;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+.dash-nav-btn:hover{background:var(--bg2);color:var(--text)}
+.dash-nav-btn.active{background:var(--bg2);color:var(--accent1);border-left-color:var(--accent1)}
+/* Mobile sidebar toggle */
+.mobile-nav-toggle{display:none;padding:10px 16px;background:none;border:none;color:var(--text);font-size:20px;cursor:pointer}
+.dash-sidebar.open{display:block}
+.dash-content-wrap{flex:1;padding:20px;overflow-y:auto;min-width:0}
+.dash-content-wrap h3{font-size:18px;margin-bottom:4px}
+.dash-content-wrap .subtitle{color:var(--text2);font-size:13px;margin-bottom:16px}
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;margin-bottom:12px}
+.card h4{font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.card .meta{font-size:12px;color:var(--text2);margin-bottom:6px}
+.card .preview{font-size:13px;color:var(--text3);line-height:1.5;margin-bottom:8px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.card-actions{display:flex;gap:6px;flex-wrap:wrap}
+.card-actions button{padding:5px 12px;border-radius:var(--radius);border:none;cursor:pointer;font-size:11px;font-weight:500}
+.btn-edit{background:rgba(255,217,61,.15);color:var(--accent2)}
+.btn-delete{background:rgba(255,107,107,.15);color:var(--accent1)}
+.btn-add{background:rgba(107,255,150,.15);color:#6bff96;border:none;padding:7px 16px;border-radius:var(--radius);cursor:pointer;font-size:12px;font-weight:500;margin-bottom:12px;font-family:inherit}
+.btn-primary{background:linear-gradient(135deg,var(--accent1),#e55555);color:#fff;border:none;padding:8px 20px;border-radius:var(--radius);cursor:pointer;font-size:13px;font-weight:600;font-family:inherit}
+.btn-secondary{background:var(--bg2);color:var(--text);border:1px solid var(--border);padding:8px 20px;border-radius:var(--radius);cursor:pointer;font-size:13px;font-family:inherit}
+/* Modal */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:520px;max-height:80vh;overflow-y:auto;padding:24px}
+.modal-box h3{font-size:16px;margin-bottom:12px}
+.modal-box label{display:block;font-size:12px;color:var(--text2);margin-bottom:3px;margin-top:10px}
+.modal-box label:first-of-type{margin-top:0}
+.modal-box input,.modal-box textarea,.modal-box select{width:100%;padding:9px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;font-family:inherit}
+.modal-box input:focus,.modal-box textarea:focus{border-color:var(--accent1)}
+.modal-box textarea{min-height:70px;resize:vertical}
+.modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;text-align:center}
+.stat-card .num{font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-card .label{font-size:12px;color:var(--text2);margin-top:4px}
+/* Toast */
+.toast{position:fixed;bottom:20px;right:20px;padding:12px 20px;border-radius:var(--radius);font-size:13px;font-weight:500;z-index:2000;transform:translateY(80px);opacity:0;transition:.35s;max-width:360px;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:rgba(107,255,150,.2);border:1px solid rgba(107,255,150,.4);color:#6bff96}
+.toast.error{background:rgba(255,107,107,.2);border:1px solid rgba(255,107,107,.4);color:var(--accent1)}
+/* Mobile */
+@media(max-width:768px){
+  .dash-sidebar{display:none;position:fixed;top:52px;left:0;bottom:0;width:240px;z-index:50;box-shadow:4px 0 20px rgba(0,0,0,.5)}
+  .dash-sidebar.open{display:block}
+  .mobile-nav-toggle{display:block}
+  .dash-content-wrap{padding:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="logo">◆</div>
+    <h1>Admin Dashboard</h1>
+    <p>Motion Studio Creative</p>
+    <input type="password" id="loginPass" placeholder="Admin password" autocomplete="off">
+    <div class="error" id="loginError">Wrong password</div>
+    <button id="loginBtn">Sign In</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <div class="dash-header">
+    <button class="mobile-nav-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button>
+    <h2><i class="fas fa-cog"></i> Admin Panel</h2>
+    <div class="user-info">
+      <span><i class="fas fa-user-shield"></i> Admin</span>
+      <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div>
+  <div class="dash-body">
+    <div class="dash-sidebar" id="dashSidebar">
+      <div class="sec-label">Content</div>
+      <button class="dash-nav-btn active" data-section="testimonials"><i class="fas fa-star"></i> Testimonials</button>
+      <button class="dash-nav-btn" data-section="services"><i class="fas fa-concierge-bell"></i> Services</button>
+      <button class="dash-nav-btn" data-section="portfolio"><i class="fas fa-briefcase"></i> Portfolio</button>
+      <div class="sec-label">Site</div>
+      <button class="dash-nav-btn" data-section="settings"><i class="fas fa-palette"></i> Settings</button>
+      <button class="dash-nav-btn" data-section="help"><i class="fas fa-question-circle"></i> Help</button>
+    </div>
+    <div class="dash-content-wrap" id="dashContent"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="editModal"><div class="modal-box" id="modalContent"></div></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+var PASSWORD = 'motion2024';
+
+var data = {
+  testimonials: [
+    {name:'Rafiq Hasan', role:'Creative Director', company:'Brandfit Media', rating:5, text:'Siam delivered outstanding motion graphics work across multiple client campaigns.'},
+    {name:'Nusrat Jahan', role:'Head of Content', company:'ABC Agency', rating:5, text:'The UGC content pipeline Siam built was a game-changer. 200+ videos monthly with consistent quality.'}
+  ],
+  services: [
+    {icon:'fa-film', title:'Motion Graphics', desc:'Animated explainers, kinetic typography, logo reveals, and brand animations.', price:'From $500', features:['2D/3D Animation','Kinetic Typography','Logo Animation']},
+    {icon:'fa-video', title:'UGC Content', desc:'Authentic user-generated content strategies for social media.', price:'From $300', features:['TikTok & Reels','Product Demos','Brand Storytelling']},
+    {icon:'fa-robot', title:'AI Visuals', desc:'AI-generated images and videos for marketing campaigns.', price:'From $200', features:['AI Image Generation','AI Video Creation','Prompt Engineering']},
+    {icon:'fa-paint-brush', title:'Brand Design', desc:'Complete brand identities from logo to social media kits.', price:'From $400', features:['Logo Design','Brand Guidelines','Visual Identity']},
+    {icon:'fa-scissors', title:'Video Editing', desc:'Professional video editing for commercials and social media.', price:'From $350', features:['Multi-cam Editing','Color Grading','Audio Mixing']},
+    {icon:'fa-ad', title:'Ad Creatives', desc:'High-converting ad creatives for social media campaigns.', price:'From $400', features:['Ad Scripts','Video Ads','Static Ads']}
+  ],
+  portfolio: [
+    {title:'Brand Reel — Motion Launch Campaign', category:'Motion', description:'Led motion graphics production for brand launch campaigns.'},
+    {title:'TikTok & Reels Content Pipeline', category:'UGC', description:'Produced 200+ short-form videos monthly for 8+ brand accounts.'},
+    {title:'AI-Powered Content Automation', category:'AI', description:'Architected full-stack AI SaaS platform with 8+ content tools.'},
+    {title:'Corporate Video Production Suite', category:'Video', description:'Professional corporate videos for enterprise clients.'}
+  ]
+};
+
+var currentSection = 'testimonials';
+var editIdx = null;
+var editType = null;
+
+// ─── HELPERS ───
+function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]||c})}
+function toast(msg,t){var el=document.getElementById('toast');el.textContent=msg;el.className='toast '+(t||'success')+' show';setTimeout(function(){el.classList.remove('show')},3000)}
+function saveToLS(){try{localStorage.setItem('motion_studio_data',JSON.stringify(data))}catch(e){}}
+function loadFromLS(){try{var s=localStorage.getItem('motion_studio_data');if(s){var p=JSON.parse(s);if(p.testimonials&&p.testimonials.length)data.testimonials=p.testimonials;if(p.services&&p.services.length)data.services=p.services;if(p.portfolio&&p.portfolio.length)data.portfolio=p.portfolio}}catch(e){}}
+
+// ─── RENDER ───
+function render(){
+  var c=document.getElementById('dashContent');
+  c.innerHTML = '';
+  // Stats bar
+  var st = document.createElement('div');st.className='stats-grid';
+  st.innerHTML = '<div class="stat-card"><div class="num">'+data.testimonials.length+'</div><div class="label">Testimonials</div></div><div class="stat-card"><div class="num">'+data.services.length+'</div><div class="label">Services</div></div><div class="stat-card"><div class="num">'+data.portfolio.length+'</div><div class="label">Projects</div></div>';
+  c.appendChild(st);
+  
+  // Title
+  var titles = {testimonials:'⭐ Testimonials',services:'🎯 Services',portfolio:'📂 Portfolio',settings:'⚙️ Settings',help:'❓ Help'};
+  var subtitles = {testimonials:'Manage client testimonials',services:'Manage service offerings',portfolio:'Manage portfolio projects',settings:'Site settings & actions',help:'How to use the dashboard'};
+  var h = document.createElement('h3');h.textContent = titles[currentSection]||currentSection;
+  c.appendChild(h);
+  var sub = document.createElement('p');sub.className='subtitle';sub.textContent=subtitles[currentSection]||'';
+  c.appendChild(sub);
+  
+  // Render section
+  switch(currentSection){
+    case 'testimonials': renderTestimonials(c);break;
+    case 'services': renderServices(c);break;
+    case 'portfolio': renderPortfolio(c);break;
+    case 'settings': renderSettings(c);break;
+    case 'help': renderHelp(c);break;
+  }
+}
+
+function renderTestimonials(container){
+  var add = document.createElement('button');add.className='btn-add';add.innerHTML='<i class="fas fa-plus"></i> Add Testimonial';
+  add.addEventListener('click',function(){openModal('testimonials')});
+  container.appendChild(add);
+  data.testimonials.forEach(function(t,i){
+    var card = document.createElement('div');card.className='card';
+    card.innerHTML = '<h4>'+'★'.repeat(t.rating)+'☆'.repeat(5-t.rating)+' <span style="color:var(--text)">'+esc(t.name)+'</span></h4><div class="meta">'+esc(t.role)+(t.company?', '+esc(t.company):'')+'</div><div class="preview">'+esc(t.text)+'</div><div class="card-actions"><button class="btn-edit" data-action="edit-testimonial" data-idx="'+i+'">✏️ Edit</button><button class="btn-delete" data-action="delete-testimonial" data-idx="'+i+'">🗑️ Delete</button></div>';
+    container.appendChild(card);
+  });
+}
+
+function renderServices(container){
+  var add = document.createElement('button');add.className='btn-add';add.innerHTML='<i class="fas fa-plus"></i> Add Service';
+  add.addEventListener('click',function(){openModal('services')});
+  container.appendChild(add);
+  data.services.forEach(function(s,i){
+    var card = document.createElement('div');card.className='card';
+    card.innerHTML = '<h4><i class="fas '+esc(s.icon)+'" style="color:var(--accent1);width:18px"></i> '+esc(s.title)+'</h4><div class="meta">'+esc(s.price)+' · '+s.features.length+' features</div><div class="preview">'+esc(s.desc)+'</div><div class="card-actions"><button class="btn-edit" data-action="edit-service" data-idx="'+i+'">✏️ Edit</button><button class="btn-delete" data-action="delete-service" data-idx="'+i+'">🗑️ Delete</button></div>';
+    container.appendChild(card);
+  });
+}
+
+function renderPortfolio(container){
+  var add = document.createElement('button');add.className='btn-add';add.innerHTML='<i class="fas fa-plus"></i> Add Project';
+  add.addEventListener('click',function(){openModal('portfolio')});
+  container.appendChild(add);
+  data.portfolio.forEach(function(p,i){
+    var card = document.createElement('div');card.className='card';
+    card.innerHTML = '<h4><span style="color:var(--accent1)">'+esc(p.title)+'</span></h4><div class="meta">'+esc(p.category)+'</div><div class="preview">'+esc(p.description)+'</div><div class="card-actions"><button class="btn-edit" data-action="edit-portfolio" data-idx="'+i+'">✏️ Edit</button><button class="btn-delete" data-action="delete-portfolio" data-idx="'+i+'">🗑️ Delete</button></div>';
+    container.appendChild(card);
+  });
+}
+
+function renderSettings(container){
+  var html = '<div class="card"><h4>🔑 Admin Password</h4><div class="meta">Current password: <code>motion2024</code></div><p style="font-size:13px;color:var(--text3)">To change password, edit the <code>PASSWORD</code> variable in admin.html and re-deploy.</p></div><div class="card"><h4>📥 Export Content</h4><div class="meta">Download all your edits as JSON backup</div><button class="btn-primary" id="exportBtn">📥 Export Data</button></div><div class="card"><h4>📤 Import Content</h4><div class="meta">Restore from a previous backup file</div><input type="file" id="importFile" accept=".json" style="margin-top:6px"></div><div class="card" style="border-color:rgba(255,107,107,.3)"><h4>🌐 Publish to Live Site</h4><div class="meta">Your edits save in this browser. To publish globally, export your data and send to Siam for re-deployment.</div><p style="font-size:13px;color:var(--text3)">Email: <a href=\"mailto:siammunkasir@gmail.com\">siammunkasir@gmail.com</a></p></div>';
+  container.innerHTML += html;
+  setTimeout(function(){
+    var ex = document.getElementById('exportBtn');
+    if(ex) ex.addEventListener('click',function(){exportData()});
+    var imp = document.getElementById('importFile');
+    if(imp) imp.addEventListener('change',function(e){importData(e)});
+  },0);
+}
+
+function renderHelp(container){
+  container.innerHTML += '<div class="card"><h4>✏️ Editing</h4><div class="meta">Click Testimonials, Services, or Portfolio in the sidebar. Use the Add button to create new items, or click Edit/Delete on existing ones.</div></div><div class="card"><h4>💾 Saving</h4><div class="meta">All changes save automatically. Export a backup from Settings.</div></div><div class="card"><h4>🌐 Publishing</h4><div class="meta">Edits are saved in your browser only. Export from Settings and send to Siam for global deployment.</div></div>';
+}
+
+// ─── MODAL ───
+function openModal(type,idx){
+  editType = type;
+  editIdx = idx;
+  var item = idx!==undefined ? data[type][idx] : null;
+  var title = item ? 'Edit' : 'Add';
+  var c = document.getElementById('modalContent');
+  
+  if(type==='testimonials'){
+    var name = item ? item.name : '';
+    var role = item ? item.role : '';
+    var company = item ? (item.company||'') : '';
+    var rating = item ? item.rating : 5;
+    var text = item ? item.text : '';
+    var stars = '';
+    for(var r=5;r>=1;r--) stars += '<option value="'+r+'"'+(r===rating?' selected':'')+'>'+'★'.repeat(r)+'☆'.repeat(5-r)+'</option>';
+    c.innerHTML = '<h3>'+(item?'Edit':'Add')+' Testimonial</h3><label>Name</label><input type="text" id="f_name" value="'+esc(name)+'"><label>Role</label><input type="text" id="f_role" value="'+esc(role)+'"><label>Company</label><input type="text" id="f_company" value="'+esc(company)+'"><label>Rating</label><select id="f_rating">'+stars+'</select><label>Review</label><textarea id="f_text" rows="4">'+esc(text)+'</textarea><div class="modal-actions"><button class="btn-secondary" data-action="close-modal">Cancel</button><button class="btn-primary" data-action="save-modal">Save</button></div>';
+  } else if(type==='services'){
+    var icon = item ? item.icon : 'fa-film';
+    var sname = item ? item.title : '';
+    var sdesc = item ? item.desc : '';
+    var sprice = item ? item.price : '$500+';
+    var sfeats = item ? item.features.join(', ') : '';
+    c.innerHTML = '<h3>'+(item?'Edit':'Add')+' Service</h3><label>Icon (Font Awesome class)</label><input type="text" id="f_icon" value="'+esc(icon)+'"><label>Name</label><input type="text" id="f_name" value="'+esc(sname)+'"><label>Description</label><textarea id="f_desc" rows="2">'+esc(sdesc)+'</textarea><label>Price</label><input type="text" id="f_price" value="'+esc(sprice)+'"><label>Features (comma-separated)</label><input type="text" id="f_features" value="'+esc(sfeats)+'"><div class="modal-actions"><button class="btn-secondary" data-action="close-modal">Cancel</button><button class="btn-primary" data-action="save-modal">Save</button></div>';
+  } else if(type==='portfolio'){
+    var ptitle = item ? item.title : '';
+    var pcat = item ? item.category : 'Motion';
+    var pdesc = item ? item.description : '';
+    var cats = '';
+    ['Motion','UGC','AI','Video'].forEach(function(c){cats+='<option value="'+c+'"'+(c===pcat?' selected':'')+'>'+c+'</option>'});
+    c.innerHTML = '<h3>'+(item?'Edit':'Add')+' Project</h3><label>Title</label><input type="text" id="f_name" value="'+esc(ptitle)+'"><label>Category</label><select id="f_category">'+cats+'</select><label>Description</label><textarea id="f_desc" rows="3">'+esc(pdesc)+'</textarea><div class="modal-actions"><button class="btn-secondary" data-action="close-modal">Cancel</button><button class="btn-primary" data-action="save-modal">Save</button></div>';
+  }
+  document.getElementById('editModal').classList.add('open');
+}
+
+function saveModal(){
+  var type = editType;
+  var idx = editIdx;
+  if(type==='testimonials'){
+    var name = document.getElementById('f_name').value.trim();
+    var text = document.getElementById('f_text').value.trim();
+    if(!name||!text){toast('Name and review required','error');return}
+    var item = {name:name, role:document.getElementById('f_role').value.trim(), company:document.getElementById('f_company').value.trim(), rating:parseInt(document.getElementById('f_rating').value), text:text};
+    if(idx===null) data.testimonials.push(item); else data.testimonials[idx]=item;
+  } else if(type==='services'){
+    var title = document.getElementById('f_name').value.trim();
+    var desc = document.getElementById('f_desc').value.trim();
+    if(!title||!desc){toast('Name and description required','error');return}
+    var features = document.getElementById('f_features').value.split(',').map(function(f){return f.trim()}).filter(function(f){return f});
+    var item = {icon:document.getElementById('f_icon').value.trim()||'fa-film', title:title, desc:desc, price:document.getElementById('f_price').value.trim()||'$500+', features:features};
+    if(idx===null) data.services.push(item); else data.services[idx]=item;
+  } else if(type==='portfolio'){
+    var ptitle = document.getElementById('f_name').value.trim();
+    var pdesc = document.getElementById('f_desc').value.trim();
+    if(!ptitle||!pdesc){toast('Title and description required','error');return}
+    var item = {title:ptitle, category:document.getElementById('f_category').value, description:pdesc};
+    if(idx===null) data.portfolio.push(item); else data.portfolio[idx]=item;
+  }
+  closeModal();
+  render();
+  saveToLS();
+  toast('Saved!');
+}
+
+function deleteItem(type,idx){
+  data[type].splice(idx,1);
+  render();
+  saveToLS();
+  toast('Deleted');
+}
+
+function closeModal(){document.getElementById('editModal').classList.remove('open')}
+
+// ─── EXPORT / IMPORT ───
+function exportData(){
+  var blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');a.href=url;a.download='motion-studio-backup.json';a.click();
+  URL.revokeObjectURL(url);
+  toast('Exported!');
+}
+
+function importData(e){
+  var file = e.target.files[0];if(!file)return;
+  var reader = new FileReader();
+  reader.onload = function(e2){
+    try{
+      var imp = JSON.parse(e2.target.result);
+      if(imp.testimonials&&imp.testimonials.length)data.testimonials=imp.testimonials;
+      if(imp.services&&imp.services.length)data.services=imp.services;
+      if(imp.portfolio&&imp.portfolio.length)data.portfolio=imp.portfolio;
+      saveToLS();render();toast('Imported!');
+    }catch(err){toast('Invalid file','error')}
+  };
+  reader.readAsText(file);
+}
+
+// ─── EVENT DELEGATION ───
+document.addEventListener('click', function(e){
+  var target = e.target.closest('[data-action]');
+  if(!target) return;
+  var action = target.getAttribute('data-action');
+  
+  if(action==='edit-testimonial'){openModal('testimonials',parseInt(target.getAttribute('data-idx')))}
+  else if(action==='delete-testimonial'){deleteItem('testimonials',parseInt(target.getAttribute('data-idx')))}
+  else if(action==='edit-service'){openModal('services',parseInt(target.getAttribute('data-idx')))}
+  else if(action==='delete-service'){deleteItem('services',parseInt(target.getAttribute('data-idx')))}
+  else if(action==='edit-portfolio'){openModal('portfolio',parseInt(target.getAttribute('data-idx')))}
+  else if(action==='delete-portfolio'){deleteItem('portfolio',parseInt(target.getAttribute('data-idx')))}
+  else if(action==='close-modal'){closeModal()}
+  else if(action==='save-modal'){saveModal()}
+});
+
+// ─── NAVIGATION ───
+document.getElementById('dashSidebar').addEventListener('click', function(e){
+  var btn = e.target.closest('.dash-nav-btn');
+  if(!btn) return;
+  var section = btn.getAttribute('data-section');
+  document.querySelectorAll('.dash-nav-btn').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  currentSection = section;
+  render();
+  // Close sidebar on mobile
+  document.getElementById('dashSidebar').classList.remove('open');
+});
+
+// Mobile toggle
+document.getElementById('mobileToggle').addEventListener('click', function(){
+  document.getElementById('dashSidebar').classList.toggle('open');
+});
+
+// ─── LOGIN ───
+document.getElementById('loginBtn').addEventListener('click', function(){
+  var pass = document.getElementById('loginPass').value;
+  if(pass === PASSWORD){
+    localStorage.setItem('motion_admin','1');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('loginError').style.display = 'none';
+    render();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+});
+document.getElementById('loginPass').addEventListener('keydown', function(e){
+  if(e.key==='Enter') document.getElementById('loginBtn').click();
+});
+
+// Logout
+document.getElementById('logoutBtn').addEventListener('click', function(){
+  localStorage.removeItem('motion_admin');
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('dashboard').style.display = 'none';
+});
+
+// ─── MODAL OVERLAY ───
+document.getElementById('editModal').addEventListener('click', function(e){
+  if(e.target === this) closeModal();
+});
+
+// ─── INIT ───
+if(localStorage.getItem('motion_admin')==='1'){
+  loadFromLS();
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  render();
+}
+})();
+</script>
+</body>
+</html>

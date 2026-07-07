@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Manage Reviews - Siam Munkasir Admin</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--bg:#09090B;--bg2:#111827;--card:#0F172A;--border:#1E293B;--text:#F8FAFC;--text2:#94A3B8;--text3:#64748B;--accent1:#3B82F6;--accent2:#8B5CF6;--accent3:#06B6D4;--radius:12px;--radius-lg:20px;--font:'Inter',sans-serif;--transition:.35s ease}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;flex-shrink:0;height:100vh;position:sticky;top:0;overflow-y:auto}
+.sidebar h2{font-size:18px;font-weight:700;margin-bottom:32px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;color:var(--text2);font-size:14px;margin-bottom:4px;transition:var(--transition);text-decoration:none}
+.sidebar a:hover,.sidebar a.active{background:rgba(59,130,246,.1);color:var(--accent1)}
+.main{flex:1;padding:32px 40px;min-width:0}
+h1{font-size:24px;font-weight:700;margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:24px}
+.card h2{font-size:16px;font-weight:600;margin-bottom:16px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:12px;font-weight:500;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none;transition:var(--transition)}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent1)}
+.form-group textarea{min-height:80px;resize:vertical}
+.btn{padding:10px 24px;border-radius:8px;border:none;font-size:14px;font-weight:600;cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff}
+.btn-primary:hover{opacity:.9}
+.btn-danger{background:rgba(239,68,68,.15);color:#ef4444}
+.btn-danger:hover{background:rgba(239,68,68,.25)}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:12px 8px;font-size:13px;border-bottom:1px solid var(--border)}
+th{color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.5px;font-size:11px}
+td{color:var(--text2)}
+.search-bar{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.search-bar input{padding:8px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;outline:none;min-width:200px}
+.search-bar input:focus{border-color:var(--accent1)}
+.rating-stars{color:#F59E0B;font-size:13px}
+.verified{color:var(--accent3);font-size:11px}
+.alert{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:var(--accent1);padding:12px 16px;border-radius:var(--radius);margin-bottom:20px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <h2>Siam Munkasir</h2>
+  <a href="/admin"><i class="fas fa-chart-pie"></i> Dashboard</a>
+  <a href="/admin/inquiries"><i class="fas fa-inbox"></i> Inquiries</a>
+  <a href="/admin/portfolio"><i class="fas fa-images"></i> Portfolio</a>
+  <a href="/admin/testimonials"><i class="fas fa-quote-right"></i> Testimonials</a>
+  <a href="/admin/reviews" class="active"><i class="fas fa-star"></i> Reviews</a>
+  <a href="/admin/faqs"><i class="fas fa-question-circle"></i> FAQs</a>
+  <a href="/admin/skills"><i class="fas fa-chart-bar"></i> Skills</a>
+  <a href="/admin/services"><i class="fas fa-cog"></i> Services</a>
+  <a href="/admin/settings"><i class="fas fa-sliders-h"></i> Settings</a>
+  <a href="/admin/logout" style="margin-top:32px;color:var(--accent1)"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+<div class="main">
+  <h1><i class="fas fa-star" style="color:var(--accent1);margin-right:10px"></i> Reviews Management</h1>
+
+  <div class="alert">Total reviews: {{ items|length }}</div>
+
+  <div class="card">
+    <h2>Add New Review</h2>
+    <form method="POST" action="/admin/reviews/add">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Client Name *</label>
+          <input type="text" name="client_name" required>
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <input type="text" name="country">
+        </div>
+        <div class="form-group">
+          <label>Rating</label>
+          <select name="rating">
+            <option value="5">5 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="2">2 Stars</option>
+            <option value="1">1 Star</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Service</label>
+          <input type="text" name="service" placeholder="e.g. Motion Graphics">
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label>Review Text *</label>
+          <textarea name="review_text" required></textarea>
+        </div>
+        <div class="form-group">
+          <label><input type="checkbox" name="is_verified" checked> Verified Client</label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add Review</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>All Reviews ({{ items|length }})</h2>
+    <form class="search-bar" method="GET">
+      <input type="text" name="search" placeholder="Search reviews..." value="{{ search or '' }}">
+      <select name="rating" onchange="this.form.submit()">
+        <option value="">All Ratings</option>
+        <option value="5" {% if rating == '5' %}selected{% endif %}>5 Stars</option>
+        <option value="4" {% if rating == '4' %}selected{% endif %}>4 Stars</option>
+        <option value="3" {% if rating == '3' %}selected{% endif %}>3 Stars</option>
+        <option value="2" {% if rating == '2' %}selected{% endif %}>2 Stars</option>
+        <option value="1" {% if rating == '1' %}selected{% endif %}>1 Star</option>
+      </select>
+      <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+    </form>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Client</th>
+            <th>Country</th>
+            <th>Rating</th>
+            <th>Service</th>
+            <th>Verified</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.client_name }}</td>
+            <td>{{ item.country or '-' }}</td>
+            <td><span class="rating-stars">{{ '★' * item.rating }}{{ '☆' * (5 - item.rating) }}</span></td>
+            <td>{{ item.service or '-' }}</td>
+            <td>{% if item.is_verified %}<span class="verified"><i class="fas fa-check-circle"></i> Verified</span>{% else %}-{% endif %}</td>
+            <td>{{ item.created_at[:10] if item.created_at else '-' }}</td>
+            <td>
+              <form method="POST" action="/admin/reviews/{{ item.id }}/delete" style="display:inline" onsubmit="return confirm('Delete this review?')">
+                <button type="submit" class="btn btn-danger btn-small" style="padding:4px 12px;font-size:12px"><i class="fas fa-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+          {% if items|length == 0 %}
+          <tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text3)">No reviews found.</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Portfolio — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--bg:#0a0a12;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#ff6b6b;--accent2:#ffd93d;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex}
+.sidebar{width:240px;min-height:100vh;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed}
+.sidebar h2{font-size:18px;font-weight:800;margin-bottom:32px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius);color:var(--text2);font-size:14px;text-decoration:none;transition:.3s;margin-bottom:4px}
+.sidebar a:hover,.sidebar a.active{background:rgba(255,107,107,.1);color:var(--accent1)}
+.main{flex:1;margin-left:240px;padding:32px}
+.main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.main-header h1{font-size:24px;font-weight:700}
+.btn-add{padding:10px 20px;border-radius:100px;border:none;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:var(--bg);font-size:14px;font-weight:600;cursor:pointer;transition:.3s;font-family:var(--font)}
+.btn-add:hover{transform:translateY(-2px)}
+.add-form,.item-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px}
+.add-form h3{margin-bottom:16px;font-size:16px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:12px;color:var(--text3);margin-bottom:4px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;font-family:var(--font)}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--accent1)}
+.btn-save{padding:10px 24px;border-radius:100px;border:none;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:var(--bg);font-weight:600;cursor:pointer;font-family:var(--font)}
+.btn-delete{padding:6px 14px;border-radius:100px;border:1px solid rgba(255,107,107,.3);background:transparent;color:var(--accent1);font-size:12px;cursor:pointer;font-family:var(--font)}
+.item-card{display:flex;justify-content:space-between;align-items:center}
+.item-info h4{font-size:15px;margin-bottom:4px}
+.item-info p{color:var(--text2);font-size:13px}
+.item-actions{display:flex;gap:8px}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <h2>Siam Munkasir</h2>
+  <a href="/admin"><i class="fas fa-chart-pie"></i> Dashboard</a>
+  <a href="/admin/inquiries"><i class="fas fa-inbox"></i> Inquiries</a>
+  <a href="/admin/portfolio" class="active"><i class="fas fa-images"></i> Portfolio</a>
+  <a href="/admin/testimonials"><i class="fas fa-quote-right"></i> Testimonials</a>
+  <a href="/admin/services"><i class="fas fa-cog"></i> Services</a>
+  <a href="/admin/settings"><i class="fas fa-sliders-h"></i> Settings</a>
+  <a href="/admin/logout" style="margin-top:32px;color:var(--accent1)"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+<div class="main">
+  <div class="main-header"><h1>Portfolio</h1><button onclick="document.getElementById('addForm').style.display='block'" class="btn-add">+ Add Item</button></div>
+  
+  <div id="addForm" class="add-form" style="display:none">
+    <h3>Add New Portfolio Item</h3>
+    <form method="post" action="/admin/portfolio/add" enctype="multipart/form-data">
+      <div class="form-row">
+        <div class="form-group"><label>Title *</label><input type="text" name="title" required></div>
+        <div class="form-group"><label>Category</label><select name="category"><option>motion</option><option>ugc</option><option>ai</option><option>brand</option></select></div>
+      </div>
+      <div class="form-group"><label>Description</label><textarea name="description" rows="3"></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Client</label><input type="text" name="client"></div>
+        <div class="form-group"><label>Date</label><input type="text" name="date" placeholder="2025"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Image</label><input type="file" name="image" accept="image/*"></div>
+        <div class="form-group"><label>Video URL</label><input type="url" name="video_url" placeholder="https://...mp4"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Tags (comma separated)</label><input type="text" name="tags" placeholder="Motion, 2D, Brand"></div>
+        <div class="form-group"><label>Live URL</label><input type="url" name="live_url"></div>
+      </div>
+      <div class="form-group"><label><input type="checkbox" name="featured"> Featured</label></div>
+      <button type="submit" class="btn-save">Save Item</button>
+    </form>
+  </div>
+  
+  {% for item in items %}
+  <div class="item-card">
+    <div class="item-info">
+      <h4>{{ item.title }}</h4>
+      <p>{{ item.category }} • {{ item.client or 'No client' }}</p>
+      {% if item.tags %}<p style="font-size:11px;color:var(--text3);margin-top:4px">{{ item.tags }}</p>{% endif %}
+    </div>
+    <div class="item-actions">
+      <form method="post" action="/admin/portfolio/{{ item.id }}/edit" enctype="multipart/form-data" style="display:none" class="edit-form">
+        <input type="text" name="title" value="{{ item.title }}">
+        <button onclick="this.closest('.edit-form').style.display='none';this.closest('.item-card').querySelector('.item-info').style.display='block'" class="btn-delete">Cancel</button>
+      </form>
+      <form method="post" action="/admin/portfolio/{{ item.id }}/delete" onsubmit="return confirm('Delete?')">
+        <button class="btn-delete"><i class="fas fa-trash"></i></button>
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <p style="color:var(--text3);text-align:center;padding:40px">No portfolio items yet. Click "Add Item" to create one.</p>
+  {% endfor %}
+</div>
+</body>
+</html>

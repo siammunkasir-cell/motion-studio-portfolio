@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Inquiry #{{ inquiry.id }} — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#ff6b6b;--accent2:#ffd93d;--accent3:#6c5ce7;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex}
+.sidebar{width:240px;min-height:100vh;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed;left:0;top:0}
+.sidebar h2{font-size:18px;font-weight:800;margin-bottom:32px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius);color:var(--text2);font-size:14px;text-decoration:none;transition:.3s;margin-bottom:4px}
+.sidebar a:hover,.sidebar a.active{background:rgba(255,107,107,.1);color:var(--accent1)}.sidebar a i{width:20px;text-align:center}
+.main{flex:1;margin-left:240px;padding:32px}
+.main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.main-header h1{font-size:20px;font-weight:700}
+.main-header a{color:var(--accent1);font-size:14px;text-decoration:none}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.field{padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius)}
+.field.full{grid-column:1/-1}
+.field label{display:block;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.field .value{font-size:14px;color:var(--text2)}
+.actions{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.btn{padding:10px 20px;border-radius:100px;border:1px solid var(--border);font-size:13px;font-weight:600;cursor:pointer;transition:.3s;background:transparent;color:var(--text2);font-family:var(--font);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{transform:translateY(-1px)}
+.btn-contact{border-color:var(--accent2);color:var(--accent2)}
+.btn-close{border-color:var(--accent1);color:var(--accent1)}
+.btn-archive{border-color:var(--text3);color:var(--text3)}
+.btn-delete{border-color:rgba(255,107,107,.3);color:var(--accent1);background:rgba(255,107,107,.05)}
+.reply-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:24px}
+.reply-box h3{font-size:15px;font-weight:600;margin-bottom:12px}
+.reply-box textarea{width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:14px;min-height:120px;resize:vertical;font-family:var(--font);outline:none}
+.reply-box textarea:focus{border-color:var(--accent1)}
+.reply-box button{margin-top:12px}
+.files-grid{display:flex;flex-wrap:wrap;gap:8px}
+.file-link{padding:6px 14px;background:rgba(255,107,107,.1);border-radius:6px;font-size:12px;color:var(--accent1);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.file-link:hover{background:rgba(255,107,107,.2)}
+.flash{background:rgba(255,217,61,.1);border:1px solid rgba(255,217,61,.2);color:var(--accent2);padding:12px 16px;border-radius:var(--radius);margin-bottom:16px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <h2>Siam Munkasir</h2>
+  <a href="/admin"><i class="fas fa-chart-pie"></i> Dashboard</a>
+  <a href="/admin/inquiries" class="active"><i class="fas fa-inbox"></i> Inquiries</a>
+  <a href="/admin/portfolio"><i class="fas fa-images"></i> Portfolio</a>
+  <a href="/admin/testimonials"><i class="fas fa-quote-right"></i> Testimonials</a>
+  <a href="/admin/services"><i class="fas fa-cog"></i> Services</a>
+  <a href="/admin/settings"><i class="fas fa-sliders-h"></i> Settings</a>
+  <a href="/admin/logout" style="margin-top:32px;color:var(--accent1)"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+<div class="main">
+  <div class="main-header">
+    <h1>Inquiry #{{ inquiry.id }} — {{ inquiry.full_name }}</h1>
+    <a href="/admin/inquiries"><i class="fas fa-arrow-left"></i> Back</a>
+  </div>
+  
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="flash">{% for m in messages %}{{ m }}{% endfor %}</div>
+  {% endif %}
+  {% endwith %}
+  
+  <div class="actions">
+    <span class="status" style="display:inline-block;padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;
+      {%if inquiry.status=='new'%}background:rgba(108,92,231,.15);color:var(--accent3)
+      {%elif inquiry.status=='contacted'%}background:rgba(255,217,61,.15);color:var(--accent2)
+      {%elif inquiry.status=='closed'%}background:rgba(255,107,107,.15);color:var(--accent1)
+      {%else%}background:rgba(102,102,136,.15);color:var(--text3){%endif%}">{{ inquiry.status }}</span>
+  </div>
+  
+  <div class="detail-grid">
+    <div class="field"><label>Full Name</label><div class="value">{{ inquiry.full_name }}</div></div>
+    <div class="field"><label>Email</label><div class="value">{{ inquiry.email }}</div></div>
+    <div class="field"><label>Phone</label><div class="value">{{ inquiry.phone or '-' }}</div></div>
+    <div class="field"><label>Company</label><div class="value">{{ inquiry.company_name or '-' }}</div></div>
+    <div class="field"><label>Country</label><div class="value">{{ inquiry.country or '-' }}</div></div>
+    <div class="field"><label>Website</label><div class="value">{% if inquiry.website %}<a href="{{ inquiry.website }}" target="_blank" style="color:var(--accent1)">{{ inquiry.website }}</a>{% else %}-{% endif %}</div></div>
+    <div class="field"><label>Project Type</label><div class="value">{{ inquiry.project_type or '-' }}</div></div>
+    <div class="field"><label>Business Name</label><div class="value">{{ inquiry.business_name or '-' }}</div></div>
+    <div class="field"><label>Industry</label><div class="value">{{ inquiry.industry or '-' }}</div></div>
+    <div class="field"><label>Budget</label><div class="value">{{ inquiry.budget or '-' }}</div></div>
+    <div class="field"><label>Timeline</label><div class="value">{{ inquiry.timeline or '-' }}</div></div>
+    <div class="field"><label>Submitted</label><div class="value">{{ inquiry.created_at }}</div></div>
+    <div class="field"><label>IP Address</label><div class="value">{{ inquiry.ip_address or '-' }}</div></div>
+    <div class="field full"><label>Instagram</label><div class="value">{% if inquiry.instagram %}<a href="{{ inquiry.instagram }}" target="_blank" style="color:var(--accent1)">{{ inquiry.instagram }}</a>{% else %}-{% endif %}</div></div>
+    <div class="field full"><label>LinkedIn</label><div class="value">{% if inquiry.linkedin %}<a href="{{ inquiry.linkedin }}" target="_blank" style="color:var(--accent1)">{{ inquiry.linkedin }}</a>{% else %}-{% endif %}</div></div>
+    <div class="field full"><label>Project Description</label><div class="value">{{ inquiry.project_description or '-' }}</div></div>
+    <div class="field full"><label>Main Problem</label><div class="value">{{ inquiry.main_problem or '-' }}</div></div>
+    <div class="field full"><label>Goals</label><div class="value">{{ inquiry.goals or '-' }}</div></div>
+    <div class="field full"><label>Additional Notes</label><div class="value">{{ inquiry.additional_notes or '-' }}</div></div>
+  </div>
+  
+  {% if inquiry.uploaded_files %}
+  <h3 style="margin-bottom:8px;font-size:14px;font-weight:600">Uploaded Files</h3>
+  <div class="files-grid">
+    {% for f in inquiry.uploaded_files.split(',') %}
+    <a href="/uploads/{{ f }}" target="_blank" class="file-link"><i class="fas fa-file"></i> {{ f }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <br>
+  
+  <div class="actions">
+    <form method="post" action="/admin/inquiry/{{ inquiry.id }}" style="display:contents">
+      <input type="hidden" name="status" value="contacted">
+      <button type="submit" class="btn btn-contact"><i class="fas fa-check"></i> Mark Contacted</button>
+    </form>
+    <form method="post" action="/admin/inquiry/{{ inquiry.id }}" style="display:contents">
+      <input type="hidden" name="status" value="closed">
+      <button type="submit" class="btn btn-close"><i class="fas fa-times"></i> Mark Closed</button>
+    </form>
+    <form method="post" action="/admin/inquiry/{{ inquiry.id }}" style="display:contents">
+      <input type="hidden" name="status" value="archived">
+      <button type="submit" class="btn btn-archive"><i class="fas fa-archive"></i> Archive</button>
+    </form>
+    <form method="post" action="/admin/inquiry/{{ inquiry.id }}/delete" onsubmit="return confirm('Delete this inquiry?')" style="display:contents">
+      <button type="submit" class="btn btn-delete"><i class="fas fa-trash"></i> Delete</button>
+    </form>
+  </div>
+  
+  <div class="reply-box">
+    <h3>Reply via Email</h3>
+    <form method="post" action="/admin/inquiry/{{ inquiry.id }}">
+      <textarea name="reply" placeholder="Write your response..."></textarea>
+      <input type="hidden" name="status" value="contacted">
+      <button type="submit" class="btn btn-contact">Send Reply <i class="fas fa-paper-plane"></i></button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

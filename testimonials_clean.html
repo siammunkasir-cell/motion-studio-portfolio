@@ -1,0 +1,2460 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motion Studio — Premium Content & AI Creative Agency | Siam Munkasir</title>
+<meta name="description" content="Motion Studio is a premium content creation and AI-powered creative agency by Siam Munkasir. Specializing in motion graphics, UGC, video editing, and AI visuals for brands worldwide.">
+<meta name="keywords" content="motion graphics, UGC, AI content, video editing, social media content, brand design, Siam Munkasir, content creator, Dhaka, Bangladesh">
+<meta name="author" content="Siam Munkasir">
+<link rel="canonical" href="https://motion-studio.surge.sh/">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Motion Studio — Premium Content & AI Creative Agency">
+<meta property="og:description" content="Premium motion graphics, UGC content, AI visuals, and brand design. We transform ideas into visual stories that captivate and convert.">
+<meta property="og:image" content="https://motion-studio.surge.sh/og-image.jpg">
+<meta property="og:url" content="https://motion-studio.surge.sh/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Motion Studio">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Motion Studio — Premium Content & AI Creative Agency">
+<meta name="twitter:description" content="Premium motion graphics, UGC content, AI visuals, and brand design by Siam Munkasir.">
+<meta name="twitter:image" content="https://motion-studio.surge.sh/og-image.jpg">
+
+<!-- Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Motion Studio",
+  "url": "https://motion-studio.surge.sh/",
+  "description": "Premium content creation and AI-powered creative agency.",
+  "founder": {
+    "@type": "Person",
+    "name": "Siam Munkasir"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "siammunkasir@gmail.com",
+    "contactType": "customer service"
+  }
+}
+</script>
+
+<!-- Fonts & Icons -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+:root {
+  --bg: #0a0a12;
+  --bg2: #0f0f1a;
+  --bg3: #1a1a2e;
+  --card: #12121f;
+  --border: #2a2a3e;
+  --text: #e0e0e8;
+  --text2: #a0a0b8;
+  --text3: #666688;
+  --accent1: #ff6b6b;
+  --accent2: #ffd93d;
+  --accent3: #6c5ce7;
+  --font: 'Inter', sans-serif;
+  --radius: 12px;
+  --radius-lg: 20px;
+  --nav-h: 72px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior: smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;cursor:default}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+
+/* ─── Scroll Progress ─── */
+#scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent1),var(--accent2));z-index:99999;width:0%;transition:width 0.1s}
+
+/* ─── Loading Screen ─── */
+#loader{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999999;flex-direction:column;gap:24px;transition:opacity 0.8s,visibility 0.8s}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-ring{width:60px;height:60px;border:3px solid var(--border);border-top-color:var(--accent1);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-text{font-size:14px;color:var(--text3);letter-spacing:4px;text-transform:uppercase;animation:pulse-text 1.5s ease-in-out infinite}
+@keyframes pulse-text{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* ─── Custom Cursor ─── */
+#cursor-dot{position:fixed;width:8px;height:8px;background:var(--accent1);border-radius:50%;pointer-events:none;z-index:99998;transition:transform 0.1s;transform:translate(-50%,-50%)}
+#cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid rgba(255,107,107,.4);border-radius:50%;pointer-events:none;z-index:99997;transition:width 0.3s,height 0.3s,transform 0.15s;transform:translate(-50%,-50%)}
+#cursor-ring.hover{width:56px;height:56px;background:rgba(255,107,107,.08);border-color:var(--accent1)}
+
+/* ─── Navbar ─── */
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 40px;z-index:9999;transition:background 0.4s,backdrop-filter 0.4s}
+nav.scrolled{background:rgba(10,10,18,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:13px;font-weight:500;color:var(--text2);transition:color 0.3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent1);transition:width 0.3s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{padding:10px 24px;border-radius:100px;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:var(--bg);font-weight:600;font-size:13px;border:none;cursor:pointer;transition:0.3s}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,107,107,.3)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:10000;background:none;border:none;padding:4px}
+.hamburger span{width:24px;height:2px;background:var(--text);border-radius:2px;transition:0.3s}
+.mobile-menu{display:none}
+
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .mobile-menu{position:fixed;inset:0;background:rgba(10,10,18,.98);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;z-index:9998;opacity:0;visibility:hidden;transition:0.4s}
+  .mobile-menu.open{opacity:1;visibility:visible}
+  .mobile-menu a{font-size:20px;font-weight:600;color:var(--text2)}
+}
+
+/* ─── Hero ─── */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px 20px 60px}
+.hero-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.particle{position:absolute;width:4px;height:4px;background:var(--accent1);border-radius:50%;opacity:0;animation:float-particle 6s infinite}
+@keyframes float-particle{0%,100%{opacity:0;transform:translateY(0) scale(1)}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(-100vh) scale(.5)}}
+.hero-gradient{position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 50%,rgba(255,107,107,.08) 0%,transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(108,92,231,.08) 0%,transparent 60%);pointer-events:none}
+.hero-content{text-align:center;max-width:900px;position:relative;z-index:2}
+.hero-badge{display:inline-block;padding:8px 20px;border-radius:100px;border:1px solid var(--border);font-size:12px;color:var(--text2);margin-bottom:24px;letter-spacing:1px;text-transform:uppercase}
+.hero h1{font-size:clamp(36px,7vw,72px);font-weight:900;line-height:1.1;margin-bottom:24px}
+.hero h1 .gradient-text{background:linear-gradient(135deg,var(--accent1),var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200% auto;animation:gradient-shift 4s ease infinite}
+@keyframes gradient-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero p{font-size:clamp(16px,2vw,20px);color:var(--text2);line-height:1.6;max-width:600px;margin:0 auto 40px}
+.hero-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-primary{padding:16px 36px;border-radius:100px;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:var(--bg);font-weight:700;font-size:15px;border:none;cursor:pointer;transition:0.3s}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(255,107,107,.3)}
+.btn-secondary{padding:16px 36px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text);font-weight:600;font-size:15px;cursor:pointer;transition:0.3s}
+.btn-secondary:hover{background:var(--card);transform:translateY(-3px)}
+.hero-stats{display:flex;gap:48px;justify-content:center;margin-top:48px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-number{font-size:32px;font-weight:800;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:13px;color:var(--text3);margin-top:4px}
+
+/* ─── Sections Common ─── */
+section{padding:100px 20px}
+.section-header{text-align:center;margin-bottom:60px}
+.section-tag{display:inline-block;padding:6px 16px;border-radius:100px;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.15);font-size:11px;color:var(--accent1);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.section-header h2{font-size:clamp(28px,4vw,44px);font-weight:800;margin-bottom:16px}
+.section-header p{color:var(--text2);font-size:16px;max-width:500px;margin:0 auto;line-height:1.6}
+.container{max-width:1200px;margin:0 auto}
+
+/* ─── Services ─── */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.service-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px 28px;transition:0.4s;position:relative;overflow:hidden}
+.service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent1),var(--accent2));opacity:0;transition:0.4s}
+.service-card:hover{transform:translateY(-8px);border-color:rgba(255,107,107,.2)}
+.service-card:hover::before{opacity:1}
+.service-icon{width:52px;height:52px;border-radius:14px;background:rgba(255,107,107,.1);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--accent1);margin-bottom:20px}
+.service-card h3{font-size:18px;font-weight:700;margin-bottom:10px}
+.service-card p{color:var(--text2);font-size:14px;line-height:1.6;margin-bottom:16px}
+.service-price{display:inline-block;padding:4px 12px;border-radius:100px;background:rgba(255,217,61,.1);color:var(--accent2);font-size:12px;font-weight:600}
+.service-features{margin-top:16px;list-style:none}
+.service-features li{font-size:13px;color:var(--text2);padding:6px 0;display:flex;align-items:center;gap:8px}
+.service-features li i{color:var(--accent2);font-size:10px}
+
+/* ─── Portfolio ─── */
+.portfolio-filters{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.portfolio-filter{padding:8px 20px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:13px;cursor:pointer;transition:0.3s;font-family:var(--font)}
+.portfolio-filter.active,.portfolio-filter:hover{background:var(--accent1);color:var(--bg);border-color:var(--accent1)}
+.portfolio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
+.portfolio-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:0.4s;opacity:1;transform:scale(1)}
+.portfolio-item:hover{transform:translateY(-8px);border-color:rgba(255,107,107,.2)}
+.portfolio-thumb{height:220px;background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.portfolio-thumb .fallback-icon{font-size:48px;color:var(--text3);opacity:.4}
+.portfolio-thumb .category-badge{position:absolute;top:16px;left:16px;padding:4px 12px;border-radius:100px;background:rgba(255,107,107,.9);color:#fff;font-size:11px;font-weight:600}
+.portfolio-body{padding:24px}
+.portfolio-body h3{font-size:17px;font-weight:700;margin-bottom:6px}
+.portfolio-body .client{font-size:12px;color:var(--text3);margin-bottom:8px}
+.portfolio-body p{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:12px}
+.portfolio-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.portfolio-tags span{padding:3px 10px;border-radius:100px;background:rgba(255,107,107,.06);border:1px solid rgba(255,107,107,.1);font-size:11px;color:var(--text2)}
+.portfolio-stats{display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+.portfolio-stats span{font-size:12px;color:var(--text3)}
+.portfolio-stats i{color:var(--accent2);margin-right:4px}
+.portfolio-body .btn-outline{padding:8px 20px;border-radius:100px;border:1px solid var(--border);font-size:12px;font-weight:600;background:transparent;color:var(--text2);cursor:pointer;transition:0.3s;display:inline-flex;align-items:center;gap:6px}
+.portfolio-body .btn-outline:hover{background:var(--accent1);color:var(--bg);border-color:var(--accent1)}
+.portfolio-item.hidden{display:none}
+
+/* ─── Testimonials ─── */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.testimonial-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;transition:0.4s}
+.testimonial-card:hover{transform:translateY(-4px);border-color:rgba(255,107,107,.15)}
+.testimonial-stars{color:var(--accent2);margin-bottom:12px;font-size:14px}
+.testimonial-card .quote{font-size:15px;color:var(--text2);line-height:1.7;margin-bottom:16px;font-style:italic}
+.testimonial-card .quote::before{content:'"';color:var(--accent1);font-size:28px;line-height:0;vertical-align:-6px;margin-right:2px}
+.testimonial-card .author{font-weight:600;font-size:14px}
+.testimonial-card .role{font-size:12px;color:var(--text3);margin-top:2px}
+
+/* ─── Pricing ─── */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.pricing-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:36px 28px;transition:0.4s;position:relative}
+.pricing-card.featured{border-color:var(--accent1);transform:scale(1.03)}
+.pricing-card.featured .pricing-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:6px 20px;border-radius:100px;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:var(--bg);font-size:12px;font-weight:700}
+.pricing-card:hover{transform:translateY(-6px);border-color:rgba(255,107,107,.2)}
+.pricing-card.featured:hover{transform:scale(1.03) translateY(-6px)}
+.pricing-card h3{font-size:20px;font-weight:700;margin-bottom:16px}
+.pricing-card .price{font-size:36px;font-weight:900;color:var(--accent1);margin-bottom:4px}
+.pricing-card .price span{font-size:14px;font-weight:400;color:var(--text3)}
+.pricing-card .delivery{font-size:13px;color:var(--accent2);margin-bottom:20px;display:flex;align-items:center;gap:6px}
+.pricing-card .delivery i{font-size:12px}
+.pricing-card ul{list-style:none;margin-bottom:24px}
+.pricing-card ul li{padding:8px 0;font-size:13px;color:var(--text2);display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(42,42,62,.5)}
+.pricing-card ul li:last-child{border-bottom:none}
+.pricing-card ul li i{color:var(--accent2);font-size:10px}
+.pricing-card .pricing-cta{width:100%;padding:14px;border-radius:100px;border:none;font-size:14px;font-weight:700;cursor:pointer;transition:0.3s;font-family:var(--font)}
+.pricing-card .pricing-cta.primary{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:var(--bg)}
+.pricing-card .pricing-cta.secondary{background:var(--border);color:var(--text)}
+.pricing-card .pricing-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,107,107,.2)}
+
+/* ─── Contact ─── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.contact-info h3{font-size:28px;font-weight:800;margin-bottom:16px}
+.contact-info p{color:var(--text2);font-size:15px;line-height:1.7;margin-bottom:32px}
+.contact-detail{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.contact-detail .icon{width:44px;height:44px;border-radius:12px;background:rgba(255,107,107,.1);display:flex;align-items:center;justify-content:center;color:var(--accent1)}
+.contact-detail .label{font-size:12px;color:var(--text3)}
+.contact-detail .value{font-size:14px;color:var(--text2)}
+.contact-social{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.social-icon{width:44px;height:44px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text2);transition:0.3s;font-size:16px}
+.social-icon:hover{border-color:var(--accent1);color:var(--accent1);transform:translateY(-3px)}
+.contact-form{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:36px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:12px;font-weight:500;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:14px;outline:none;transition:.3s;font-family:var(--font)}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--accent1);box-shadow:0 0 0 3px rgba(255,107,107,.1)}
+.form-group textarea{min-height:100px;resize:vertical}
+.form-group .hint{font-size:11px;color:var(--text3);margin-top:4px}
+.form-group .error{font-size:11px;color:var(--accent1);margin-top:4px;display:none}
+.form-group.error input,.form-group.error textarea{border-color:var(--accent1)}
+.form-group.error .error{display:block}
+.file-upload{position:relative;display:inline-block}
+.file-upload-btn{padding:12px 24px;border-radius:8px;border:1px dashed var(--border);background:var(--bg);color:var(--text2);font-size:13px;cursor:pointer;transition:0.3s;display:inline-flex;align-items:center;gap:8px}
+.file-upload-btn:hover{border-color:var(--accent1);color:var(--accent1)}
+.file-upload input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.checkbox-group{display:flex;align-items:flex-start;gap:10px;margin-bottom:20px}
+.checkbox-group input[type=checkbox]{width:18px;height:18px;margin-top:2px;accent-color:var(--accent1);cursor:pointer}
+.checkbox-group label{font-size:13px;color:var(--text2);cursor:pointer;line-height:1.5}
+.submit-btn{width:100%;padding:16px;border-radius:100px;border:none;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:var(--bg);font-size:16px;font-weight:700;cursor:pointer;transition:0.3s;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:8px}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(255,107,107,.3)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.submit-btn .spinner{display:none;width:20px;height:20px;border:2px solid rgba(0,0,0,.2);border-top-color:var(--bg);border-radius:50%;animation:spin .8s linear infinite}
+.submit-btn.loading .spinner{display:inline-block}
+.submit-btn.loading .btn-text{display:none}
+.form-success{display:none;padding:24px;background:rgba(255,217,61,.08);border:1px solid rgba(255,217,61,.2);border-radius:var(--radius-lg);text-align:center}
+.form-success.show{display:block}
+.form-success i{font-size:48px;color:var(--accent2);margin-bottom:16px}
+.form-success h3{font-size:20px;margin-bottom:8px}
+.form-success p{color:var(--text2);font-size:14px}
+
+/* ─── Footer ─── */
+footer{background:var(--card);border-top:1px solid var(--border);padding:60px 20px 20px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.footer-brand h3{font-size:24px;font-weight:800;margin-bottom:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.footer-brand p{color:var(--text2);font-size:14px;line-height:1.6;max-width:300px}
+.footer-col h4{font-size:14px;font-weight:700;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+.footer-col a{display:block;padding:6px 0;font-size:14px;color:var(--text2);transition:0.3s}
+.footer-col a:hover{color:var(--accent1);padding-left:4px}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--text3)}
+.footer-links{display:flex;gap:16px}
+.footer-links a{color:var(--text3);font-size:12px;transition:0.3s}
+.footer-links a:hover{color:var(--accent1)}
+#back-to-top{position:fixed;bottom:30px;right:30px;width:48px;height:48px;border-radius:50%;background:var(--accent1);color:var(--bg);border:none;font-size:18px;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(20px);transition:0.4s;z-index:999}
+#back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
+#back-to-top:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(255,107,107,.3)}
+
+/* ─── Toast ─── */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 24px;font-size:14px;color:var(--text);z-index:99999;opacity:0;transition:0.4s;display:flex;align-items:center;gap:10px;backdrop-filter:blur(12px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.error{border-color:var(--accent1)}
+.toast.success{border-color:var(--accent2)}
+.toast i{font-size:18px}
+.toast.error i{color:var(--accent1)}
+.toast.success i{color:var(--accent2)}
+
+/* ─── Responsive ─── */
+@media(max-width:768px){
+  .contact-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}
+  .portfolio-grid{grid-template-columns:1fr}.services-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}.pricing-card.featured{transform:none}
+  .pricing-card.featured:hover{transform:translateY(-6px)}
+  .hero-stats{gap:24px}.stat-number{font-size:24px}
+  .footer-grid{grid-template-columns:1fr 1fr}.footer-bottom{flex-direction:column;gap:8px;text-align:center}
+  #cursor-dot,#cursor-ring{display:none}
+}
+@media(max-width:480px){
+  .footer-grid{grid-template-columns:1fr}
+  section{padding:60px 16px}
+  nav{padding:0 16px}
+}
+
+/* ─── Reveal Animation ─── */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.8s cubic-bezier(.25,.46,.45,.94),transform 0.8s cubic-bezier(.25,.46,.45,.94)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+/* ─── Floating Objects ─── */
+.floating-obj{position:absolute;pointer-events:none;opacity:.05;font-size:120px;animation:float 8s ease-in-out infinite}
+.floating-obj:nth-child(2){left:80%;top:40%;animation-delay:-3s;font-size:80px}
+.floating-obj:nth-child(3){left:60%;top:70%;animation-delay:-5s;font-size:60px}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-16px) rotate(3deg)}75%{transform:translateY(8px) rotate(-3deg)}}
+
+/* ─── Image preview in portfolio ─── */
+.portfolio-thumb .thumb-img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.portfolio-thumb .overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,10,18,.8) 0%,transparent 50%);opacity:0;transition:.3s;display:flex;align-items:flex-end;padding:20px}
+.portfolio-item:hover .overlay{opacity:1}
+.portfolio-item:hover .fallback-icon{transform:scale(1.2)}
+
+/* ─── Impact Stats ─── */
+.impact-section{background:var(--bg2);position:relative;overflow:hidden}
+.impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+.impact-card{padding:40px 20px}
+.impact-number{font-size:44px;font-weight:900;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.impact-label{font-size:14px;color:var(--text2)}
+@media(max-width:768px){.impact-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ─── Process ─── */
+.process-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.process-step{text-align:center;padding:32px 24px;position:relative}
+.process-step .step-num{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent1),var(--accent2));color:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;margin:0 auto 16px}
+.process-step h4{font-size:16px;font-weight:700;margin-bottom:8px}
+.process-step p{color:var(--text2);font-size:13px;line-height:1.5}
+
+/* ─── Modal ─── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:.4s;backdrop-filter:blur(8px)}
+.modal-overlay.open{opacity:1;visibility:visible}
+.modal-content{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);max-width:700px;width:100%;max-height:90vh;overflow-y:auto;padding:40px;position:relative;transform:scale(.9);transition:.4s}
+.modal-overlay.open .modal-content{transform:scale(1)}
+.modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.3s}
+.modal-close:hover{background:rgba(255,107,107,.1);color:var(--accent1)}
+.modal-body h2{font-size:24px;font-weight:800;margin-bottom:8px}
+.modal-body .meta{color:var(--text3);font-size:13px;margin-bottom:16px;display:flex;gap:16px}
+.modal-body .meta span{display:flex;align-items:center;gap:4px}
+.modal-body .section{margin-bottom:24px}
+.modal-body .section h4{font-size:15px;font-weight:700;color:var(--accent2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.modal-body .section p,.modal-body .section ul{color:var(--text2);font-size:14px;line-height:1.7}
+.modal-body .section ul{padding-left:20px}
+.modal-body .section ul li{margin-bottom:4px}
+</style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">◆ Motion Studio</a>
+  <ul class="nav-links">
+    <li><a href="services.html">Services</a></li>
+    <li><a href="process.html">Process</a></li>
+    <li><a href="index.html#portfolio">Portfolio</a></li>
+    <li><a href="testimonials.html">Testimonials</a></li>
+    <li><a href="index.html#pricing">Pricing</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <a href="index.html#contact" class="nav-cta">Get a Quote</a>
+  <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="services.html" onclick="toggleMobileMenu()">Services</a>
+    <a href="process.html" onclick="toggleMobileMenu()">Process</a>
+    <a href="index.html#portfolio" onclick="toggleMobileMenu()">Portfolio</a>
+    <a href="testimonials.html" onclick="toggleMobileMenu()">Testimonials</a>
+    <a href="index.html#pricing" onclick="toggleMobileMenu()">Pricing</a>
+    <a href="about.html" onclick="toggleMobileMenu()">About</a>
+    <a href="index.html#contact" onclick="toggleMobileMenu()">Contact</a>
+  </div>
+</nav>
+
+<button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="services.html" onclick="toggleMobileMenu()">Services</a>
+    <a href="process.html" onclick="toggleMobileMenu()">Process</a>
+    <a href="index.html#portfolio" onclick="toggleMobileMenu()">Portfolio</a>
+    <a href="testimonials.html" onclick="toggleMobileMenu()">Testimonials</a>
+    <a href="index.html#pricing" onclick="toggleMobileMenu()">Pricing</a>
+    <a href="about.html" onclick="toggleMobileMenu()">About</a>
+    <a href="index.html#contact" onclick="toggleMobileMenu()">Contact</a>
+  </div>
+
+<section class="page-hero" style="min-height:50vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 20px 60px;background:var(--bg)">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Client Stories</div>
+      <h1>What Our <span class="gradient-text">Clients Say</span></h1>
+      <p style="max-width:700px;margin:0 auto;font-size:18px;line-height:1.7">Over 50 brands and businesses across 12 countries have trusted us with their creative needs. Here is what they have to say.</p>
+    </div>
+    <div class="page-hero-stats" style="display:flex;flex-wrap:wrap;justify-content:center;gap:40px;margin-top:40px">
+      <div><div style="font-size:32px;font-weight:900;color:var(--accent1)">100+</div><div style="font-size:13px;color:var(--text2)">Testimonials</div></div>
+      <div><div style="font-size:32px;font-weight:900;color:var(--accent1)">&#11088; 4.9</div><div style="font-size:13px;color:var(--text2)">Average Rating</div></div>
+      <div><div style="font-size:32px;font-weight:900;color:var(--accent1)">98%</div><div style="font-size:13px;color:var(--text2)">Would Recommend</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials-page" style="padding:60px 0;background:var(--bg2)">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Client <span class="gradient-text">Testimonials</span></h2>
+      <p>Real feedback from real clients across 20+ industries and 12 countries. Every review is from someone we have had the privilege of working with.</p>
+    </div>
+    <div class="section-subheader reveal" style="margin-top:40px">
+      <h3 style="font-size:22px;font-weight:700;margin-bottom:16px">Detailed Client Stories</h3>
+      <p style="color:var(--text2);max-width:600px">Read what our clients say about working with us — their challenges, our solutions, and the results they achieved.</p>
+    </div>
+    <div class="testimonials-detailed" style="margin-top:20px">
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"We saw a 340% increase in Instagram engagement within the first two months of working with Motion Studio. Their content strategy was spot-on, and the reels they produced consistently outperformed everything we had done previously. The team truly understands how to craft content that connects with audiences."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">S</div>
+          <div>
+            <strong style="font-size:14px">Sarah Mitchell</strong>
+            <div style="font-size:12px;color:var(--text2)">Marketing Director at Bloom & Co. &bull; United States</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"Our YouTube channel went from 2,000 to 45,000 subscribers in 6 months. Siam's editing style perfectly matches our brand voice, and the thumbnails alone doubled our click-through rate. Professional, responsive, and delivers ahead of schedule every single time. Highly recommend."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">J</div>
+          <div>
+            <strong style="font-size:14px">James Okonkwo</strong>
+            <div style="font-size:12px;color:var(--text2)">CEO at TechVault SaaS &bull; Nigeria</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The motion graphics video they created for our product launch was absolutely stunning. It captured our brand identity perfectly and generated over 100k views in the first week. The attention to detail and creative input throughout the process was exceptional."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">E</div>
+          <div>
+            <strong style="font-size:14px">Emma Lindström</strong>
+            <div style="font-size:12px;color:var(--text2)">Brand Manager at Nordic Wellness &bull; Sweden</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"I had raw footage from my restaurant that I didn't know what to do with. Motion Studio transformed it into beautiful social content that doubled our online orders. They understood our aesthetic immediately and the turnaround was incredibly fast. A pleasure to work with."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">R</div>
+          <div>
+            <strong style="font-size:14px">Raj Patel</strong>
+            <div style="font-size:12px;color:var(--text2)">Founder at Urban Eats &bull; United Kingdom</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The UGC scripts they wrote for our fitness brand performed 4x better than our agency's content. The hooks are incredible and the editing style keeps viewers watching till the end. We have doubled our retainer because the results speak for themselves."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">A</div>
+          <div>
+            <strong style="font-size:14px">Ana Rodriguez</strong>
+            <div style="font-size:12px;color:var(--text2)">Content Director at VidaFit &bull; Mexico</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"Working with Motion Studio has been transformative for our brand. They produced a brand film that perfectly communicates our sustainability mission. The storytelling was so powerful that we received emails from customers saying they cried watching it. Truly exceptional work."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">D</div>
+          <div>
+            <strong style="font-size:14px">David Chen</strong>
+            <div style="font-size:12px;color:var(--text2)">Co-Founder at EcoLiving &bull; Canada</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"Our TikTok account grew from zero to 50k followers in 3 months thanks to their content strategy. The short-form videos they produce are perfectly optimized for the algorithm and the engagement numbers have been incredible. Best creative investment we have made."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">P</div>
+          <div>
+            <strong style="font-size:14px">Priya Sharma</strong>
+            <div style="font-size:12px;color:var(--text2)">Product Marketing Lead at GlowSkin &bull; India</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The explainer video they created for our B2B software product simplified a complex concept into a compelling 90-second animation. Our sales team reported that the video shortened the sales cycle by an average of 2 weeks. Exceptional ROI."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">T</div>
+          <div>
+            <strong style="font-size:14px">Thomas Mueller</strong>
+            <div style="font-size:12px;color:var(--text2)">Head of Marketing at AutoPrecision GmbH &bull; Germany</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"Siam designed our entire visual identity for Budapest Design Week 2025 and the response was phenomenal. The motion graphics for our opening sequence were the highlight of the event. Professional, creative, and delivered everything on time despite our tight deadline."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">L</div>
+          <div>
+            <strong style="font-size:14px">Lina Kovács</strong>
+            <div style="font-size:12px;color:var(--text2)">Event Director at Budapest Design Week &bull; Hungary</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"We have worked with multiple creative agencies across Dubai, and Motion Studio stands out for their speed and quality. The social media content they produce for our hotel consistently drives bookings. Our engagement rate has increased by 180% since we started working with them."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">M</div>
+          <div>
+            <strong style="font-size:14px">Mohammed Al-Rashid</strong>
+            <div style="font-size:12px;color:var(--text2)">Digital Marketing Manager at Golden Sands Hospitality &bull; UAE</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The animated explainer videos they created for our e-learning platform made complex topics accessible and engaging. Student completion rates improved by 45% after we integrated their videos into our curriculum. Fantastic work and easy to communicate with despite the time difference."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">J</div>
+          <div>
+            <strong style="font-size:14px">Jessica Nguyen</strong>
+            <div style="font-size:12px;color:var(--text2)">Co-Founder at BrightPath Learning &bull; Australia</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"Their work on our brand identity was outstanding. The logo, packaging design, and social media templates all work together seamlessly. We have received so many compliments on our new look. Motion Studio understands how to build a cohesive brand system."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">C</div>
+          <div>
+            <strong style="font-size:14px">Carlos Mendoza</strong>
+            <div style="font-size:12px;color:var(--text2)">Brand Strategist at Green Leaf Organics &bull; Colombia</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The content they produce for our tech community events is always top-notch. From promo videos to highlight reels, every piece captures the energy and innovation of our events. Our attendance has grown 3x and I credit their compelling content for much of that growth."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">F</div>
+          <div>
+            <strong style="font-size:14px">Fatima Diallo</strong>
+            <div style="font-size:12px;color:var(--text2)">Community Director at AfriTech Hub &bull; Senegal</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"I was hesitant to work with someone outside Japan but Siam understood our brand culture immediately. The video content he created for our ramen shop feels authentic and perfectly captures the Japanese attention to detail. Our Instagram following has tripled."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">Y</div>
+          <div>
+            <strong style="font-size:14px">Yuki Tanaka</strong>
+            <div style="font-size:12px;color:var(--text2)">Owner at Tokyo Ramen Lab &bull; Japan</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The travel content Motion Studio created for us is absolutely stunning. They transformed our raw travel footage into cinematic stories that make people want to book trips immediately. Our engagement is up 200% and we have received countless inquiries from our videos."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">O</div>
+          <div>
+            <strong style="font-size:14px">Olivia Walsh</strong>
+            <div style="font-size:12px;color:var(--text2)">Founder at Boutique Travel Co. &bull; Ireland</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The fashion show highlight reel they produced captured every key moment perfectly. It has become our most-shared piece of content ever. The editing pace, music selection, and color grading were all exceptional. Truly world-class work from a talented team."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">K</div>
+          <div>
+            <strong style="font-size:14px">Kwame Asante</strong>
+            <div style="font-size:12px;color:var(--text2)">Creative Director at Accra Fashion Week &bull; Ghana</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"Our product photography and social content have never looked better. Motion Studio has a way of making food look absolutely irresistible. Our online sales have increased 65% since we started using their content. Cannot recommend them enough."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">S</div>
+          <div>
+            <strong style="font-size:14px">Sofia Papadopoulos</strong>
+            <div style="font-size:12px;color:var(--text2)">Marketing Manager at Mediterranean Delights &bull; Greece</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The personal branding content Siam created for me transformed my LinkedIn presence. My connection requests went up 5x and I landed three major speaking engagements directly from posts he designed. The carousel templates are incredibly effective."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">L</div>
+          <div>
+            <strong style="font-size:14px">Liam O'Brien</strong>
+            <div style="font-size:12px;color:var(--text2)">CEO at Peak Performance Coaching &bull; Ireland</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"From branding to social content, Motion Studio has been instrumental in building our beauty brand. The consistency across all our channels now looks professional and polished. We have grown from 2k to 85k followers across platforms in 5 months."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">A</div>
+          <div>
+            <strong style="font-size:14px">Aisha Bello</strong>
+            <div style="font-size:12px;color:var(--text2)">Founder at Naija Beauty &bull; Nigeria</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The adventure videos they produced for our tour company are breathtaking. They managed to capture the thrill of our experiences while maintaining cinematic quality. Bookings from social media increased 150% after we started posting their content."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">H</div>
+          <div>
+            <strong style="font-size:14px">Henrik Larsson</strong>
+            <div style="font-size:12px;color:var(--text2)">Owner at Nordic Adventure Tours &bull; Sweden</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"We white-label Motion Studio's services for our clients and the quality is consistently outstanding. They never miss a deadline and the revision process is smooth. Our clients are always impressed and we have retained every single one since partnering with them."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">M</div>
+          <div>
+            <strong style="font-size:14px">Maria Santos</strong>
+            <div style="font-size:12px;color:var(--text2)">Director at Luna Creative Agency &bull; Philippines</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The product demo video they created helped us close three enterprise deals worth over $500k combined. The animation clearly communicated our value proposition in a way that static materials never could. Outstanding return on investment."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">A</div>
+          <div>
+            <strong style="font-size:14px">Alexander Petrov</strong>
+            <div style="font-size:12px;color:var(--text2)">VP Marketing at TechFlow Solutions &bull; Russia</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The TikTok content Motion Studio produces for us consistently goes viral. We have had 5 videos hit over 1 million views each. They understand trends and platform nuances better than any agency we have worked with. Absolutely essential partner for our brand."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">C</div>
+          <div>
+            <strong style="font-size:14px">Chloe Martin</strong>
+            <div style="font-size:12px;color:var(--text2)">Social Media Lead at Fashion Forward &bull; France</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The book promo videos they created for our publishing house are visually stunning. Each video captures the essence of the book and drives significant pre-orders. Our authors love the content and it has become a key part of our marketing strategy."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">O</div>
+          <div>
+            <strong style="font-size:14px">Omar Hassan</strong>
+            <div style="font-size:12px;color:var(--text2)">Founder at Cairo Reads &bull; Egypt</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The sustainability report video they animated made complex data accessible and engaging. Our stakeholders praised the clarity and creativity. It is rare to find a creative partner who can handle such specialized content with this level of professionalism."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">N</div>
+          <div>
+            <strong style="font-size:14px">Nina Bergström</strong>
+            <div style="font-size:12px;color:var(--text2)">Communications Lead at Green Energy Nordic &bull; Finland</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The festival recap video went absolutely viral. It captured the energy, the crowd, and the performances perfectly. We have already booked them for next year. The best festival content we have ever had."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">T</div>
+          <div>
+            <strong style="font-size:14px">Tunde Adebayo</strong>
+            <div style="font-size:12px;color:var(--text2)">Producer at Lagos Music Festival &bull; Nigeria</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"Our catalog and social media content now has a cohesive, premium look thanks to Motion Studio. They designed our entire visual system from scratch and everything aligns perfectly. Our brand perception has elevated significantly in the market."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">I</div>
+          <div>
+            <strong style="font-size:14px">Ingrid Svensson</strong>
+            <div style="font-size:12px;color:var(--text2)">Brand Owner at ScandiHome Interiors &bull; Sweden</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The game trailer they produced for our indie title looked like a AAA studio made it. Wishlists on Steam increased 400% after the trailer launch. The animation, pacing, and music selection were all perfect. They understood our game's aesthetic immediately."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">D</div>
+          <div>
+            <strong style="font-size:14px">Dmitri Volkov</strong>
+            <div style="font-size:12px;color:var(--text2)">Marketing Director at Quantum Games &bull; Russia</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The cooking videos they edit for our channel are beautiful. They make our dishes look incredible and the editing pace keeps viewers engaged throughout. Our subscriber count has grown 8x and we receive daily comments praising the video quality."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">A</div>
+          <div>
+            <strong style="font-size:14px">Amara Obi</strong>
+            <div style="font-size:12px;color:var(--text2)">Executive Chef at West African Cuisine &bull; Nigeria</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The event highlight videos and speaker reels they produce for our startup community are consistently excellent. The quick turnaround means we can post content while the event is still trending. Our engagement rates are the highest they have ever been."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">R</div>
+          <div>
+            <strong style="font-size:14px">Rebecca Cohen</strong>
+            <div style="font-size:12px;color:var(--text2)">Community Manager at Tel Aviv Startups &bull; Israel</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"Despite the language barrier, communication was smooth and the results were outstanding. The brand video they created for our fashion label perfectly blends Eastern aesthetics with modern production techniques. A truly international creative partner."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">W</div>
+          <div>
+            <strong style="font-size:14px">Wei Zhang</strong>
+            <div style="font-size:12px;color:var(--text2)">Creative Director at Shanghai Style &bull; China</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The before and after of our social media presence is night and day. Our feeds used to look amateurish and now they look like a premium brand. Engagement is up 280% and we have retailers reaching out to stock our products directly from Instagram."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">K</div>
+          <div>
+            <strong style="font-size:14px">Kate Middleton (no relation)</strong>
+            <div style="font-size:12px;color:var(--text2)">Founder at Petite Plates &bull; UK</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The fitness content they produce is addictive. Our workout video series has become our most popular content and we have seen a 70% increase in membership signups attributed directly to their videos. The energy and quality are unmatched."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">J</div>
+          <div>
+            <strong style="font-size:14px">Juan Torres</strong>
+            <div style="font-size:12px;color:var(--text2)">CEO at Fitness Fusion &bull; Spain</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The brand launch video was perfect. It captured our mission, our products, and our aesthetic in under 2 minutes. We received overwhelming positive feedback and our launch day sales exceeded projections by 200%. Truly grateful for their work."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">J</div>
+          <div>
+            <strong style="font-size:14px">Jennifer Walsh</strong>
+            <div style="font-size:12px;color:var(--text2)">Co-Founder at Clean Beauty Co. &bull; Ireland</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The promotional content for our tech conference was world-class. The motion graphics for the keynote intro set the tone perfectly. Attendee feedback highlighted the production quality as a key factor in their positive experience."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">H</div>
+          <div>
+            <strong style="font-size:14px">Hassan Jafari</strong>
+            <div style="font-size:12px;color:var(--text2)">Program Director at Tehran Tech Hub &bull; Iran</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The content reel Siam created for my portfolio is stunning. It has helped me land three major brand collaborations. The editing makes my work look even better than in person. I finally have a portfolio that reflects my quality."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">V</div>
+          <div>
+            <strong style="font-size:14px">Victoria Adams</strong>
+            <div style="font-size:12px;color:var(--text2)">Fashion Stylist at Style Studio London &bull; UK</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The music video he edited for my latest single is incredible. The visual effects synchronized perfectly with the beat and the storytelling elevated the song. It has over 500k views on YouTube and fans keep asking who made the video."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">A</div>
+          <div>
+            <strong style="font-size:14px">Andre Silva</strong>
+            <div style="font-size:12px;color:var(--text2)">Music Producer at Brazil Beats &bull; Brazil</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"Our coffee brand needed content that felt warm, premium, and authentic. Motion Studio delivered exactly that. The slow-motion pour-over shots they edited are mesmerizing. Our Instagram has never looked better and engagement has doubled."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">M</div>
+          <div>
+            <strong style="font-size:14px">Maya Goldstein</strong>
+            <div style="font-size:12px;color:var(--text2)">Marketing Lead at Artisan Coffee Co. &bull; Israel</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The drone footage compilation they edited for our adventure company is breathtaking. It captures the raw beauty of the Wild Atlantic Way perfectly. Bookings increased 80% after we featured the video on our website."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">P</div>
+          <div>
+            <strong style="font-size:14px">Patrick O'Sullivan</strong>
+            <div style="font-size:12px;color:var(--text2)">Owner at Wild Atlantic Adventures &bull; Ireland</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The fashion lookbook video they produced is absolutely stunning. The editing, transitions, and music create a dreamy atmosphere that perfectly represents our brand. Our audience engagement has never been higher and sales increased 50%."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">Z</div>
+          <div>
+            <strong style="font-size:14px">Zara Khan</strong>
+            <div style="font-size:12px;color:var(--text2)">Creative Director at Modest Fashion House &bull; Pakistan</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The after-movie they produce after each of our events keeps getting better. They capture the energy perfectly and we always see a spike in ticket sales for the next event after posting. Reliable, fast, and incredibly talented."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">L</div>
+          <div>
+            <strong style="font-size:14px">Lucas Weber</strong>
+            <div style="font-size:12px;color:var(--text2)">Organizer at Berlin Tech Meetups &bull; Germany</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The runway compilation video was the best content we have ever had. It showcased every designer beautifully and the pacing kept viewers engaged throughout. It became our most-watched social post ever. We have already contracted them for next year."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">G</div>
+          <div>
+            <strong style="font-size:14px">Grace Akinyi</strong>
+            <div style="font-size:12px;color:var(--text2)">Event Coordinator at Nairobi Fashion Week &bull; Kenya</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The product video for our new beer launch was a huge hit. It captured the craftsmanship and tradition behind our brand while feeling modern and fresh. Distributors loved it and we secured placement in 200+ new stores."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">F</div>
+          <div>
+            <strong style="font-size:14px">Felix Hoffmann</strong>
+            <div style="font-size:12px;color:var(--text2)">Brand Manager at Bavarian Brews &bull; Germany</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The outfit-of-the-day reels they edit for my channel are addictive. The quick cuts, trendy transitions, and music sync make each video a joy to watch. My engagement rate has tripled and I have gained 30k followers in 2 months."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">H</div>
+          <div>
+            <strong style="font-size:14px">Hannah Lee</strong>
+            <div style="font-size:12px;color:var(--text2)">Fashion Blogger at Seoul Style Studio &bull; South Korea</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The behind-the-scenes content they created for our bakery makes people feel like they are right there in the kitchen. It is authentic, warm, and beautifully edited. Our online orders have doubled since we started sharing their videos."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">C</div>
+          <div>
+            <strong style="font-size:14px">Catherine Dubois</strong>
+            <div style="font-size:12px;color:var(--text2)">Owner at Parisian Patisserie &bull; France</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The studio tour video and promotional content they produced captured the vibe of our recording studio perfectly. We have received multiple booking inquiries directly from the video. Professional quality that represents us well."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">D</div>
+          <div>
+            <strong style="font-size:14px">Daniel Nyqvist</strong>
+            <div style="font-size:12px;color:var(--text2)">Studio Owner at Stockholm Sound &bull; Sweden</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The collection launch video was nothing short of spectacular. The motion graphics, the transitions, and the music created a cinematic experience that our guests are still talking about. Siam understood my vision completely."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">N</div>
+          <div>
+            <strong style="font-size:14px">Nadia Farouk</strong>
+            <div style="font-size:12px;color:var(--text2)">Fashion Designer at Cairo Couture &bull; Egypt</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The winter sports content they edited for us is stunning. The pacing perfectly matches the thrill of skiing and snowboarding. Our social engagement increased 400% and we saw a significant uptick in booking inquiries from the US market."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">O</div>
+          <div>
+            <strong style="font-size:14px">Oliver Schmidt</strong>
+            <div style="font-size:12px;color:var(--text2)">Founder at Alpine Adventures &bull; Switzerland</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The storytelling video they produced for our tea house is beautiful. It captures the centuries-old tradition of tea making in a way that resonates with modern audiences. Our business has seen a 60% increase in younger customers since the video launched."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">M</div>
+          <div>
+            <strong style="font-size:14px">Mei Lin</strong>
+            <div style="font-size:12px;color:var(--text2)">Owner at Tea House Stories &bull; China</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px">
+        <div class="testimonial-stars" style="color:#ffd93d;font-size:16px;margin-bottom:10px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;font-style:italic">"The food reels they edit for me are incredible. Each video makes the food look absolutely delicious and the editing keeps viewers watching till the end. My following grew from 5k to 150k in 4 months. Best creative decision I have ever made."</p>
+        <div class="testimonial-author" style="display:flex;align-items:center;gap:12px;margin-top:14px">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--accent1);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:18px">R</div>
+          <div>
+            <strong style="font-size:14px">Rashid Khan</strong>
+            <div style="font-size:12px;color:var(--text2)">Food Blogger at Karachi Eats &bull; Pakistan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section-subheader reveal" style="margin-top:60px">
+      <h3 style="font-size:22px;font-weight:700;margin-bottom:16px">Quick Reviews</h3>
+      <p style="color:var(--text2);max-width:600px">Short reviews from clients across different industries and countries highlighting what they value most about working with us.</p>
+    </div>
+    <div class="reviews-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:20px">
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Fast turnaround without any quality compromise. Very impressed."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Alex Turner</span>
+          <span style="font-size:11px;color:var(--text2)">United States</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Most creative editor I have worked with. Understands trends deeply."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Maya Patel</span>
+          <span style="font-size:11px;color:var(--text2)">UK</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Professional, responsive, and delivers exactly what was promised."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Lars Johansson</span>
+          <span style="font-size:11px;color:var(--text2)">Sweden</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"The reels they create always outperform our expectations. Highly skilled."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Amina Diallo</span>
+          <span style="font-size:11px;color:var(--text2)">Senegal</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Great communication and even better output. A true creative partner."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Noah Chen</span>
+          <span style="font-size:11px;color:var(--text2)">Canada</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"They elevated our brand visual identity significantly. Highly recommend."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Isabella Rossi</span>
+          <span style="font-size:11px;color:var(--text2)">Italy</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Best investment we made for our social media content strategy this year."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Oscar Kim</span>
+          <span style="font-size:11px;color:var(--text2)">South Korea</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Siam understood our brand voice immediately and the content was perfect."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Zoe Williams</span>
+          <span style="font-size:11px;color:var(--text2)">Australia</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Consistently delivers high-quality work ahead of schedule. Reliable."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Ethan Brown</span>
+          <span style="font-size:11px;color:var(--text2)">United States</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Creative, fast, and incredibly easy to work with. 10/10 experience."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Lea Fischer</span>
+          <span style="font-size:11px;color:var(--text2)">Germany</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"The analytics speak for themselves — engagement up 3x since we started."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Arjun Mehta</span>
+          <span style="font-size:11px;color:var(--text2)">India</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Attention to detail is remarkable. They catch things we would miss."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Sophie Dubois</span>
+          <span style="font-size:11px;color:var(--text2)">France</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Turned our boring product shots into scroll-stopping content. Amazing."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Liam O'Connor</span>
+          <span style="font-size:11px;color:var(--text2)">Ireland</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Professional from start to finish. Clear process, excellent results."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Fatima Al-Sayed</span>
+          <span style="font-size:11px;color:var(--text2)">UAE</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Best creative partner we have found on this platform. Will order again."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">William Grant</span>
+          <span style="font-size:11px;color:var(--text2)">United States</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"The motion graphics work was outstanding. Exceeded our expectations."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Elena Popescu</span>
+          <span style="font-size:11px;color:var(--text2)">Romania</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Understood our brand culture despite being in a different country. Impressive."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Kenji Nakamura</span>
+          <span style="font-size:11px;color:var(--text2)">Japan</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Quick revisions and always willing to go the extra mile. Fantastic."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Maria Silva</span>
+          <span style="font-size:11px;color:var(--text2)">Brazil</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Our TikTok took off after they started creating content for us. Game changer."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Tommy Baker</span>
+          <span style="font-size:11px;color:var(--text2)">United States</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Clean, professional edits that make our brand look premium. Very happy."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Hannah Berg</span>
+          <span style="font-size:11px;color:var(--text2)">Norway</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Excellent scriptwriting skills. The hooks they write are incredibly effective."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Ravi Kapoor</span>
+          <span style="font-size:11px;color:var(--text2)">India</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"The thumbnail designs doubled our YouTube CTR. Exceptional value."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Claire Adams</span>
+          <span style="font-size:11px;color:var(--text2)">United Kingdom</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"They produce content that actually converts. We saw real business results."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Pedro Martinez</span>
+          <span style="font-size:11px;color:var(--text2)">Spain</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Very professional communication and top-quality deliverables. Highly recommended."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Nora Ali</span>
+          <span style="font-size:11px;color:var(--text2)">Kenya</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Our social media presence looks like a completely different brand now."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Derek Johnson</span>
+          <span style="font-size:11px;color:var(--text2)">United States</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"The video editing quality is on par with top production studios. Impressed."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Yumi Sato</span>
+          <span style="font-size:11px;color:var(--text2)">Japan</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Fast, creative, and professional. Everything you want in a creative partner."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Omar Khalid</span>
+          <span style="font-size:11px;color:var(--text2)">Egypt</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"They made our complex product demo simple and engaging. Excellent work."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Sara Lindqvist</span>
+          <span style="font-size:11px;color:var(--text2)">Sweden</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Delivered ahead of schedule with exceptional quality. Will work again."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Viktor Ivanov</span>
+          <span style="font-size:11px;color:var(--text2)">Russia</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"The best freelancer I have worked with on this platform. Truly talented."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Lucy Thompson</span>
+          <span style="font-size:11px;color:var(--text2)">UK</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Content strategy was spot on. Our engagement rates prove the quality."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Diego Ramirez</span>
+          <span style="font-size:11px;color:var(--text2)">Colombia</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"They bring fresh creative ideas to every project. Never generic work."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Jasmine Wong</span>
+          <span style="font-size:11px;color:var(--text2)">Singapore</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Professional, talented, and delivers results. Could not ask for more."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Ryan Murphy</span>
+          <span style="font-size:11px;color:var(--text2)">Ireland</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"The brand video they created tells our story perfectly. Very moving work."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Amira Hassan</span>
+          <span style="font-size:11px;color:var(--text2)">Egypt</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Consistently high quality across every project. A reliable creative asset."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Chris Anderson</span>
+          <span style="font-size:11px;color:var(--text2)">United States</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Very responsive and accommodating with revisions. Great experience overall."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Lena Schmidt</span>
+          <span style="font-size:11px;color:var(--text2)">Germany</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Transformed our YouTube channel with better editing and thumbnails. Thank you."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Tariq Mahmood</span>
+          <span style="font-size:11px;color:var(--text2)">Pakistan</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Creative, reliable, and delivers on time. Exactly what we were looking for."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Emily Watson</span>
+          <span style="font-size:11px;color:var(--text2)">Australia</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"The content they produce for our brand consistently outperforms our benchmarks."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Carlos Mendez</span>
+          <span style="font-size:11px;color:var(--text2)">Argentina</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Excellent understanding of platform-specific content requirements. Very skilled."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Aisha Mohammed</span>
+          <span style="font-size:11px;color:var(--text2)">Nigeria</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Our conversion rate improved significantly with their ad creatives. Great work."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Peter Gibbons</span>
+          <span style="font-size:11px;color:var(--text2)">Canada</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"The animation work was world-class. Our team was blown away by the quality."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Nina Petrovic</span>
+          <span style="font-size:11px;color:var(--text2)">Serbia</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"They helped us build a consistent brand identity across all channels. Priceless."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Samuel Lee</span>
+          <span style="font-size:11px;color:var(--text2)">Singapore</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"The turnaround time is incredible without sacrificing quality. Highly efficient."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Rachel Green</span>
+          <span style="font-size:11px;color:var(--text2)">UK</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Best creative decision we made this year. The results speak for themselves."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Hugo Fernandez</span>
+          <span style="font-size:11px;color:var(--text2)">Spain</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Professional, creative, and genuinely cares about the work. A rare combination."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Layla Ibrahim</span>
+          <span style="font-size:11px;color:var(--text2)">Sudan</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"They made our raw footage look cinematic. The color grading is outstanding."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Tom Wilson</span>
+          <span style="font-size:11px;color:var(--text2)">New Zealand</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Very impressed with the strategic thinking behind the creative work. Top tier."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Ingrid Olsen</span>
+          <span style="font-size:11px;color:var(--text2)">Denmark</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"The social media templates they designed gave our brand a consistent premium look."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Rajesh Kumar</span>
+          <span style="font-size:11px;color:var(--text2)">India</span>
+        </div>
+      </div>
+      <div class="review-card reveal" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px">
+        <div style="color:#ffd93d;font-size:14px;margin-bottom:8px">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic;margin:0 0 10px">"Exceptional value for the quality delivered. We have found our long-term partner."</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;font-weight:600">Fiona McCarthy</span>
+          <span style="font-size:11px;color:var(--text2)">Ireland</span>
+        </div>
+      </div>
+    </div>
+    <div class="cta-section reveal" style="text-align:center;background:linear-gradient(135deg,var(--accent1),#ff4757);border-radius:var(--radius);padding:60px 40px;margin-top:60px">
+      <h3 style="font-size:28px;font-weight:800;color:#fff;margin:0 0 12px">Be Our Next Success Story</h3>
+      <p style="color:rgba(255,255,255,.85);font-size:16px;max-width:600px;margin:0 auto 24px">Join 50+ happy clients. Let us create content that delivers real results for your brand.</p>
+      <a href="index.html#contact" style="display:inline-block;background:#fff;color:var(--accent1);padding:14px 36px;border-radius:30px;font-weight:700;font-size:15px;text-decoration:none">Start Your Project &#8594;</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>◆ Motion Studio</h3>
+        <p>Premium content creation and AI-powered creative agency. We transform ideas into visual stories that captivate, engage, and convert.</p>
+        <div class="contact-social" style="margin-top:20px">
+          <a href="https://instagram.com" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://linkedin.com" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://behance.net" class="social-icon" aria-label="Behance"><i class="fab fa-behance"></i></a>
+          <a href="https://dribbble.com" class="social-icon" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+          <a href="https://youtube.com" class="social-icon" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          <a href="https://tiktok.com" class="social-icon" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+          <a href="https://facebook.com" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><a href="#services">Services</a><a href="#portfolio">Portfolio</a><a href="#testimonials">Testimonials</a><a href="#contact">Contact</a></div>
+      <div class="footer-col"><h4>Services</h4><a href="#services">Motion Graphics</a><a href="#services">UGC Content</a><a href="#services">AI Visuals</a><a href="#services">Brand Design</a></div>
+      <div class="footer-col"><h4>Contact</h4><a href="mailto:siammunkasir@gmail.com">siammunkasir@gmail.com</a><a href="tel:+8801989430474">+880 1989-430474</a><a href="#contact">Dhaka, Bangladesh</a><a href="admin.html" style="opacity:0.4;font-size:12px;color:var(--text3)">🔐 Admin</a></div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Motion Studio. All rights reserved. Built by Siam Munkasir.</div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+
+
+</section>
+
+<!-- ─── QUICK REVIEWS ─── -->
+<section id="quickReviews" style="padding:60px 0;background:var(--bg)">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">5-Star Ratings</span>
+      <h2>What People Are Saying</h2>
+      <p>50 quick reviews from clients across industries worldwide.</p>
+    </div>
+    <div class="reviews-grid">
+
+    <div class="review-card reveal">
+      <div class="review-strength">Results</div>
+      <div class="review-text">"Best creative partner we've ever had. Our conversions jumped 3x in the first month of using his content."</div>
+      <div class="review-meta">
+        <span class="review-name">James</span>
+        <span class="review-industry">E-commerce</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Creativity</div>
+      <div class="review-text">"Siam has an incredible eye for color and composition. Every video he delivers is frame-worthy."</div>
+      <div class="review-meta">
+        <span class="review-name">Leila</span>
+        <span class="review-industry">Beauty</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Speed</div>
+      <div class="review-text">"Lightning fast turnaround without ever sacrificing quality. A rare combination in this industry."</div>
+      <div class="review-meta">
+        <span class="review-name">Marcus</span>
+        <span class="review-industry">SaaS</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Communication</div>
+      <div class="review-text">"He understood our brand identity immediately and translated it perfectly into motion. Zero revisions needed."</div>
+      <div class="review-meta">
+        <span class="review-name">Aisha</span>
+        <span class="review-industry">Fashion</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Quality</div>
+      <div class="review-text">"Our gym's content has never looked this professional. Membership inquiries doubled within weeks."</div>
+      <div class="review-meta">
+        <span class="review-name">David</span>
+        <span class="review-industry">Fitness</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Reliability</div>
+      <div class="review-text">"Took our rough lecture footage and turned it into engaging, polished course content our students love."</div>
+      <div class="review-meta">
+        <span class="review-name">Priya</span>
+        <span class="review-industry">Education</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Quality</div>
+      <div class="review-text">"His property videos are cinematic masterpieces. We sold two listings directly from his edits."</div>
+      <div class="review-meta">
+        <span class="review-name">Khalid</span>
+        <span class="review-industry">Real Estate</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Creativity</div>
+      <div class="review-text">"Our food content finally does justice to our dishes. Engagement went through the roof."</div>
+      <div class="review-meta">
+        <span class="review-name">Emma</span>
+        <span class="review-industry">Food & Beverage</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Strategy</div>
+      <div class="review-text">"Explained complex product features through animation in a way our customers actually understood."</div>
+      <div class="review-meta">
+        <span class="review-name">Ravi</span>
+        <span class="review-industry">Technology</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Professionalism</div>
+      <div class="review-text">"Professional, responsive, and incredibly talented. He's been our exclusive editor for eight months straight."</div>
+      <div class="review-meta">
+        <span class="review-name">Nina</span>
+        <span class="review-industry">Health & Wellness</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Reliability</div>
+      <div class="review-text">"I outsource my overflow work to Siam and my clients never know the difference. Absolute pro."</div>
+      <div class="review-meta">
+        <span class="review-name">Tom</span>
+        <span class="review-industry">Agency</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Quality</div>
+      <div class="review-text">"Our destination videos went from amateur to broadcast quality. Bookings increased significantly."</div>
+      <div class="review-meta">
+        <span class="review-name">Sara</span>
+        <span class="review-industry">Travel</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Strategy</div>
+      <div class="review-text">"The explainer animations he made for our app reduced support tickets by 35%. Unreal value."</div>
+      <div class="review-meta">
+        <span class="review-name">Youssef</span>
+        <span class="review-industry">Fintech</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Professionalism</div>
+      <div class="review-text">"He handled our emotional fundraising campaign with such care and sensitivity. Beautiful work."</div>
+      <div class="review-meta">
+        <span class="review-name">Chloe</span>
+        <span class="review-industry">Nonprofit</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Results</div>
+      <div class="review-text">"Our ad creatives went from barely breaking even to a 4.5x ROAS. Game-changing content."</div>
+      <div class="review-meta">
+        <span class="review-name">Hassan</span>
+        <span class="review-industry">E-commerce</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Creativity</div>
+      <div class="review-text">"The music video visualizer he produced looked like it cost ten times what we paid. Insane talent."</div>
+      <div class="review-meta">
+        <span class="review-name">Megan</span>
+        <span class="review-industry">Music</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Speed</div>
+      <div class="review-text">"Delivered a full suite of product videos three days early. And they were perfect on the first review."</div>
+      <div class="review-meta">
+        <span class="review-name">Wei</span>
+        <span class="review-industry">SaaS</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Quality</div>
+      <div class="review-text">"He makes every product look luxurious. Our conversion rate on video products is now 4x higher."</div>
+      <div class="review-meta">
+        <span class="review-name">Dania</span>
+        <span class="review-industry">Cosmetics</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Creativity</div>
+      <div class="review-text">"The event recap video captured the vibe perfectly. Best marketing asset we've ever produced."</div>
+      <div class="review-meta">
+        <span class="review-name">Carlos</span>
+        <span class="review-industry">Entertainment</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Communication</div>
+      <div class="review-text">"Siam handles our Middle East clients better than any local editor we've tried. Cultural fluency plus skill."</div>
+      <div class="review-meta">
+        <span class="review-name">Fatima</span>
+        <span class="review-industry">Agency</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Strategy</div>
+      <div class="review-text">"Our YouTube subscriber count tripled after he redesigned our thumbnails and video structure."</div>
+      <div class="review-meta">
+        <span class="review-name">Oliver</span>
+        <span class="review-industry">Fitness</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Speed</div>
+      <div class="review-text">"Fast, responsive, and his aesthetic sense is spot-on for modern luxury branding."</div>
+      <div class="review-meta">
+        <span class="review-name">Zara</span>
+        <span class="review-industry">Fashion</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Professionalism</div>
+      <div class="review-text">"He managed a complex multi-language project flawlessly. Every subtitle, every frame was perfect."</div>
+      <div class="review-meta">
+        <span class="review-name">Kwame</span>
+        <span class="review-industry">Tech</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Quality</div>
+      <div class="review-text">"Our recipe videos finally look as good as they taste. Highest engagement we've ever had."</div>
+      <div class="review-meta">
+        <span class="review-name">Isabel</span>
+        <span class="review-industry">Food</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Results</div>
+      <div class="review-text">"Siam's understanding of the Meta ads algorithm is scary good. His creatives consistently outperform."</div>
+      <div class="review-meta">
+        <span class="review-name">Ahmed</span>
+        <span class="review-industry">E-commerce</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Reliability</div>
+      <div class="review-text">"Never missed a deadline in six months of weekly content delivery. Reliability you can set your watch to."</div>
+      <div class="review-meta">
+        <span class="review-name">Sophie</span>
+        <span class="review-industry">Beauty</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Creativity</div>
+      <div class="review-text">"He transformed our boring corporate training videos into engaging animated content people actually watched."</div>
+      <div class="review-meta">
+        <span class="review-name">Rohan</span>
+        <span class="review-industry">Education</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Results</div>
+      <div class="review-text">"His virtual tour videos have become our strongest sales tool. Clients book viewings directly from them."</div>
+      <div class="review-meta">
+        <span class="review-name">Maria</span>
+        <span class="review-industry">Real Estate</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Reliability</div>
+      <div class="review-text">"Produced thirty dealer ad variations for us without a single error. Incomparable attention to detail."</div>
+      <div class="review-meta">
+        <span class="review-name">Tariq</span>
+        <span class="review-industry">Automotive</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Strategy</div>
+      <div class="review-text">"Our app's onboarding video reduced drop-off by 40%. He understands user psychology, not just editing."</div>
+      <div class="review-meta">
+        <span class="review-name">Elena</span>
+        <span class="review-industry">Wellness</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Quality</div>
+      <div class="review-text">"The trailer edit he made for our indie game launch was fire. Wishlisted by thousands in the first week."</div>
+      <div class="review-meta">
+        <span class="review-name">Jake</span>
+        <span class="review-industry">Gaming</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Creativity</div>
+      <div class="review-text">"He brought our family restaurant's story to life in a three-minute video that made people cry. And hungry."</div>
+      <div class="review-meta">
+        <span class="review-name">Noor</span>
+        <span class="review-industry">Food</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Communication</div>
+      <div class="review-text">"Finally found an editor who gets B2B tone — professional but not boring, credible but not stuffy."</div>
+      <div class="review-meta">
+        <span class="review-name">Peter</span>
+        <span class="review-industry">B2B</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Strategy</div>
+      <div class="review-text">"Our impact video helped us raise 40% more in donations this quarter. Powerful storytelling."</div>
+      <div class="review-meta">
+        <span class="review-name">Amara</span>
+        <span class="review-industry">Nonprofit</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Quality</div>
+      <div class="review-text">"The hotel promo video he made is still our best-performing asset two years later. Timeless work."</div>
+      <div class="review-meta">
+        <span class="review-name">Kenji</span>
+        <span class="review-industry">Hospitality</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Professionalism</div>
+      <div class="review-text">"He works like he's part of our in-house team. Same quality, same commitment, zero drama."</div>
+      <div class="review-meta">
+        <span class="review-name">Layla</span>
+        <span class="review-industry">Fashion</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Creativity</div>
+      <div class="review-text">"Our training content went from boring to actually watchable. Athlete engagement went way up."</div>
+      <div class="review-meta">
+        <span class="review-name">Dylan</span>
+        <span class="review-industry">Sports</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Speed</div>
+      <div class="review-text">"Three days for a full campaign edit. Twelve videos delivered, all on-brand, all high-converting."</div>
+      <div class="review-meta">
+        <span class="review-name">Grace</span>
+        <span class="review-industry">E-commerce</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Reliability</div>
+      <div class="review-text">"I've referred Siam to five other agencies. Every single one came back thanking me. That says everything."</div>
+      <div class="review-meta">
+        <span class="review-name">Usman</span>
+        <span class="review-industry">Agency</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Results</div>
+      <div class="review-text">"His thumbnails alone doubled our YouTube click-through rate. The most underrated skill in the game."</div>
+      <div class="review-meta">
+        <span class="review-name">Mia</span>
+        <span class="review-industry">Lifestyle</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Professionalism</div>
+      <div class="review-text">"Compliant, accurate, and visually stunning — he navigated our regulatory requirements without missing a beat."</div>
+      <div class="review-meta">
+        <span class="review-name">Amjad</span>
+        <span class="review-industry">Fintech</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Quality</div>
+      <div class="review-text">"He made our affordable products look premium. The production value he brings is unmatched at this price point."</div>
+      <div class="review-meta">
+        <span class="review-name">Yara</span>
+        <span class="review-industry">Beauty</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Strategy</div>
+      <div class="review-text">"Our product demo video is now our top converting asset. Siam just gets what makes tech exciting."</div>
+      <div class="review-meta">
+        <span class="review-name">Vlad</span>
+        <span class="review-industry">Tech</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Speed</div>
+      <div class="review-text">"Turnaround on our rush project was twenty-four hours. The result was better than our previous editor's two-week timeline."</div>
+      <div class="review-meta">
+        <span class="review-name">Hannah</span>
+        <span class="review-industry">Fashion</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Results</div>
+      <div class="review-text">"We tested his creatives against our agency's. His won on every metric — CTR, CVR, ROAS."</div>
+      <div class="review-meta">
+        <span class="review-name">Bilal</span>
+        <span class="review-industry">E-commerce</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Creativity</div>
+      <div class="review-text">"Our course completion rates improved because students actually enjoyed watching the video lessons."</div>
+      <div class="review-meta">
+        <span class="review-name">Fiona</span>
+        <span class="review-industry">Education</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Professionalism</div>
+      <div class="review-text">"He transformed our smartphone footage into broadcast-quality content without expensive reshoots."</div>
+      <div class="review-meta">
+        <span class="review-name">Rashid</span>
+        <span class="review-industry">Travel</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Reliability</div>
+      <div class="review-text">"Consistent, high-quality content delivered every single week for over a year. True partnership."</div>
+      <div class="review-meta">
+        <span class="review-name">Celeste</span>
+        <span class="review-industry">Beauty</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Quality</div>
+      <div class="review-text">"The animated infographics he created for our whitepaper made it the most downloaded in our company history."</div>
+      <div class="review-meta">
+        <span class="review-name">Arjun</span>
+        <span class="review-industry">SaaS</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-strength">Communication</div>
+      <div class="review-text">"I don't even write briefs anymore. I just send raw footage and trust Siam to work his magic. Never been let down."</div>
+      <div class="review-meta">
+        <span class="review-name">Nadia</span>
+        <span class="review-industry">Agency</span>
+        <span class="review-stars">★★★★★</span>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+.review-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  position: relative;
+  transition: 0.3s;
+}
+.review-card:hover { transform: translateY(-3px); border-color: rgba(255,107,107,0.2); }
+.review-strength {
+  position: absolute;
+  top: -8px;
+  right: 16px;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  color: var(--bg);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 12px;
+  border-radius: 20px;
+}
+.review-text {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 12px;
+  font-style: italic;
+}
+.review-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.review-name { font-weight: 600; color: var(--text); }
+.review-industry { color: var(--text3); }
+.review-stars { color: #ffd93d; margin-left: auto; letter-spacing: 2px; }
+</style>
+
+<script>
+
+// ─── LIVE EDIT: Load from admin localStorage ───
+function loadFromStorage(key, defaultVal) {
+  try {
+    const saved = localStorage.getItem('motion_studio_data');
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data[key] && Array.isArray(data[key]) && data[key].length > 0) {
+        return data[key];
+      }
+    }
+  } catch(e) {}
+  return defaultVal;
+}
+// ─── DATA ───
+const services = [
+  {icon:'fa-film', title:'Motion Graphics', desc:'Animated explainers, kinetic typography, logo reveals, and brand animations that bring your story to life.', price:'From $500', features:['2D/3D Animation','Kinetic Typography','Logo Animation','Title Sequences']},
+  {icon:'fa-video', title:'UGC Content', desc:'Authentic user-generated content strategies for social media that build trust and drive conversions.', price:'From $300', features:['TikTok & Reels','Product Demos','Brand Storytelling','Influencer-style Content']},
+  {icon:'fa-robot', title:'AI Visuals', desc:'AI-generated images and videos tailored for marketing, social media, and brand campaigns.', price:'From $200', features:['AI Image Generation','AI Video Creation','Prompt Engineering','Style Transfer']},
+  {icon:'fa-paint-brush', title:'Brand Design', desc:'Complete brand identities from logo to social media kits and visual guidelines.', price:'From $400', features:['Logo Design','Brand Guidelines','Social Media Kits','Visual Identity']},
+  {icon:'fa-scissors', title:'Video Editing', desc:'Professional video editing for commercials, social media, YouTube, and corporate content.', price:'From $350', features:['Multi-cam Editing','Color Grading','Audio Mixing','Visual Effects']},
+  {icon:'fa-ad', title:'Ad Creatives', desc:'High-converting ad creatives for Facebook, Instagram, TikTok, and YouTube campaigns.', price:'From $400', features:['Ad Scripts','Video Ads','Static Ads','A/B Testing Creative']}
+];
+
+const portfolioItems = [
+  {
+    title:'Brand Reel — Motion Launch Campaign',
+    category:'Motion',
+    client:'Brandfit Media (2022-2023)',
+    desc:'Led motion graphics production for multiple brand launch campaigns. Created cinematic brand reveals, animated logos, and promotional videos for diverse clients across retail and tech sectors.',
+    tags:['Motion Graphics','Branding','After Effects','Typography'],
+    stats:{views:'15K+', time:'6 months ongoing', tools:'After Effects, Premiere, Illustrator'},
+    icon:'fa-film',
+    modal:{
+      challenge:'Brandfit Media needed a consistent motion identity across multiple client campaigns — each with unique brand guidelines, tones, and delivery formats.',
+      strategy:'Developed reusable motion templates with modular animation blocks, customized per client. Built a library of transitions, typography reveals, and color palettes for rapid deployment.',
+      tools:['After Effects','Premiere Pro','Illustrator','Audition'],
+      deliverables:'4 brand launch videos, 12 social promos, 6 product teasers, motion template library',
+      results:'Reduced production time by 40%, maintained 100% on-time delivery, all campaigns launched successfully.'
+    }
+  },
+  {
+    title:'TikTok & Reels Content Pipeline',
+    category:'UGC',
+    client:'ABC Agency (2023-2026)',
+    desc:'Produced and managed a high-volume short-form content pipeline for brand clients, generating authentic UGC-style videos that drove millions of views across TikTok and Instagram.',
+    tags:['UGC','TikTok','Reels','Social Media'],
+    stats:{views:'2M+', time:'Ongoing', tools:'CapCut, Premiere, Canva'},
+    icon:'fa-video',
+    modal:{
+      challenge:'Multiple brand clients needed consistent, high-volume short-form content that felt authentic and performed well on algorithms — without looking like traditional ads.',
+      strategy:'Built a production system: trend research → scriptwriting → filming → editing → publishing. Created UGC-style content using real customer perspectives, trending audio, and platform-native formats.',
+      tools:['CapCut','Premiere Pro','Canva','AI Scriptwriting'],
+      deliverables:'200+ videos produced monthly across 8+ brand accounts, content calendars, performance reports',
+      results:'2M+ combined monthly views, 340% engagement increase, 3 clients renewed annual contracts.'
+    }
+  },
+  {
+    title:'AI-Powered Content Automation',
+    category:'AI',
+    client:'ViralForge AI — Self-Initiated',
+    desc:'Architected a full-stack AI SaaS platform featuring 8+ content generation tools — UGC scripts, video analysis, social media content, human-written bypass, and self-training feedback system.',
+    tags:['AI','SaaS','Python','Full Stack'],
+    stats:{views:'12K+', time:'3 months', tools:'Python, Flask, AI APIs'},
+    icon:'fa-robot',
+    modal:{
+      challenge:'Build a comprehensive AI content platform from scratch with zero budget — combining UGC strategy with AI automation for content creators.',
+      strategy:'Designed modular Flask backend with integrated AI APIs for scriptwriting, content generation, and analysis. Built responsive dark-themed frontend. Implemented social scraper, deep analysis, and auto-improvement cron.',
+      tools:['Python','Flask','JavaScript','HTML/CSS','AI APIs','SQLite'],
+      deliverables:'Full SaaS platform (8+ tools), admin dashboard, user feedback system, auto-training cron',
+      results:'Fully functional AI content platform generating scripts, social posts, and brand content with human-quality output. Deployed and accessible globally.'
+    }
+  },
+  {
+    title:'Corporate Video Production Suite',
+    category:'Video',
+    client:'Brandfit Media — Corporate Division',
+    desc:'Produced professional corporate videos including company profiles, product demonstrations, testimonial videos, and event coverage for B2B and enterprise clients.',
+    tags:['Corporate','Video','Editing','Production'],
+    stats:{views:'8K+', time:'12+ projects', tools:'Premiere, After Effects, Audition'},
+    icon:'fa-briefcase',
+    modal:{
+      challenge:'Enterprise clients needed polished corporate videos that communicated complex value propositions clearly while maintaining professional brand standards.',
+      strategy:'Used clean motion graphics, data visualization, professional voiceovers, and structured storytelling frameworks. Implemented client review workflow with revision tracking.',
+      tools:['Premiere Pro','After Effects','Audition','Illustrator'],
+      deliverables:'15 corporate videos (2-5 min each), 8 testimonial videos, 3 product demos, 5 event highlight reels',
+      results:'All projects delivered on time, 95% client satisfaction rate, repeat business from 4 enterprise clients.'
+    }
+  },
+  {
+    title:'Social Media Management & Content Strategy',
+    category:'Social',
+    client:'ABC Agency — Multiple Brands',
+    desc:'Managed end-to-end social media content strategies for 8+ brand accounts across fashion, beauty, lifestyle, and tech verticals — including content creation, scheduling, and analytics.',
+    tags:['Social Media','Strategy','Content','Management'],
+    stats:{views:'500K+', time:'2 years', tools:'Meta Suite, Canva, Analytics'},
+    icon:'fa-hashtag',
+    modal:{
+      challenge:'Brands needed consistent, high-quality social media presence with measurable growth across Instagram, Facebook, TikTok, and LinkedIn.',
+      strategy:'Developed brand-specific content pillars, created monthly content calendars, produced photo and video assets, managed community engagement, and optimized posting schedules based on analytics.',
+      tools:['Meta Business Suite','Canva','CapCut','Google Analytics'],
+      deliverables:'Monthly content packages (30+ posts), weekly Stories, engagement reports, growth strategies',
+      results:'Average 180% follower growth across accounts, 4.5x engagement rate increase, 2 brands achieved 10K+ followers.'
+    }
+  },
+  {
+    title:'Short-form Video — Viral Content Factory',
+    category:'Short-form',
+    client:'ABC Agency — Creator Division',
+    desc:'Specialized in producing viral-worthy short-form content strategy and execution for brands targeting Gen Z and Millennial audiences on TikTok, Reels, and YouTube Shorts.',
+    tags:['Short-form','Viral','TikTok','Reels'],
+    stats:{views:'1.5M+', time:'Monthly retainer', tools:'CapCut, Premiere, AI Tools'},
+    icon:'fa-bolt',
+    modal:{
+      challenge:'Brands needed to break through algorithm noise with content that stopped the scroll and drove real engagement, not just views.',
+      strategy:'Used hook-first approach: analyzed trending formats, adapted brand messaging into native platform language, leveraged AI for script optimization, and A/B tested content variations.',
+      tools:['CapCut','Premiere Pro','AI Scriptwriting','TikTok Creative Center'],
+      deliverables:'150+ short-form videos, weekly trend reports, performance optimization recommendations',
+      results:'1.5M+ total views, 98K+ engagements, 15 viral videos (100K+ views each), 22K new followers generated.'
+    }
+  },
+  {
+    title:'Client Pitch & Ad Creatives',
+    category:'Motion',
+    client:'Brandfit Media — Agency Pitches',
+    desc:'Created high-impact motion graphics and video presentations for agency client pitches that won multiple new business accounts.',
+    tags:['Motion','Pitch','Ad Creatives','Presentation'],
+    stats:{views:'—', time:'8+ pitches', tools:'After Effects, Photoshop, Keynote'},
+    icon:'fa-presentation',
+    modal:{
+      challenge:'Agency pitches required compelling visual presentations that demonstrated creative capability and won client trust within limited pitch windows.',
+      strategy:'Built custom animated pitch decks with embedded motion prototypes, brand visualization concepts, and case study highlights. Tailored each pitch to the prospective client\'s industry and brand identity.',
+      tools:['After Effects','Photoshop','Illustrator','Keynote'],
+      deliverables:'8 pitch presentations, 12 concept animations, 3 competitive brand analysis visuals',
+      results:'Won 6 out of 8 pitches (75% win rate), securing $180K+ in new annual recurring revenue for the agency.'
+    }
+  },
+  {
+    title:'AI Receptionist & Automation Systems',
+    category:'AI',
+    client:'ABC Agency — Client Projects',
+    desc:'Designed and deployed AI-powered receptionist systems (voice + chat) for client businesses — automating customer intake, lead qualification, and appointment scheduling.',
+    tags:['AI','Automation','Chatbot','Voice'],
+    stats:{views:'—', time:'5+ deployments', tools:'AI APIs, Python, Twilio'},
+    icon:'fa-headset',
+    modal:{
+      challenge:'Small and medium businesses needed affordable customer service automation that handled calls and chats without expensive human staffing.',
+      strategy:'Built custom AI receptionist systems combining speech-to-text, LLM response generation, and text-to-speech for natural phone conversations. Integrated chat widgets for websites with lead capture and CRM integration.',
+      tools:['Python','OpenAI API','Twilio','WebSocket','SQLite'],
+      deliverables:'5 AI receptionist deployments, 3 website chat widgets, integration guides for each client',
+      results:'Clients reported 70% reduction in missed calls, 24/7 availability, average 40% cost savings vs human receptionists.'
+    }
+  },
+  {
+    title:'Brand Identity & Visual Design',
+    category:'Brand',
+    client:'Brandfit Media — Creative Services',
+    desc:'Developed complete brand identities for startups and growing businesses — including logo design, color systems, typography, brand guidelines, and visual asset packages.',
+    tags:['Brand','Logo','Identity','Design'],
+    stats:{views:'—', time:'10+ brands', tools:'Illustrator, Photoshop, Figma'},
+    icon:'fa-paint-brush',
+    modal:{
+      challenge:'Startups needed professional brand identities that communicated their unique value propositions and stood out in competitive markets — with limited budgets.',
+      strategy:'Conducted brand discovery workshops, developed mood boards and style scapes, iterated on logo concepts through client feedback, and delivered comprehensive brand guideline documents.',
+      tools:['Illustrator','Photoshop','Figma','Lightroom'],
+      deliverables:'10 complete brand identities including logos, color systems, typography, brand guidelines, social media templates, business card designs',
+      results:'All brands launched successfully, 2 client startups secured funding with our branding materials, 8/10 clients returned for additional design work.'
+    }
+  },
+  {
+    title:'UGC Campaign — Product Launch',
+    category:'UGC',
+    client:'ABC Agency — E-commerce Clients',
+    desc:'Executed strategic UGC campaigns for e-commerce product launches — producing 50+ authentic-style videos and photos that drove conversion rates up by 45%.',
+    tags:['UGC','E-commerce','Product','Conversion'],
+    stats:{views:'250K+', time:'6 campaigns', tools:'CapCut, Canva, AI tools'},
+    icon:'fa-shopping-cart',
+    modal:{
+      challenge:'E-commerce brands launching new products needed authentic content that built trust and drove sales — without the production value looking too polished.',
+      strategy:'Created UGC-style content featuring real product demonstrations, unboxing experiences, before/after results, and lifestyle integrations. Used A/B testing to identify highest-performing content formats.',
+      tools:['CapCut','Canva','AI Scriptwriting','Meta Ads Manager'],
+      deliverables:'50+ UGC videos, 30+ photo assets, 15 ad creative variations per campaign, performance analysis',
+      results:'45% increase in conversion rates, 250K+ reach per campaign, 3x ROAS on ad spend, 2 products sold out within first week.'
+    }
+  },
+  {
+    title:'YouTube Content & Channel Growth',
+    category:'Video',
+    client:'ABC Agency — Content Clients',
+    desc:'Produced and edited long-form YouTube content for client channels — from scripting to final delivery including thumbnails, SEO optimization, and growth strategy.',
+    tags:['YouTube','Editing','Growth','SEO'],
+    stats:{views:'300K+', time:'Ongoing', tools:'Premiere, After Effects, Photoshop'},
+    icon:'fa-youtube',
+    modal:{
+      challenge:'Client YouTube channels needed consistent high-quality content with strong audience retention and algorithmic performance.',
+      strategy:'Implemented data-driven editing (hook retention analysis, pacing optimization), custom thumbnail design with click-through testing, SEO keyword research, and strategic upload scheduling.',
+      tools:['Premiere Pro','After Effects','Photoshop','YouTube Studio'],
+      deliverables:'50+ edited videos (8-20 min each), 50+ custom thumbnails, channel optimization guides, monthly growth reports',
+      results:'Average retention improved from 32% to 55%, 300K+ total views, 3 channels grew from under 1K to 15K+ subscribers.'
+    }
+  },
+  {
+    title:'Multi-platform Content Ecosystem',
+    category:'Social',
+    client:'ABC Agency — Integrated Campaigns',
+    desc:'Managed integrated multi-platform content campaigns spanning TikTok, Instagram, YouTube, LinkedIn, and Facebook — with cohesive brand messaging and platform-optimized formats.',
+    tags:['Cross-platform','Strategy','Campaign','Integration'],
+    stats:{views:'1M+', time:'8 campaigns', tools:'Multiple platforms, Analytics'},
+    icon:'fa-globe',
+    modal:{
+      challenge:'Brands needed consistent messaging across 4-6 platforms simultaneously, each requiring platform-native content formats while maintaining brand cohesion.',
+      strategy:'Developed cross-platform content matrices: repurposed core assets into platform-specific formats, optimized posting schedules per platform, cross-promoted content across channels.',
+      tools:['Meta Business Suite','TikTok Business','LinkedIn Analytics','Google Analytics'],
+      deliverables:'8 integrated campaigns, 400+ assets across platforms, cross-platform analytics, ROI measurement',
+      results:'1M+ cumulative reach per campaign, 35% reduction in content production costs through strategic repurposing, consistent brand presence across all channels.'
+    }
+  }
+];
+
+const testimonials = loadFromStorage('testimonials', [
+  {name:'Rafiq Hasan', role:'Creative Director', company:'Brandfit Media', rating:5, text:'Siam delivered outstanding motion graphics work across multiple client campaigns. His attention to detail and ability to translate brand guidelines into compelling visual stories made him an invaluable part of our creative team.'},
+  {name:'Nusrat Jahan', role:'Head of Content', company:'ABC Agency', rating:5, text:'The UGC content pipeline Siam built for our brand clients was a game-changer. 200+ videos monthly with consistent quality — our clients specifically asked for more of his work. Exceptional talent.'},
+  {name:'Tamim Ahmed', role:'CEO', company:'ViralForge AI', rating:5, text:'Siam architected our entire AI content platform from scratch. The level of technical skill combined with creative understanding is rare. The platform is fully functional and driving real value for users.'},
+  {name:'Farzana Karim', role:'Marketing Manager', company:'Brandfit Media (Client)', rating:5, text:'The corporate videos Siam produced for our enterprise clients were nothing short of professional. Clean, compelling, and delivered on time every single time. A true professional.'},
+  {name:'Imran Shah', role:'Social Media Lead', company:'ABC Agency', rating:5, text:'Working with Siam elevated our social media output significantly. The growth numbers speak for themselves — 180% follower growth across accounts. He understands what makes content perform.'},
+  {name:'Shamim Reza', role:'Founder', company:'E-commerce Client (via ABC Agency)', rating:4, text:'Our UGC product launch campaign drove a 45% increase in conversions. Siam\'s approach to creating authentic content that resonates with buyers is exactly what we needed. Highly recommended.'}
+];
+
+// ─── RENDER FUNCTIONS ───
+
+function renderServices() {
+  const grid = document.getElementById('servicesGrid');
+  grid.innerHTML = services.map(s => `
+    <div class="service-card reveal">
+      <div class="service-icon"><i class="fas ${s.icon}"></i></div>
+      <h3>${s.title}</h3>
+      <p>${s.desc}</p>
+      <span class="service-price">${s.price}</span>
+      <ul class="service-features">${s.features.map(f => `<li><i class="fas fa-check"></i> ${f}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+}
+
+function renderPortfolio(filter) {
+  const grid = document.getElementById('portfolioGrid');
+  const items = filter ? portfolioItems.filter(i => i.category === filter) : portfolioItems;
+  grid.innerHTML = items.map((item, idx) => `
+    <div class="portfolio-item reveal" data-category="${item.category}">
+      <div class="portfolio-thumb" style="background:linear-gradient(135deg,var(--bg3),var(--card))">
+        <i class="fas ${item.icon} fallback-icon" style="opacity:.15;font-size:64px"></i>
+        <span class="category-badge">${item.category}</span>
+      </div>
+      <div class="portfolio-body">
+        <h3>${item.title}</h3>
+        <div class="client">${item.client}</div>
+        <p>${item.desc}</p>
+        <div class="portfolio-tags">${item.tags.map(t => `<span>${t}</span>`).join('')}</div>
+        <div class="portfolio-stats">
+          <span><i class="fas fa-eye"></i> ${item.stats.views}</span>
+          <span><i class="fas fa-clock"></i> ${item.stats.time}</span>
+          <span><i class="fas fa-tools"></i> ${item.stats.tools}</span>
+        </div>
+        <button class="btn-outline" onclick="openModal(${idx})"><i class="fas fa-plus-circle"></i> View Case Study</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderPortfolioFilters() {
+  const cats = [...new Set(portfolioItems.map(i => i.category))];
+  const container = document.getElementById('portfolioFilters');
+  container.innerHTML = '<button class="portfolio-filter active" onclick="filterPortfolio(\'all\',this)">All</button>' +
+    cats.map(c => `<button class="portfolio-filter" onclick="filterPortfolio('${c}',this)">${c}</button>`).join('');
+}
+
+function filterPortfolio(cat, btn) {
+  document.querySelectorAll('.portfolio-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPortfolio(cat === 'all' ? null : cat);
+}
+
+function renderTestimonials() {
+  const grid = document.getElementById('testimonialsGrid');
+  grid.innerHTML = testimonials.map(t => `
+    <div class="testimonial-card reveal">
+      <div class="testimonial-stars">${'★'.repeat(t.rating)}${'☆'.repeat(5-t.rating)}</div>
+      <div class="quote">${t.text}</div>
+      <div class="author">${t.name}</div>
+      <div class="role">${t.role}${t.company ? `, ${t.company}` : ''}</div>
+    </div>
+  `).join('');
+}
+
+// ─── MODAL ───
+function openModal(idx) {
+  const item = portfolioItems[idx];
+  const m = item.modal;
+  const html = `
+    <h2>${item.title}</h2>
+    <div class="meta">
+      <span><i class="fas fa-user"></i> ${item.client}</span>
+      <span><i class="fas fa-tag"></i> ${item.category}</span>
+      <span><i class="fas fa-clock"></i> ${item.stats.time}</span>
+    </div>
+    ${m.challenge ? `<div class="section"><h4>Challenge</h4><p>${m.challenge}</p></div>` : ''}
+    ${m.strategy ? `<div class="section"><h4>Strategy</h4><p>${m.strategy}</p></div>` : ''}
+    ${m.tools ? `<div class="section"><h4>Tools Used</h4><ul>${m.tools.map(t => `<li>${t}</li>`).join('')}</ul></div>` : ''}
+    ${m.deliverables ? `<div class="section"><h4>Deliverables</h4><p>${m.deliverables}</p></div>` : ''}
+    ${m.results ? `<div class="section"><h4>Results</h4><p>${m.results}</p></div>` : ''}
+  `;
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('portfolioModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('portfolioModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('portfolioModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ─── ANIMATIONS ───
+
+// Loading screen
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 800);
+});
+
+// Particles
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = Math.random() * 100 + '%';
+    p.style.width = p.style.height = (2 + Math.random() * 4) + 'px';
+    p.style.animationDelay = Math.random() * 6 + 's';
+    p.style.animationDuration = (6 + Math.random() * 6) + 's';
+    container.appendChild(p);
+  }
+}
+createParticles();
+
+// Scroll progress
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('scroll-progress').style.width = (window.scrollY / h * 100) + '%';
+});
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  document.getElementById('back-to-top').classList.toggle('visible', window.scrollY > 500);
+});
+
+// Custom cursor
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+if (dot && ring) {
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+  function animateRing() { rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animateRing); }
+  animateRing();
+  document.querySelectorAll('a, button, input, textarea, select').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+  });
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Counters
+function animateCounters() {
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    const update = () => {
+      const current = parseInt(el.textContent) || 0;
+      if (current < target) {
+        el.textContent = Math.min(current + Math.ceil(target / 30), target);
+        requestAnimationFrame(update);
+      }
+    };
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { update(); obs.unobserve(el); } });
+    }, { threshold: 0.5 });
+    obs.observe(el);
+  });
+}
+animateCounters();
+
+// Mobile menu
+function toggleMobileMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+  document.querySelector('.hamburger').classList.toggle('open');
+}
+
+// ─── FORM ───
+document.getElementById('inquiryForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('formSubmit');
+  const btnText = btn.querySelector('.btn-text');
+  const successDiv = document.getElementById('formSuccess');
+  const form = this;
+  
+  if (!document.getElementById('consent').checked) {
+    showToast('Please agree to the privacy policy', 'error');
+    return;
+  }
+  
+  btn.classList.add('loading');
+  btn.disabled = true;
+  btnText.textContent = 'Sending...';
+  
+  try {
+    const formData = new FormData(form);
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData
+    });
+    const data = await response.json();
+    
+    if (data.success) {
+      form.reset();
+      successDiv.style.display = 'block';
+      form.querySelector('.submit-btn').style.display = 'none';
+      showToast('Message sent successfully! We will respond within 24h.', 'success');
+    } else {
+      showToast(data.message || 'Submission failed. Please try again.', 'error');
+    }
+  } catch (err) {
+    showToast('Network error. Please check your connection and try again.', 'error');
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    btnText.innerHTML = 'Send Inquiry <i class="fas fa-paper-plane" style="font-size:14px"></i>';
+  }
+});
+  const btn = document.getElementById('formSubmit');
+  btn.classList.add('loading');
+  btn.disabled = true;
+  
+  const consent = document.getElementById('consent');
+  if (!consent.checked) {
+    showToast('Please agree to the privacy policy', 'error');
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    e.preventDefault();
+    return;
+  }
+});
+
+// ─── NEWSLETTER ───
+const newsletterForm = document.getElementById('newsletterForm');
+if (newsletterForm) {
+  newsletterForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('newsletterSubmit');
+    const email = document.getElementById('newsletterEmail');
+    const msg = document.getElementById('newsletterMsg');
+    const originalText = btn.textContent;
+    
+    btn.textContent = 'Subscribing...';
+    btn.disabled = true;
+    msg.style.display = 'none';
+    
+    try {
+      const fd = new FormData();
+      fd.append('access_key', 'c1e6d832-f9f5-4021-9ada-23523b2f99ca');
+      fd.append('email', email.value);
+      fd.append('subject', 'Newsletter Signup - Motion Studio');
+      fd.append('from_name', 'Motion Studio Newsletter');
+      
+      const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd });
+      const data = await res.json();
+      
+      if (data.success) {
+        msg.textContent = '✅ Subscribed! Check your inbox for confirmation.';
+        msg.style.color = '#4ade80';
+        email.value = '';
+      } else {
+        msg.textContent = '❌ ' + (data.message || 'Subscription failed. Try again.');
+        msg.style.color = '#ff6b6b';
+      }
+    } catch (err) {
+      msg.textContent = '❌ Network error. Please try again.';
+      msg.style.color = '#ff6b6b';
+    }
+    
+    msg.style.display = 'block';
+    btn.textContent = originalText;
+    btn.disabled = false;
+  });
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.querySelector('span').textContent = msg;
+  t.querySelector('i').className = type === 'error' ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// ─── INIT ───
+renderServices();
+renderPortfolioFilters();
+renderPortfolio('all');
+renderTestimonials();
+console.log('🎬 Motion Studio — Premium Creative Agency');
+console.log('📧 siammunkasir@gmail.com');
+</script>
+
+</body>
+</html>
