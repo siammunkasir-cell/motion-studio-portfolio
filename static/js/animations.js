@@ -16,8 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ─── HERO STAGGER ───
-  const heroContent = document.querySelector('.hero-content');
+  const heroContent = document.getElementById('heroContent');
   if (heroContent) {
+    // Reveal hero content before starting stagger
+    gsap.set(heroContent, { opacity: 1 });
     const tl = gsap.timeline({ delay: 2.6 });
 
     // Hero badge
