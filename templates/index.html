@@ -3089,5 +3089,175 @@ document.getElementById('backToTop').addEventListener('click', function() {
 checkReveals();
 </script>
 
+<!-- ─── VISITOR TRACKING ─── -->
+<script>
+(function(){
+  // Generate a fingerprint from browser characteristics
+  function getFingerprint() {
+    var fp = [navigator.userAgent, navigator.language, (screen.width||0), (screen.height||0), (screen.colorDepth||0)];
+    if (window.canvasFingerprint !== undefined) fp.push(String(window.canvasFingerprint));
+    var s = fp.join('|||');
+    var hash = 0;
+    for (var i = 0; i < s.length; i++) { var c = s.charCodeAt(i); hash = ((hash << 5) - hash) + c; hash |= 0; }
+    return 'v' + Math.abs(hash).toString(36);
+  }
+
+  // Get or create session ID
+  var sidKey = '_track_sid';
+  var sid = sessionStorage.getItem(sidKey);
+  if (!sid) { sid = 's' + Date.now().toString(36) + Math.random().toString(36).substr(2,6); sessionStorage.setItem(sidKey, sid); }
+
+  // Get or create visitor fingerprint
+  var fpKey = '_track_fp';
+  var fingerprint = localStorage.getItem(fpKey);
+  if (!fingerprint) { fingerprint = getFingerprint(); localStorage.setItem(fpKey, fingerprint); }
+
+  var pageStart = Date.now();
+  var maxScroll = 0;
+  var lastTrackedUrl = location.pathname;
+
+  // Device detection
+  function getDeviceInfo() {
+    var ua = navigator.userAgent;
+    var deviceType = 'Desktop';
+    if (/Mobi|Android|iPhone|iPad|iPod/i.test(ua)) deviceType = /iPad|Tablet/i.test(ua) ? 'Tablet' : 'Mobile';
+    var os = 'Unknown';
+    if (/Windows/i.test(ua)) os = 'Windows';
+    else if (/Mac OS/i.test(ua)) os = 'macOS';
+    else if (/Linux/i.test(ua)) os = 'Linux';
+    else if (/Android/i.test(ua)) os = 'Android';
+    else if (/iOS|iPhone|iPad/i.test(ua)) os = 'iOS';
+    var browser = 'Unknown';
+    if (/Chrome/i.test(ua) && !/Edg/i.test(ua)) browser = 'Chrome';
+    else if (/Firefox/i.test(ua)) browser = 'Firefox';
+    else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) browser = 'Safari';
+    else if (/Edg/i.test(ua)) browser = 'Edge';
+    else if (/Opera|OPR/i.test(ua)) browser = 'Opera';
+    var bv = '';
+    var m = ua.match(/(Chrome|Firefox|Safari|Edg|OPR)\/([\d.]+)/);
+    if (m) bv = m[2];
+    return { device_type: deviceType, os: os, browser: browser, browser_version: bv, screen_resolution: screen.width+'x'+screen.height };
+  }
+
+  // Get UTM params
+  function getUtmParams() {
+    var p = new URLSearchParams(location.search);
+    var utm = {};
+    ['source','medium','campaign','term','content'].forEach(function(k) {
+      var v = p.get('utm_'+k);
+      if (v) utm['utm_'+k] = v;
+    });
+    return utm;
+  }
+
+  function getCountry() {
+    var c = localStorage.getItem('_track_country');
+    if (c) return c;
+    // Fetch from IP API (async)
+    fetch('https://ipapi.co/json/').then(function(r){return r.json()}).then(function(d){
+      if (d && d.country_name) {
+        localStorage.setItem('_track_country', d.country_name||'');
+        localStorage.setItem('_track_city', d.city||'');
+        localStorage.setItem('_track_region', d.region||'');
+        localStorage.setItem('_track_timezone', d.timezone||'');
+        localStorage.setItem('_track_language', navigator.language||'');
+      }
+    }).catch(function(){});
+    return '';
+  }
+
+  // Send tracking event
+  function track(event, extra) {
+    var info = getDeviceInfo();
+    var utm = getUtmParams();
+    var data = {
+      event: event,
+      fingerprint: fingerprint,
+      session_id: sid,
+      page_url: location.pathname + location.search,
+      page_title: document.title,
+      referrer: document.referrer || '',
+      device_type: info.device_type,
+      os: info.os,
+      browser: info.browser,
+      browser_version: info.browser_version,
+      screen_resolution: info.screen_resolution,
+      language: navigator.language,
+      country: localStorage.getItem('_track_country')||'',
+      city: localStorage.getItem('_track_city')||'',
+      region: localStorage.getItem('_track_region')||'',
+      timezone: localStorage.getItem('_track_timezone')||'',
+      duration: Math.floor((Date.now() - pageStart) / 1000)
+    };
+    // Merge UTM
+    for (var k in utm) data[k] = utm[k];
+    // Merge extra
+    if (extra) for (var k in extra) data[k] = extra[k];
+
+    navigator.sendBeacon('/api/track', JSON.stringify(data));
+  }
+
+  // Session start / page view
+  function initTracking() {
+    getCountry(); // kick off geo lookup
+    track('session_start');
+    track('page_view');
+  }
+
+  // Track scroll depth
+  window.addEventListener('scroll', function() {
+    var scrollH = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollH <= 0) return;
+    var scrolled = Math.round((window.scrollY / scrollH) * 100);
+    if (scrolled > maxScroll) {
+      maxScroll = scrolled;
+      track('scroll', { scroll_depth: maxScroll });
+    }
+  });
+
+  // Track clicks
+  document.addEventListener('click', function(e) {
+    track('click', { click_target: e.target.tagName + (e.target.className ? '.'+e.target.className.split(' ')[0] : '') });
+  });
+
+  // Heartbeat every 10 seconds
+  setInterval(function() {
+    track('heartbeat');
+  }, 10000);
+
+  // Track when user leaves
+  window.addEventListener('beforeunload', function() {
+    track('session_end', { duration: Math.floor((Date.now() - pageStart) / 1000) });
+  });
+
+  // Track SPA navigation
+  var origPushState = history.pushState;
+  history.pushState = function() {
+    origPushState.apply(this, arguments);
+    setTimeout(function() {
+      if (location.pathname !== lastTrackedUrl) {
+        lastTrackedUrl = location.pathname;
+        track('page_view');
+      }
+    }, 100);
+  };
+  window.addEventListener('popstate', function() {
+    setTimeout(function() {
+      if (location.pathname !== lastTrackedUrl) {
+        lastTrackedUrl = location.pathname;
+        track('page_view');
+      }
+    }, 100);
+  });
+
+  // Start tracking when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTracking);
+  } else {
+    initTracking();
+  }
+})();
+</script>
+
 </body>
 </html>

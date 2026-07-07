@@ -1,11 +1,11 @@
-import os, json, uuid, re, hashlib, smtplib, csv, io, time, threading
-from datetime import datetime
+import os, json, uuid, re, hashlib, smtplib, csv, io, time, threading, math, random
+from datetime import datetime, timedelta
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from functools import wraps
 from pathlib import Path
 
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_from_directory, abort, flash
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_from_directory, abort, flash, Response
 from werkzeug.utils import secure_filename
 import sqlite3
 
@@ -159,6 +159,93 @@ def init_db():
             sort_order INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+        CREATE TABLE IF NOT EXISTS visitors (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            fingerprint TEXT UNIQUE NOT NULL,
+            ip_address TEXT,
+            first_visit TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            last_visit TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            visit_count INTEGER DEFAULT 1,
+            country TEXT DEFAULT '',
+            city TEXT DEFAULT '',
+            region TEXT DEFAULT '',
+            timezone TEXT DEFAULT '',
+            language TEXT DEFAULT '',
+            device_type TEXT DEFAULT '',
+            os TEXT DEFAULT '',
+            browser TEXT DEFAULT '',
+            browser_version TEXT DEFAULT '',
+            screen_resolution TEXT DEFAULT '',
+            total_page_views INTEGER DEFAULT 0,
+            total_clicks INTEGER DEFAULT 0,
+            total_session_duration INTEGER DEFAULT 0
+        );
+        CREATE TABLE IF NOT EXISTS visits (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            visitor_id INTEGER NOT NULL,
+            session_id TEXT UNIQUE NOT NULL,
+            ip_address TEXT,
+            user_agent TEXT,
+            referrer TEXT DEFAULT '',
+            landing_page TEXT DEFAULT '',
+            exit_page TEXT DEFAULT '',
+            traffic_source TEXT DEFAULT 'Direct',
+            utm_source TEXT DEFAULT '',
+            utm_medium TEXT DEFAULT '',
+            utm_campaign TEXT DEFAULT '',
+            utm_term TEXT DEFAULT '',
+            utm_content TEXT DEFAULT '',
+            device_type TEXT DEFAULT '',
+            os TEXT DEFAULT '',
+            browser TEXT DEFAULT '',
+            browser_version TEXT DEFAULT '',
+            screen_resolution TEXT DEFAULT '',
+            country TEXT DEFAULT '',
+            city TEXT DEFAULT '',
+            region TEXT DEFAULT '',
+            timezone TEXT DEFAULT '',
+            language TEXT DEFAULT '',
+            page_views INTEGER DEFAULT 0,
+            clicks INTEGER DEFAULT 0,
+            scroll_depth INTEGER DEFAULT 0,
+            session_duration INTEGER DEFAULT 0,
+            is_bounce INTEGER DEFAULT 1,
+            started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            ended_at TIMESTAMP,
+            FOREIGN KEY (visitor_id) REFERENCES visitors(id)
+        );
+        CREATE TABLE IF NOT EXISTS page_views (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            visit_id INTEGER NOT NULL,
+            visitor_id INTEGER NOT NULL,
+            page_url TEXT NOT NULL,
+            page_title TEXT DEFAULT '',
+            time_spent INTEGER DEFAULT 0,
+            scroll_depth INTEGER DEFAULT 0,
+            referrer TEXT DEFAULT '',
+            view_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (visit_id) REFERENCES visits(id),
+            FOREIGN KEY (visitor_id) REFERENCES visitors(id)
+        );
+        CREATE TABLE IF NOT EXISTS live_visitors (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            visitor_id INTEGER NOT NULL,
+            session_id TEXT NOT NULL,
+            current_page TEXT DEFAULT '',
+            page_title TEXT DEFAULT '',
+            country TEXT DEFAULT '',
+            device_type TEXT DEFAULT '',
+            browser TEXT DEFAULT '',
+            ip_address TEXT DEFAULT '',
+            started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            last_heartbeat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (visitor_id) REFERENCES visitors(id)
+        );
+        CREATE INDEX IF NOT EXISTS idx_visits_visitor ON visits(visitor_id);
+        CREATE INDEX IF NOT EXISTS idx_visits_started ON visits(started_at);
+        CREATE INDEX IF NOT EXISTS idx_page_views_visit ON page_views(visit_id);
+        CREATE INDEX IF NOT EXISTS idx_page_views_time ON page_views(view_time);
+        CREATE INDEX IF NOT EXISTS idx_live_heartbeat ON live_visitors(last_heartbeat);
         ''')
         # Create default admin if not exists
         existing = db.execute("SELECT id FROM admin WHERE username='admin'").fetchone()
@@ -881,9 +968,427 @@ def api_captcha():
     else: answer = a * b
     return jsonify({'question': f'{a} {op} {b} = ?', 'answer': str(answer)})
 
-# ─── Initialize database on import ───
-with app.app_context():
-    init_db()
+# ─── VISITOR TRACKING ───
+
+@app.route('/api/track', methods=['POST'])
+def api_track():
+    try:
+        data = request.get_json(silent=True) or {}
+        event = data.get('event', 'page_view')
+        fingerprint = data.get('fingerprint', '')
+        session_id = data.get('session_id', '')
+        page_url = data.get('page_url', '')
+        page_title = data.get('page_title', '')
+        referrer = data.get('referrer', '')
+
+        if not fingerprint or not session_id:
+            return jsonify({'error': 'Missing tracking identifiers'}), 400
+
+        ua = request.headers.get('User-Agent', '')
+        ip = request.headers.get('X-Forwarded-For', request.remote_addr or '').split(',')[0].strip()
+        current_time = datetime.utcnow()
+
+        with get_db() as db:
+            # Upsert visitor
+            visitor = db.execute("SELECT * FROM visitors WHERE fingerprint=?", (fingerprint,)).fetchone()
+            if visitor:
+                visitor_id = visitor['id']
+                db.execute("UPDATE visitors SET last_visit=?, visit_count=visit_count+1, ip_address=? WHERE id=?",
+                          (current_time, ip, visitor_id))
+            else:
+                cursor = db.execute('''INSERT INTO visitors (fingerprint, ip_address, device_type, os, browser,
+                    browser_version, screen_resolution, language, country, city, region, timezone)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?)''', (
+                    fingerprint, ip,
+                    data.get('device_type', ''),
+                    data.get('os', ''),
+                    data.get('browser', ''),
+                    data.get('browser_version', ''),
+                    data.get('screen_resolution', ''),
+                    data.get('language', ''),
+                    data.get('country', ''),
+                    data.get('city', ''),
+                    data.get('region', ''),
+                    data.get('timezone', '')
+                ))
+                visitor_id = cursor.lastrowid
+
+            # Get or create visit
+            visit = db.execute("SELECT * FROM visits WHERE session_id=?", (session_id,)).fetchone()
+            if event == 'session_start' or not visit:
+                # Determine traffic source
+                traffic_source = 'Direct'
+                utm_source = data.get('utm_source', '')
+                utm_medium = data.get('utm_medium', '')
+                utm_campaign = data.get('utm_campaign', '')
+
+                if utm_source:
+                    traffic_source = 'Campaign'
+                elif referrer:
+                    ref_lower = referrer.lower()
+                    if 'google' in ref_lower:
+                        traffic_source = 'Google Search'
+                    elif 'bing' in ref_lower:
+                        traffic_source = 'Bing'
+                    elif 'facebook' in ref_lower:
+                        traffic_source = 'Facebook'
+                    elif 'instagram' in ref_lower:
+                        traffic_source = 'Instagram'
+                    elif 'linkedin' in ref_lower:
+                        traffic_source = 'LinkedIn'
+                    elif 'x.com' in ref_lower or 'twitter' in ref_lower:
+                        traffic_source = 'X (Twitter)'
+                    elif 'youtube' in ref_lower:
+                        traffic_source = 'YouTube'
+                    elif 'mail' in ref_lower or 'email' in ref_lower:
+                        traffic_source = 'Email'
+                    elif 'qrcode' in ref_lower or 'qr' in ref_lower:
+                        traffic_source = 'QR Code'
+                    else:
+                        traffic_source = 'Referral'
+
+                if visit:
+                    # Update existing
+                    db.execute('''UPDATE visits SET landing_page=?, referrer=?, traffic_source=?,
+                        utm_source=?, utm_medium=?, utm_campaign=?, device_type=?, os=?, browser=?,
+                        browser_version=?, screen_resolution=?, country=?, city=?, region=?,
+                        timezone=?, language=? WHERE session_id=?''', (
+                        page_url, referrer, traffic_source, utm_source, utm_medium, utm_campaign,
+                        data.get('device_type', ''), data.get('os', ''), data.get('browser', ''),
+                        data.get('browser_version', ''), data.get('screen_resolution', ''),
+                        data.get('country', ''), data.get('city', ''), data.get('region', ''),
+                        data.get('timezone', ''), data.get('language', ''), session_id
+                    ))
+                else:
+                    cursor = db.execute('''INSERT INTO visits (visitor_id, session_id, ip_address, user_agent,
+                        referrer, landing_page, traffic_source, utm_source, utm_medium, utm_campaign,
+                        utm_term, utm_content, device_type, os, browser, browser_version,
+                        screen_resolution, country, city, region, timezone, language)
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''', (
+                        visitor_id, session_id, ip, ua, referrer, page_url, traffic_source,
+                        utm_source, utm_medium, utm_campaign,
+                        data.get('utm_term', ''), data.get('utm_content', ''),
+                        data.get('device_type', ''), data.get('os', ''), data.get('browser', ''),
+                        data.get('browser_version', ''), data.get('screen_resolution', ''),
+                        data.get('country', ''), data.get('city', ''), data.get('region', ''),
+                        data.get('timezone', ''), data.get('language', '')
+                    ))
+                    visit_id = cursor.lastrowid
+                    visit = db.execute("SELECT * FROM visits WHERE id=?", (visit_id,)).fetchone()
+
+                # Add to live visitors
+                db.execute('''INSERT OR REPLACE INTO live_visitors (visitor_id, session_id, current_page,
+                    page_title, country, device_type, browser, ip_address, last_heartbeat)
+                    VALUES (?,?,?,?,?,?,?,?,?)''', (
+                    visitor_id, session_id, page_url, page_title,
+                    data.get('country', ''), data.get('device_type', ''),
+                    data.get('browser', ''), ip, current_time
+                ))
+
+            visit_id = visit['id'] if visit else None
+
+            if event == 'page_view' and visit_id:
+                # Record page view
+                db.execute('''INSERT INTO page_views (visit_id, visitor_id, page_url, page_title, referrer)
+                    VALUES (?,?,?,?,?)''', (visit_id, visitor_id, page_url, page_title, referrer))
+                db.execute("UPDATE visits SET page_views=page_views+1, exit_page=? WHERE id=?", (page_url, visit_id))
+                db.execute("UPDATE visitors SET total_page_views=total_page_views+1 WHERE id=?", (visitor_id,))
+
+                # Update live visitor
+                db.execute('''UPDATE live_visitors SET current_page=?, page_title=?, last_heartbeat=?
+                    WHERE session_id=?''', (page_url, page_title, current_time, session_id))
+
+            elif event == 'heartbeat' and visit_id:
+                db.execute('''UPDATE live_visitors SET last_heartbeat=? WHERE session_id=?''',
+                          (current_time, session_id))
+                duration = int(data.get('duration', 0))
+                if duration > 0:
+                    db.execute("UPDATE visits SET session_duration=? WHERE id=? AND session_duration<?",
+                              (duration, visit_id, duration))
+
+            elif event == 'click' and visit_id:
+                db.execute("UPDATE visits SET clicks=clicks+1 WHERE id=?", (visit_id,))
+                db.execute("UPDATE visitors SET total_clicks=total_clicks+1 WHERE id=?", (visitor_id,))
+
+            elif event == 'scroll' and visit_id:
+                depth = int(data.get('scroll_depth', 0))
+                db.execute("UPDATE visits SET scroll_depth=MAX(scroll_depth,?) WHERE id=?", (depth, visit_id))
+
+            elif event == 'session_end' and visit_id:
+                duration = int(data.get('duration', 0))
+                db.execute('''UPDATE visits SET session_duration=?, ended_at=?, is_bounce=0
+                    WHERE id=? AND ended_at IS NULL''', (duration, current_time, visit_id))
+                db.execute("DELETE FROM live_visitors WHERE session_id=?", (session_id,))
+                if duration > 0:
+                    db.execute("UPDATE visitors SET total_session_duration=total_session_duration+? WHERE id=?",
+                              (duration, visitor_id))
+
+            # Clean up stale live visitors (30+ seconds old)
+            db.execute("DELETE FROM live_visitors WHERE last_heartbeat < ?",
+                      (current_time - timedelta(seconds=30),))
+
+            return jsonify({'success': True, 'visitor_id': visitor_id})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# ─── ADMIN ANALYTICS ───
+
+@app.route('/admin/analytics')
+@admin_required
+def admin_analytics():
+    return render_template('admin/analytics.html')
+
+@app.route('/api/admin/analytics/stats')
+@admin_required
+def api_analytics_stats():
+    today = datetime.utcnow().date()
+    yesterday = today - timedelta(days=1)
+    week_start = today - timedelta(days=today.weekday())
+    month_start = today.replace(day=1)
+    year_start = today.replace(month=1, day=1)
+
+    with get_db() as db:
+        # Total visitors
+        total_visitors = db.execute("SELECT COUNT(*) as c FROM visitors").fetchone()['c']
+
+        # Today's visitors
+        today_visitors = db.execute("SELECT COUNT(DISTINCT visitor_id) as c FROM visits WHERE date(started_at)=?",
+                                   (today,)).fetchone()['c']
+        yesterday_visitors = db.execute("SELECT COUNT(DISTINCT visitor_id) as c FROM visits WHERE date(started_at)=?",
+                                       (yesterday,)).fetchone()['c']
+
+        # This week
+        week_visitors = db.execute("SELECT COUNT(DISTINCT visitor_id) as c FROM visits WHERE date(started_at)>=?",
+                                  (week_start,)).fetchone()['c']
+
+        # This month
+        month_visitors = db.execute("SELECT COUNT(DISTINCT visitor_id) as c FROM visits WHERE date(started_at)>=?",
+                                   (month_start,)).fetchone()['c']
+
+        # This year
+        year_visitors = db.execute("SELECT COUNT(DISTINCT visitor_id) as c FROM visits WHERE date(started_at)>=?",
+                                  (year_start,)).fetchone()['c']
+
+        # Live visitors
+        cutoff = datetime.utcnow() - timedelta(seconds=15)
+        live_visitors = db.execute("SELECT COUNT(*) as c FROM live_visitors WHERE last_heartbeat>=?",
+                                  (cutoff,)).fetchone()['c']
+
+        # Unique vs returning
+        unique_visitors = db.execute("SELECT COUNT(*) as c FROM visitors WHERE visit_count=1").fetchone()['c']
+        returning_visitors = db.execute("SELECT COUNT(*) as c FROM visitors WHERE visit_count>1").fetchone()['c']
+
+        # Total page views
+        total_page_views = db.execute("SELECT COUNT(*) as c FROM page_views").fetchone()['c']
+
+        # Average session duration
+        avg_duration = db.execute("SELECT COALESCE(ROUND(AVG(session_duration)),0) as a FROM visits WHERE session_duration>0").fetchone()['a']
+
+        # Bounce rate
+        total_sessions = db.execute("SELECT COUNT(*) as c FROM visits").fetchone()['c']
+        bounces = db.execute("SELECT COUNT(*) as c FROM visits WHERE is_bounce=1 AND page_views=1").fetchone()['c']
+        bounce_rate = round((bounces / total_sessions * 100), 1) if total_sessions > 0 else 0
+
+        # Previous period comparisons
+        prev_month_start = (month_start - timedelta(days=1)).replace(day=1)
+        prev_month_visitors = db.execute("SELECT COUNT(DISTINCT visitor_id) as c FROM visits WHERE date(started_at)>=? AND date(started_at)<?",
+                                        (prev_month_start, month_start)).fetchone()['c']
+        prev_week_start = week_start - timedelta(days=7)
+        prev_week_visitors = db.execute("SELECT COUNT(DISTINCT visitor_id) as c FROM visits WHERE date(started_at)>=? AND date(started_at)<?",
+                                       (prev_week_start, week_start)).fetchone()['c']
+
+    month_change = round(((month_visitors - prev_month_visitors) / prev_month_visitors * 100), 1) if prev_month_visitors > 0 else 0
+    week_change = round(((week_visitors - prev_week_visitors) / prev_week_visitors * 100), 1) if prev_week_visitors > 0 else 0
+
+    return jsonify({
+        'total_visitors': total_visitors,
+        'today_visitors': today_visitors,
+        'yesterday_visitors': yesterday_visitors,
+        'week_visitors': week_visitors,
+        'month_visitors': month_visitors,
+        'year_visitors': year_visitors,
+        'live_visitors': live_visitors,
+        'unique_visitors': unique_visitors,
+        'returning_visitors': returning_visitors,
+        'total_page_views': total_page_views,
+        'avg_session_duration': avg_duration,
+        'bounce_rate': bounce_rate,
+        'month_change': month_change,
+        'week_change': week_change
+    })
+
+@app.route('/api/admin/analytics/visitor-growth')
+@admin_required
+def api_analytics_visitor_growth():
+    period = request.args.get('period', 'daily')
+    with get_db() as db:
+        if period == 'daily':
+            rows = db.execute('''SELECT date(started_at) as d, COUNT(DISTINCT visitor_id) as c
+                FROM visits WHERE started_at >= date('now', '-30 days')
+                GROUP BY d ORDER BY d''').fetchall()
+        elif period == 'weekly':
+            rows = db.execute('''SELECT strftime('%Y-W%W', started_at) as d, COUNT(DISTINCT visitor_id) as c
+                FROM visits WHERE started_at >= date('now', '-6 months')
+                GROUP BY d ORDER BY d''').fetchall()
+        elif period == 'monthly':
+            rows = db.execute('''SELECT strftime('%Y-%m', started_at) as d, COUNT(DISTINCT visitor_id) as c
+                FROM visits WHERE started_at >= date('now', '-12 months')
+                GROUP BY d ORDER BY d''').fetchall()
+        else:
+            rows = db.execute('''SELECT strftime('%Y', started_at) as d, COUNT(DISTINCT visitor_id) as c
+                FROM visits GROUP BY d ORDER BY d''').fetchall()
+    return jsonify([{'date': r['d'], 'count': r['c']} for r in rows])
+
+@app.route('/api/admin/analytics/traffic-sources')
+@admin_required
+def api_analytics_traffic():
+    with get_db() as db:
+        rows = db.execute('''SELECT traffic_source, COUNT(*) as c FROM visits
+            GROUP BY traffic_source ORDER BY c DESC''').fetchall()
+    return jsonify([{'source': r['traffic_source'], 'count': r['c']} for r in rows])
+
+@app.route('/api/admin/analytics/devices')
+@admin_required
+def api_analytics_devices():
+    with get_db() as db:
+        rows = db.execute('''SELECT device_type, COUNT(*) as c FROM visits
+            WHERE device_type != '' GROUP BY device_type ORDER BY c DESC''').fetchall()
+    return jsonify([{'device': r['device_type'] or 'Unknown', 'count': r['c']} for r in rows])
+
+@app.route('/api/admin/analytics/browsers')
+@admin_required
+def api_analytics_browsers():
+    with get_db() as db:
+        rows = db.execute('''SELECT browser, COUNT(*) as c FROM visits
+            WHERE browser != '' GROUP BY browser ORDER BY c DESC''').fetchall()
+    return jsonify([{'browser': r['browser'] or 'Unknown', 'count': r['c']} for r in rows])
+
+@app.route('/api/admin/analytics/countries')
+@admin_required
+def api_analytics_countries():
+    with get_db() as db:
+        rows = db.execute('''SELECT country, COUNT(DISTINCT visitor_id) as c FROM visitors
+            WHERE country != '' GROUP BY country ORDER BY c DESC LIMIT 20''').fetchall()
+    total = sum(r['c'] for r in rows)
+    return jsonify([{'country': r['country'], 'count': r['c'], 'percentage': round(r['c']/total*100,1) if total else 0} for r in rows])
+
+@app.route('/api/admin/analytics/pages')
+@admin_required
+def api_analytics_pages():
+    with get_db() as db:
+        rows = db.execute('''SELECT page_url, COUNT(*) as views,
+            COALESCE(ROUND(AVG(time_spent)),0) as avg_time
+            FROM page_views GROUP BY page_url
+            ORDER BY views DESC LIMIT 20''').fetchall()
+    return jsonify([{'page': r['page_url'], 'views': r['views'], 'avg_time': r['avg_time']} for r in rows])
+
+@app.route('/api/admin/analytics/live')
+@admin_required
+def api_analytics_live():
+    cutoff = datetime.utcnow() - timedelta(seconds=15)
+    with get_db() as db:
+        rows = db.execute('''SELECT lv.*, v.browser, v.os, v.device_type, v.country, v.city
+            FROM live_visitors lv
+            LEFT JOIN visitors v ON lv.visitor_id = v.id
+            WHERE lv.last_heartbeat >= ?
+            ORDER BY lv.last_heartbeat DESC''', (cutoff,)).fetchall()
+    result = []
+    for r in rows:
+        dur = (datetime.utcnow() - datetime.strptime(r['started_at'][:19], '%Y-%m-%d %H:%M:%S')).total_seconds() if r['started_at'] else 0
+        result.append({
+            'visitor_id': r['visitor_id'],
+            'session_id': r['session_id'],
+            'current_page': r['current_page'],
+            'page_title': r['page_title'],
+            'country': r['country'] or '',
+            'city': r['city'] or '',
+            'device_type': r['device_type'] or '',
+            'browser': r['browser'] or '',
+            'duration': int(dur)
+        })
+    return jsonify(result)
+
+@app.route('/api/admin/analytics/visitor-log')
+@admin_required
+def api_analytics_visitor_log():
+    search = request.args.get('search', '')
+    source = request.args.get('source', '')
+    device = request.args.get('device', '')
+    country = request.args.get('country', '')
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 20))
+    offset = (page - 1) * per_page
+
+    with get_db() as db:
+        conditions = []
+        params = []
+        if search:
+            conditions.append("(v.ip_address LIKE ? OR v.country LIKE ? OR v.city LIKE ? OR v.browser LIKE ?)")
+            params.extend([f'%{search}%']*4)
+        if source:
+            conditions.append("v.traffic_source=?")
+            params.append(source)
+        if device:
+            conditions.append("v.device_type=?")
+            params.append(device)
+        if country:
+            conditions.append("v.country=?")
+            params.append(country)
+
+        where = ""
+        if conditions:
+            where = " WHERE " + " AND ".join(conditions)
+
+        total = db.execute(f"SELECT COUNT(*) as c FROM visits v{where}", params).fetchone()['c']
+        rows = db.execute(f'''SELECT v.*, vi.fingerprint, vi.total_page_views, vi.total_clicks
+            FROM visits v LEFT JOIN visitors vi ON v.visitor_id = vi.id
+            {where} ORDER BY v.started_at DESC LIMIT ? OFFSET ?''',
+            params + [per_page, offset]).fetchall()
+
+    return jsonify({
+        'items': [dict(r) for r in rows],
+        'total': total,
+        'page': page,
+        'per_page': per_page
+    })
+
+@app.route('/api/admin/analytics/export')
+@admin_required
+def api_analytics_export():
+    fmt = request.args.get('format', 'csv')
+    with get_db() as db:
+        rows = db.execute('''SELECT v.id, v.session_id, v.ip_address, v.country, v.city,
+            v.device_type, v.browser, v.os, v.landing_page, v.exit_page,
+            v.page_views, v.session_duration, v.traffic_source, v.is_bounce, v.started_at
+            FROM visits v ORDER BY v.started_at DESC''').fetchall()
+
+    if fmt == 'csv':
+        output = io.StringIO()
+        writer = csv.writer(output)
+        writer.writerow(['ID', 'Session ID', 'IP', 'Country', 'City', 'Device', 'Browser', 'OS',
+                        'Landing Page', 'Exit Page', 'Page Views', 'Duration (s)', 'Traffic Source',
+                        'Bounced', 'Date'])
+        for r in rows:
+            writer.writerow([r['id'], r['session_id'], r['ip_address'], r['country'], r['city'],
+                           r['device_type'], r['browser'], r['os'], r['landing_page'], r['exit_page'],
+                           r['page_views'], r['session_duration'], r['traffic_source'],
+                           'Yes' if r['is_bounce'] else 'No', r['started_at']])
+        response = app.response_class(output.getvalue(), mimetype='text/csv')
+        response.headers['Content-Disposition'] = 'attachment; filename=analytics_visitor_log.csv'
+        return response
+    else:
+        # Excel via CSV (simple fallback)
+        output = io.StringIO()
+        writer = csv.writer(output)
+        writer.writerow(['ID', 'Session ID', 'IP', 'Country', 'City', 'Device', 'Browser', 'OS',
+                        'Landing Page', 'Exit Page', 'Page Views', 'Duration (s)', 'Traffic Source', 'Date'])
+        for r in rows:
+            writer.writerow([r['id'], r['session_id'], r['ip_address'], r['country'], r['city'],
+                           r['device_type'], r['browser'], r['os'], r['landing_page'], r['exit_page'],
+                           r['page_views'], r['session_duration'], r['traffic_source'], r['started_at']])
+        response = app.response_class(output.getvalue(), mimetype='text/csv')
+        response.headers['Content-Disposition'] = 'attachment; filename=analytics_visitor_log.csv'
+        return response
 
 if __name__ == '__main__':
     init_db()
