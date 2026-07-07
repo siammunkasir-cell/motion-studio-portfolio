@@ -177,12 +177,12 @@ def init_db():
 
         # Portfolio
         portfolio_items = [
-            ('Luxury Brand Reel', 'Motion Graphics', 'Cinematic brand film for a luxury fashion label', 'Chanel Style Co.', '2026-06', 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=375&fit=crop', '', 'cinematic,brand,luxury', '', 1),
-            ('AI UGC Campaign', 'UGC Content', 'AI-powered user-generated content campaign', 'TechBrand Inc.', '2026-05', 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=600&h=375&fit=crop', '', 'ugc,ai,campaign', '', 1),
-            ('Product Launch Video', 'Video Editing', 'High-energy product launch teaser', 'StartupX', '2026-04', 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=375&fit=crop', '', 'product,launch,editing', '', 1),
-            ('YouTube Channel Rebrand', 'Motion Design', 'Complete channel rebrand with intro/outro', 'Creator Hub', '2026-03', 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=600&h=375&fit=crop', '', 'youtube,rebrand,motion', '', 1),
-            ('Corporate Explainer', '2D Animation', 'Animated explainer for SaaS product', 'CloudSoft', '2026-02', 'https://images.unsplash.com/photo-1559028012-481c04fa702d?w=600&h=375&fit=crop', '', 'explainer,2d,saas', '', 1),
-            ('Social Media Package', 'Short-Form Video', '30-day social media content package', 'Influence Pro', '2026-01', 'https://images.unsplash.com/photo-1611605698335-8b1569810432?w=600&h=375&fit=crop', '', 'social,shortform,package', '', 1),
+            ('Luxury Brand Reel', 'Motion Graphics', 'Cinematic brand film for a luxury fashion label — smooth transitions, dynamic typography, and a premium color palette that elevated brand perception.', 'Chanel Style Co.', '2026-06', 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=375&fit=crop', '', 'cinematic,brand,luxury', '', 1),
+            ('AI UGC Campaign', 'UGC Strategy', 'AI-powered UGC campaign combining authentic user content with intelligent strategy — driving 3x engagement across social platforms.', 'TechBrand Inc.', '2026-05', 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=600&h=375&fit=crop', '', 'ugc,ai,campaign', '', 1),
+            ('Product Launch Teaser', 'Video Production', 'High-energy product launch teaser with cinematic editing, motion graphics overlays, and a pulse-pounding sound design.', 'StartupX', '2026-04', 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=375&fit=crop', '', 'product,launch,editing', '', 1),
+            ('YouTube Rebrand Package', 'Brand Identity', 'Complete channel identity with intro/outro animations, lower thirds, transition pack, and custom thumbnail templates.', 'Creator Hub', '2026-03', 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=600&h=375&fit=crop', '', 'youtube,rebrand,motion', '', 1),
+            ('SaaS Explainer Video', 'AI/Automation', 'Animated explainer for an AI SaaS product — simplifying complex features into an engaging 90-second story.', 'CloudSoft', '2026-02', 'https://images.unsplash.com/photo-1559028012-481c04fa702d?w=600&h=375&fit=crop', '', 'explainer,2d,saas', '', 1),
+            ('Viral Reel Series', 'Social Media Ads', '30-day viral short-form content package optimized for TikTok, Reels, and Shorts — trend-jacking with data-driven hooks.', 'Influence Pro', '2026-01', 'https://images.unsplash.com/photo-1611605698335-8b1569810432?w=600&h=375&fit=crop', '', 'social,shortform,package', '', 1),
         ]
         for p in portfolio_items:
             db.execute('''INSERT OR IGNORE INTO portfolio (title, category, description, client, date, image_url, video_url, tags, live_url, featured) VALUES (?,?,?,?,?,?,?,?,?,?)''', p)
