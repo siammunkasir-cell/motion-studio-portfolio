@@ -433,37 +433,55 @@ def init_db():
         # Homepage sections (defaults)
         default_sections = {
             'hero': json.dumps({
-                'headline': 'AI Content Strategist & UGC Specialist',
-                'subheadline': 'Crafting high-impact digital content that drives real business results',
-                'description': 'I help brands scale their content production with AI-powered strategy and authentic UGC that converts.',
-                'cta_text': 'Get in Touch',
-                'cta_link': '#contact',
-                'secondary_cta_text': 'View Portfolio',
-                'secondary_cta_link': '#portfolio',
-                'background_image': '',
-                'hero_image': ''
+                'badge_text': 'Available for Projects',
+                'title': 'AI-Powered Content That Captivates & Converts',
+                'roles': ['AI Content Strategist','UGC Specialist','Creative Director','Motion Designer','Brand Storyteller'],
+                'subtitle': "Crafting high-impact digital content and AI-powered solutions that drive real business results for brands worldwide.",
+                'cta_primary': {'text': 'View Portfolio', 'href': '#portfolio'},
+                'cta_secondary': {'text': 'Hire Me', 'href': '#contact'},
+                'cta_tertiary': {'text': 'Book a Call', 'href': 'https://wa.me/8801989430474'},
+                'stats': [{'label':'Projects Completed','value':200,'suffix':'+'},{'label':'Clients Served','value':50,'suffix':'+'},{'label':'Years Experience','value':3,'suffix':'+'},{'label':'Client Satisfaction','value':98,'suffix':'%'}]
+            }),
+            'about': json.dumps({
+                'tag': 'About Me',
+                'title': 'Creative Content Strategist & AI UGC Specialist',
+                'subtitle': 'Bridging creative storytelling with cutting-edge AI technology to deliver content that drives real business results.',
+                'name': 'Siam Munkasir',
+                'initials': 'SM',
+                'bio_1': "I'm a Creative Content Strategist and AI UGC Specialist based in Dhaka, Bangladesh.",
+                'bio_2': 'My expertise spans UGC strategy, short-form video production, and AI-driven marketing automation.',
+                'mission': 'Bridging creative storytelling with cutting-edge AI technology.',
+                'process_steps': [
+                    {'title':'Discovery & Strategy','desc':'Understanding your brand, goals, and audience.'},
+                    {'title':'AI-Powered Research','desc':'Researching trends and generating data-backed concepts.'},
+                    {'title':'Script & Storyboard','desc':'Crafting viral hooks for each platform.'},
+                    {'title':'Production & Filming','desc':'Creating authentic UGC content.'},
+                    {'title':'AI-Enhanced Editing','desc':'Editing with AI tools for algorithm optimization.'},
+                    {'title':'Review & Optimization','desc':'Data-driven refinements for maximum performance.'},
+                    {'title':'Delivery & Analytics','desc':'Performance tracking to measure real business impact.'}
+                ]
+            }),
+            'marquee': json.dumps({
+                'items_top': ['AI Content Strategy','UGC Production','Motion Design','Brand Storytelling','AI Automation'],
+                'items_bottom': ['ChatGPT & Gemini Expert','Short-Form Video Editor','Content Strategist','SaaS Builder','Creative Director'],
+                'separator_top': '✦',
+                'separator_bottom': '◆'
             }),
             'stats': json.dumps([
-                {'label': 'Projects Completed', 'value': '150+', 'icon': 'fa-check-circle'},
+                {'label': 'Projects Completed', 'value': '200+', 'icon': 'fa-check-circle'},
                 {'label': 'Happy Clients', 'value': '50+', 'icon': 'fa-smile'},
-                {'label': 'Years Experience', 'value': '5+', 'icon': 'fa-clock'},
+                {'label': 'Years Experience', 'value': '3+', 'icon': 'fa-clock'},
                 {'label': 'Content Pieces', 'value': '500+', 'icon': 'fa-file-alt'}
             ]),
-            'about_preview': json.dumps({
-                'title': 'About Me',
-                'content': 'I am a passionate content creator and AI strategist dedicated to helping brands tell their stories through compelling visual content.',
-                'image': '',
-                'button_text': 'Learn More',
-                'button_link': '#about'
-            }),
             'services_heading': json.dumps({
                 'title': 'Services',
                 'subtitle': 'What I Can Do For You',
                 'description': 'From AI-powered content strategy to cinematic motion design — I offer end-to-end content solutions.'
             })
         }
-        for key, val in default_sections.items():
-            db.execute("INSERT OR IGNORE INTO homepage_sections (section_key, content) VALUES (?,?)", (key, val))
+        for key in ['hero', 'about', 'marquee', 'stats', 'services_heading']:
+            if key in default_sections:
+                db.execute("INSERT OR IGNORE INTO homepage_sections (section_key, content) VALUES (?,?)", (key, default_sections[key]))
 
         # Additional settings defaults
         extra_settings = {
@@ -2008,13 +2026,18 @@ def api_analytics_export():
         return response
 
 def seed_default_sections():
-    """Seed homepage_sections if empty (for first deploy / Render)."""
+    """Seed homepage_sections if empty OR old format (migration helper)."""
     import sqlite3
     db_path = os.path.join(os.path.dirname(__file__), 'portfolio.db')
     try:
         conn = sqlite3.connect(db_path)
+        # Check if old-format sections exist (has 'headline' instead of 'title')
+        hero = conn.execute("SELECT content FROM homepage_sections WHERE section_key='hero'").fetchone()
+        needs_migration = hero and '"headline"' in hero[0]
+        if needs_migration:
+            print('Migrating homepage_sections to new format...')
         exists = conn.execute("SELECT COUNT(*) FROM homepage_sections").fetchone()[0]
-        if exists == 0:
+        if exists == 0 or needs_migration:
             SECTIONS = {
                 'hero': {
                     'badge_text': 'Available for Projects',
@@ -2045,9 +2068,13 @@ def seed_default_sections():
                 }
             }
             for key, data in SECTIONS.items():
-                conn.execute("INSERT INTO homepage_sections (section_key, content, is_active) VALUES (?, ?, 1)", (key, json.dumps(data)))
+                if needs_migration:
+                    conn.execute("INSERT OR REPLACE INTO homepage_sections (section_key, content, is_active) VALUES (?, ?, 1)", (key, json.dumps(data)))
+                else:
+                    conn.execute("INSERT INTO homepage_sections (section_key, content, is_active) VALUES (?, ?, 1)", (key, json.dumps(data)))
             conn.commit()
-            print(f'Seeded {len(SECTIONS)} homepage sections')
+            action = 'Migrated' if needs_migration else 'Seeded'
+            print(f'{action} {len(SECTIONS)} homepage sections')
         conn.close()
     except Exception as e:
         print(f'Seed sections: {e}')
