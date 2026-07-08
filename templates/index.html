@@ -3089,6 +3089,85 @@ document.getElementById('backToTop').addEventListener('click', function() {
 checkReveals();
 </script>
 
+<!-- ─── DYNAMIC CONTENT LOADER ─── -->
+<script>
+(function(){
+  // Load navigation
+  fetch('/api/navigation').then(function(r){return r.json()}).then(function(items){
+    var nav = document.querySelector('.nav-links');
+    if (!nav) return;
+    nav.innerHTML = items.map(function(item){
+      return '<a href="'+item.link+'" style="text-decoration:none">'+item.label+'</a>';
+    }).join('');
+  }).catch(function(){});
+
+  // Load pricing plans
+  fetch('/api/pricing-plans').then(function(r){return r.json()}).then(function(plans){
+    var pricingGrid = document.querySelector('#pricing .bundle-grid, #pricing .pricing-grid');
+    if (!pricingGrid || plans.length === 0) return;
+    // Find the bundle packages section
+    var bundleGrid = document.querySelector('.bundle-grid');
+    if (!bundleGrid) return;
+
+    var bundlePlans = plans.filter(function(p){ return p.tier === 'bundle'; });
+    if (bundlePlans.length === 0) bundlePlans = plans;
+
+    bundleGrid.innerHTML = bundlePlans.map(function(plan, idx){
+      var features = plan.features || [];
+      try { if (typeof features === 'string') features = JSON.parse(features); } catch(e) { features = []; }
+      var badgeHtml = plan.popular_badge ? '<span class="popular-badge">'+plan.popular_badge+'</span>' : '';
+      var highlighted = plan.highlighted ? ' highlighted' : '';
+      return '<div class="bundle-card'+highlighted+'">'+badgeHtml+
+        '<div class="bundle-icon"><i class="fas '+plan.icon+'"></i></div>'+
+        '<h3 class="bundle-name">'+plan.name+'</h3>'+
+        '<div class="bundle-price"><span class="price-currency">'+plan.currency+'</span><span class="price-amount">'+plan.price.replace(/[^0-9.,]/g,'')+'</span><span class="price-period">'+plan.period+'</span></div>'+
+        '<p class="bundle-desc">'+(plan.description||'')+'</p>'+
+        '<ul class="bundle-features">'+features.map(function(f){ return '<li><i class="fas fa-check"></i> '+f+'</li>'; }).join('')+'</ul>'+
+        '<a href="'+plan.button_link+'" class="bundle-cta">'+plan.button_text+'</a></div>';
+    }).join('');
+  }).catch(function(){});
+
+  // Apply theme settings
+  fetch('/api/settings').then(function(r){return r.json()}).then(function(s){
+    var root = document.documentElement;
+    if (s.primary_color) root.style.setProperty('--accent1', s.primary_color);
+    if (s.secondary_color) root.style.setProperty('--accent2', s.secondary_color);
+    if (s.accent_color) root.style.setProperty('--accent3', s.accent_color);
+    if (s.font_heading) root.style.setProperty('--font2', '"'+s.font_heading+'", sans-serif');
+    if (s.font_body) root.style.setProperty('--font', '"'+s.font_body+'", sans-serif');
+    if (s.border_radius) root.style.setProperty('--radius', s.border_radius);
+    if (s.theme_mode === 'light') { root.setAttribute('data-theme', 'light'); }
+    // Footer
+    var copyright = document.querySelector('.footer-copyright');
+    if (copyright && s.footer_copyright) copyright.textContent = s.footer_copyright;
+    var footerEmail = document.querySelector('.footer-email');
+    if (footerEmail && s.footer_email) { footerEmail.textContent = s.footer_email; footerEmail.href = 'mailto:'+s.footer_email; }
+    // Social links
+    if (s.social_instagram) { var el = document.querySelector('[href*="instagram"]'); if(el) el.href = s.social_instagram; }
+    if (s.social_linkedin) { var el = document.querySelector('[href*="linkedin"]'); if(el) el.href = s.social_linkedin; }
+    if (s.social_youtube) { var el = document.querySelector('[href*="youtube"]'); if(el) el.href = s.social_youtube; }
+    if (s.social_twitter || s.social_x) { var el = document.querySelector('[href*="twitter"], [href*="x.com"]'); if(el) el.href = s.social_twitter || s.social_x; }
+    // SEO
+    if (s.og_image) {
+      var og = document.querySelector('meta[property="og:image"]');
+      if (og) og.content = s.og_image;
+    }
+    // Title
+    if (s.site_name) document.title = s.site_name + (document.title.includes('—') ? '' : ' — Portfolio');
+    if (s.ga_tracking_id) {
+      var ga = document.createElement('script');
+      ga.src = 'https://www.googletagmanager.com/gtag/js?id='+s.ga_tracking_id;
+      ga.async = true;
+      document.head.appendChild(ga);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', s.ga_tracking_id);
+    }
+  }).catch(function(){});
+})();
+</script>
+
 <!-- ─── VISITOR TRACKING ─── -->
 <script>
 (function(){

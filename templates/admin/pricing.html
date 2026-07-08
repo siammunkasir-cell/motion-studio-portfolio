@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing Plans — Siam Munkasir Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#3B82F6;--accent2:#8B5CF6;--accent3:#06B6D4;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex}
+.sidebar{width:240px;min-height:100vh;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed;left:0;top:0;overflow-y:auto;z-index:10}
+.sidebar h2{font-size:18px;font-weight:800;margin-bottom:28px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar .section-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:16px 0 6px 14px}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:var(--radius);color:var(--text2);font-size:13px;text-decoration:none;transition:.3s;margin-bottom:2px}
+.sidebar a:hover,.sidebar a.active{background:rgba(59,130,246,.1);color:var(--accent1)}
+.sidebar a i{width:18px;text-align:center;font-size:14px}
+.sidebar .logout{margin-top:20px;border-top:1px solid var(--border);padding-top:16px;color:var(--accent1)!important}
+.main{flex:1;padding:28px 32px;min-width:0;max-width:calc(100% - 240px)}
+.main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.main-header h1{font-size:22px;font-weight:700}
+.main-header .actions{display:flex;gap:10px}
+.main-header .actions a{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:8px 16px;color:var(--text2);text-decoration:none;font-size:13px;transition:.3s}
+.main-header .actions a:hover{background:rgba(59,130,246,.1);color:var(--accent1);border-color:rgba(59,130,246,.3)}
+.tabs{display:flex;gap:10px;margin-bottom:20px}
+.tabs button{padding:6px 16px;border-radius:100px;font-size:12px;cursor:pointer;background:var(--card);border:1px solid var(--border);color:var(--text2);font-family:var(--font);transition:.3s}
+.tabs button.active{background:rgba(59,130,246,.1);color:var(--accent1);border-color:rgba(59,130,246,.3)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px}
+.card h2{font-size:15px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{margin-bottom:14px}
+.form-group.full{grid-column:1/-1}
+.form-group label{display:block;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;font-family:var(--font);outline:none;transition:.3s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent1)}
+.form-group textarea{min-height:60px;resize:vertical}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius);font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer;transition:.3s;border:none;text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff}
+.btn-primary:hover{opacity:.9}
+.btn-secondary{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.btn-secondary:hover{background:rgba(59,130,246,.1);color:var(--accent1)}
+.btn-danger{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:auto;margin-top:20px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 12px;font-size:12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+th{color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.5px;font-size:10px;background:var(--bg2)}
+td{color:var(--text2)}
+.badge{display:inline-block;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:600}
+.badge.highlighted{background:rgba(59,130,246,.15);color:var(--accent1)}
+.badge.popular{background:rgba(255,217,61,.15);color:var(--accent2)}
+#editModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center}
+#editModal.show{display:flex}
+#editModal .modal{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;max-width:600px;width:95%;max-height:85vh;overflow-y:auto}
+#editModal .modal h2{font-size:16px;margin-bottom:20px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+@media(max-width:768px){
+  .sidebar{width:56px;padding:16px 6px}
+  .sidebar h2,.sidebar a span,.sidebar .section-label{display:none}
+  .sidebar a{justify-content:center;padding:8px}
+  .main{margin-left:56px;padding:16px;max-width:calc(100% - 56px)}
+  .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+{% include 'admin/_sidebar.html' %}
+<div class="main">
+  <div class="main-header">
+    <h1><i class="fas fa-tags" style="color:var(--accent1);margin-right:8px"></i>Pricing Plans</h1>
+  </div>
+
+  <div class="tabs">
+    <button class="active" onclick="showTab('bundle')">Bundle Packages</button>
+    <button onclick="showTab('alacarte')">À La Carte</button>
+  </div>
+
+  <!-- Add Form -->
+  <div class="card">
+    <h2><i class="fas fa-plus" style="color:var(--accent2)"></i> Add Plan</h2>
+    <form method="post" action="/admin/pricing/add">
+      <input type="hidden" name="tier" id="tierInput" value="bundle" />
+      <div class="form-grid">
+        <div class="form-group"><label>Name</label><input type="text" name="name" required /></div>
+        <div class="form-group"><label>Price</label><input type="text" name="price" placeholder="$799" required /></div>
+        <div class="form-group"><label>Currency</label><input type="text" name="currency" value="$" /></div>
+        <div class="form-group"><label>Period</label><input type="text" name="period" value="/mo" /></div>
+        <div class="form-group"><label>Icon (FontAwesome)</label><input type="text" name="icon" value="fas fa-star" /></div>
+        <div class="form-group"><label>Sort Order</label><input type="number" name="sort_order" value="0" /></div>
+        <div class="form-group"><label>Button Text</label><input type="text" name="button_text" value="Get Started" /></div>
+        <div class="form-group"><label>Button Link</label><input type="text" name="button_link" value="#contact" /></div>
+        <div class="form-group"><label>Popular Badge</label><input type="text" name="popular_badge" placeholder="Most Popular" /></div>
+        <div class="form-group"><label><input type="checkbox" name="highlighted" value="1" /> Highlighted (featured)</label></div>
+        <div class="form-group full"><label>Description</label><textarea name="description" rows="2"></textarea></div>
+        <div class="form-group full"><label>Features (one per line)</label><textarea name="features" rows="4" placeholder="Feature 1&#10;Feature 2&#10;Feature 3"></textarea></div>
+      </div>
+      <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add Plan</button>
+    </form>
+  </div>
+
+  <!-- Plans Table -->
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Name</th><th>Price</th><th>Period</th><th>Tier</th><th>Featured</th><th>Popular</th><th>Order</th><th></th></tr></thead>
+      <tbody>
+        {% for p in plans %}
+        <tr data-id="{{ p.id }}">
+          <td style="color:var(--text);font-weight:600"><i class="fas {{ p.icon }}"></i> {{ p.name }}</td>
+          <td>{{ p.currency }}{{ p.price }}</td>
+          <td>{{ p.period }}</td>
+          <td>{{ p.tier }}</td>
+          <td>{% if p.highlighted %}<span class="badge highlighted">Featured</span>{% endif %}</td>
+          <td>{% if p.popular_badge %}<span class="badge popular">{{ p.popular_badge }}</span>{% endif %}</td>
+          <td style="color:var(--text3)">{{ p.sort_order }}</td>
+          <td>
+            <div style="display:flex;gap:4px">
+              <button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="editPlan({{ p.id }},'{{ p.name|e }}','{{ p.price|e }}','{{ p.currency|e }}','{{ p.period|e }}','{{ p.description|e }}','{{ p.icon|e }}','{{ p.button_text|e }}','{{ p.button_link|e }}','{{ p.popular_badge|e }}',{{ p.highlighted }},{{ p.sort_order }},'{{ p.tier|e }}')"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-danger" style="padding:4px 10px;font-size:11px" onclick="deletePlan({{ p.id }})"><i class="fas fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text3)">No pricing plans yet</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="editModal">
+  <div class="modal">
+    <h2>Edit Plan</h2>
+    <form id="editForm" method="post">
+      <div class="form-grid">
+        <div class="form-group"><label>Name</label><input type="text" name="name" id="edit_name" required /></div>
+        <div class="form-group"><label>Price</label><input type="text" name="price" id="edit_price" required /></div>
+        <div class="form-group"><label>Currency</label><input type="text" name="currency" id="edit_currency" /></div>
+        <div class="form-group"><label>Period</label><input type="text" name="period" id="edit_period" /></div>
+        <div class="form-group"><label>Icon</label><input type="text" name="icon" id="edit_icon" /></div>
+        <div class="form-group"><label>Sort Order</label><input type="number" name="sort_order" id="edit_sort_order" /></div>
+        <div class="form-group"><label>Button Text</label><input type="text" name="button_text" id="edit_button_text" /></div>
+        <div class="form-group"><label>Button Link</label><input type="text" name="button_link" id="edit_button_link" /></div>
+        <div class="form-group"><label>Popular Badge</label><input type="text" name="popular_badge" id="edit_popular_badge" /></div>
+        <div class="form-group"><label>Highlighted</label><input type="checkbox" name="highlighted" value="1" id="edit_highlighted" /></div>
+        <div class="form-group"><label>Tier</label><select name="tier" id="edit_tier"><option value="bundle">Bundle</option><option value="alacarte">À La Carte</option></select></div>
+        <div class="form-group full"><label>Description</label><textarea name="description" id="edit_description" rows="2"></textarea></div>
+        <div class="form-group full"><label>Features (one per line)</label><textarea name="features" id="edit_features" rows="4"></textarea></div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeEdit()">Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function showTab(tier) {
+  document.getElementById('tierInput').value = tier;
+  document.querySelectorAll('.tabs button').forEach(function(b){b.classList.remove('active')});
+  event.target.classList.add('active');
+}
+function editPlan(id, name, price, currency, period, desc, icon, btnText, btnLink, badge, highlighted, sort, tier) {
+  document.getElementById('edit_name').value = name;
+  document.getElementById('edit_price').value = price;
+  document.getElementById('edit_currency').value = currency;
+  document.getElementById('edit_period').value = period;
+  document.getElementById('edit_icon').value = icon;
+  document.getElementById('edit_sort_order').value = sort;
+  document.getElementById('edit_button_text').value = btnText;
+  document.getElementById('edit_button_link').value = btnLink;
+  document.getElementById('edit_popular_badge').value = badge;
+  document.getElementById('edit_highlighted').checked = highlighted;
+  document.getElementById('edit_tier').value = tier;
+  document.getElementById('edit_description').value = desc;
+  // Fetch features as JSON
+  var row = document.querySelector('tr[data-id="'+id+'"]');
+  if (row) {
+    var feat = row.querySelector('.features-data');
+    if (feat) document.getElementById('edit_features').value = feat.textContent;
+  }
+  document.getElementById('editForm').action = '/admin/pricing/' + id + '/edit';
+  document.getElementById('editModal').classList.add('show');
+}
+function closeEdit() { document.getElementById('editModal').classList.remove('show'); }
+function deletePlan(id) {
+  if (!confirm('Delete this plan?')) return;
+  fetch('/admin/pricing/' + id + '/delete', { method: 'POST' }).then(function(r){return r.json()}).then(function(d){
+    if (d.success) location.reload();
+  });
+}
+document.getElementById('editForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  this.submit();
+});
+</script>
+</body>
+</html>

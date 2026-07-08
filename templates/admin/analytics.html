@@ -10,14 +10,14 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#ff6b6b;--accent2:#ffd93d;--accent3:#6c5ce7;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
+:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#3B82F6;--accent2:#8B5CF6;--accent3:#06B6D4;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
 body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex}
 .sidebar{width:240px;min-height:100vh;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed;left:0;top:0;z-index:10}
 .sidebar h2{font-size:18px;font-weight:800;margin-bottom:32px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .sidebar a{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius);color:var(--text2);font-size:14px;text-decoration:none;transition:.3s;margin-bottom:4px}
-.sidebar a:hover,.sidebar a.active{background:rgba(255,107,107,.1);color:var(--accent1)}
+.sidebar a:hover,.sidebar a.active{background:rgba(59,130,246,.1);color:var(--accent1)}
 .sidebar a i{width:20px;text-align:center}
-.main{flex:1;margin-left:240px;padding:32px;max-width:calc(100% - 240px)}
+.main{flex:1;padding:32px;min-width:0;max-width:calc(100% - 240px)}
 .main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px}
 .main-header h1{font-size:24px;font-weight:700}
 .main-header a{color:var(--text2);font-size:14px;text-decoration:none;transition:.3s}
@@ -26,7 +26,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex
 /* ─── Stats Grid ─── */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:32px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;transition:.3s;position:relative;overflow:hidden}
-.stat-card:hover{border-color:rgba(255,107,107,.3);transform:translateY(-2px)}
+.stat-card:hover{border-color:rgba(59,130,246,.3);transform:translateY(-2px)}
 .stat-card .stat-icon{position:absolute;right:16px;top:16px;font-size:24px;color:var(--text3);opacity:.3}
 .stat-card h3{font-size:12px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
 .stat-number{font-size:32px;font-weight:800;margin-bottom:4px}
@@ -44,7 +44,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex
 .chart-card h3{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .chart-card h3 .period-toggle{display:flex;gap:4px;margin-left:auto}
 .chart-card h3 .period-toggle button{background:var(--bg2);border:1px solid var(--border);color:var(--text2);padding:4px 12px;border-radius:100px;font-size:11px;cursor:pointer;transition:.3s;font-family:var(--font)}
-.chart-card h3 .period-toggle button.active{background:rgba(255,107,107,.15);border-color:var(--accent1);color:var(--accent1)}
+.chart-card h3 .period-toggle button.active{background:rgba(59,130,246,.15);border-color:var(--accent1);color:var(--accent1)}
 .chart-card h3 .period-toggle button:hover{color:var(--text)}
 .chart-wrap{position:relative;height:260px}
 .chart-wrap canvas{max-height:260px!important}
@@ -68,7 +68,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex
 .log-controls input{flex:1;min-width:180px}
 .log-controls select{min-width:130px}
 .log-controls .export-btn{background:var(--bg2);border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:var(--radius);font-size:13px;cursor:pointer;transition:.3s;font-family:var(--font);display:flex;align-items:center;gap:6px}
-.log-controls .export-btn:hover{background:rgba(255,107,107,.1);color:var(--accent1);border-color:rgba(255,107,107,.3)}
+.log-controls .export-btn:hover{background:rgba(59,130,246,.1);color:var(--accent1);border-color:rgba(59,130,246,.3)}
 .log-table-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:0}
 .log-table-wrap table{width:100%;border-collapse:collapse}
 .log-table-wrap th,.log-table-wrap td{padding:10px 12px;font-size:12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
@@ -77,7 +77,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex
 .log-table-wrap tr:last-child td{border-bottom:none}
 .log-pagination{display:flex;justify-content:center;align-items:center;gap:8px;padding:16px;border-top:1px solid var(--border)}
 .log-pagination button{background:var(--bg2);border:1px solid var(--border);color:var(--text2);padding:6px 14px;border-radius:var(--radius);font-size:12px;cursor:pointer;transition:.3s;font-family:var(--font)}
-.log-pagination button:hover:not(:disabled){background:rgba(255,107,107,.1);color:var(--accent1);border-color:rgba(255,107,107,.3)}
+.log-pagination button:hover:not(:disabled){background:rgba(59,130,246,.1);color:var(--accent1);border-color:rgba(59,130,246,.3)}
 .log-pagination button:disabled{opacity:.4;cursor:default}
 .log-pagination span{font-size:12px;color:var(--text3)}
 .badge{display:inline-block;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:600}
@@ -108,20 +108,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex
 </style>
 </head>
 <body>
-<div class="sidebar">
-  <h2>Siam Munkasir</h2>
-  <a href="/admin"><i class="fas fa-chart-pie"></i> <span>Dashboard</span></a>
-  <a href="/admin/analytics" class="active"><i class="fas fa-chart-line"></i> <span>Analytics</span></a>
-  <a href="/admin/inquiries"><i class="fas fa-inbox"></i> <span>Inquiries</span></a>
-  <a href="/admin/portfolio"><i class="fas fa-images"></i> <span>Portfolio</span></a>
-  <a href="/admin/testimonials"><i class="fas fa-quote-right"></i> <span>Testimonials</span></a>
-  <a href="/admin/reviews"><i class="fas fa-star"></i> <span>Reviews</span></a>
-  <a href="/admin/faqs"><i class="fas fa-question-circle"></i> <span>FAQs</span></a>
-  <a href="/admin/skills"><i class="fas fa-chart-bar"></i> <span>Skills</span></a>
-  <a href="/admin/services"><i class="fas fa-cog"></i> <span>Services</span></a>
-  <a href="/admin/settings"><i class="fas fa-sliders-h"></i> <span>Settings</span></a>
-  <a href="/admin/logout" style="margin-top:32px;color:var(--accent1)"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
-</div>
+{% include 'admin/_sidebar.html' %}
 <div class="main">
   <div class="main-header">
     <h1><i class="fas fa-chart-line" style="color:var(--accent1);margin-right:8px"></i>Analytics</h1>
@@ -323,7 +310,7 @@ function loadGrowth(period) {
           label: 'Visitors',
           data: values,
           borderColor: '#ff6b6b',
-          backgroundColor: 'rgba(255,107,107,.1)',
+          backgroundColor: 'rgba(59,130,246,.1)',
           fill: true,
           tension: .4,
           pointRadius: 3,

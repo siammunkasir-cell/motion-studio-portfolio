@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% if post %}Edit Post{% else %}New Post{% endif %} — Siam Munkasir Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#3B82F6;--accent2:#8B5CF6;--accent3:#06B6D4;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex}
+.sidebar{width:240px;min-height:100vh;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed;left:0;top:0;overflow-y:auto;z-index:10}
+.sidebar h2{font-size:18px;font-weight:800;margin-bottom:28px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar .section-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:16px 0 6px 14px}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:var(--radius);color:var(--text2);font-size:13px;text-decoration:none;transition:.3s;margin-bottom:2px}
+.sidebar a:hover,.sidebar a.active{background:rgba(59,130,246,.1);color:var(--accent1)}
+.sidebar a i{width:18px;text-align:center;font-size:14px}
+.sidebar .logout{margin-top:20px;border-top:1px solid var(--border);padding-top:16px;color:var(--accent1)!important}
+.main{flex:1;padding:28px 32px;min-width:0;max-width:calc(100% - 240px)}
+.main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.main-header h1{font-size:22px;font-weight:700}
+.editor-layout{display:grid;grid-template-columns:1fr 280px;gap:24px}
+.editor-main{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px}
+.editor-side{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;font-family:var(--font);outline:none;transition:.3s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent1)}
+.form-group textarea{min-height:80px;resize:vertical}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer;transition:.3s;border:none;text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+.btn-secondary{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.btn-secondary:hover{background:rgba(59,130,246,.1);color:var(--accent1);border-color:rgba(59,130,246,.3)}
+.btn-danger{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+.btn-danger:hover{background:rgba(239,68,68,.25)}
+.btn-group{display:flex;gap:8px;margin-top:20px}
+.form-hint{font-size:11px;color:var(--text3);margin-top:4px}
+@media(max-width:1024px){.editor-layout{grid-template-columns:1fr}}
+@media(max-width:768px){
+  .sidebar{width:56px;padding:16px 6px}
+  .sidebar h2,.sidebar a span,.sidebar .section-label{display:none}
+  .sidebar a{justify-content:center;padding:8px}
+  .main{margin-left:56px;padding:16px;max-width:calc(100% - 56px)}
+}
+</style>
+</head>
+<body>
+{% include 'admin/_sidebar.html' %}
+<div class="main">
+  <div class="main-header">
+    <h1><i class="fas fa-blog" style="color:var(--accent1);margin-right:8px"></i>{% if post %}Edit Post{% else %}New Post{% endif %}</h1>
+    <a href="/admin/blog" style="color:var(--text2);font-size:13px;text-decoration:none"><i class="fas fa-arrow-left"></i> Back to Blog</a>
+  </div>
+
+  <form method="post" id="blogForm">
+    <div class="editor-layout">
+      <div class="editor-main">
+        <div class="form-group">
+          <label>Post Title</label>
+          <input type="text" name="title" value="{{ post.title if post else '' }}" required placeholder="Enter post title..." onkeyup="document.getElementById('slugPreview').textContent=this.value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')" />
+        </div>
+        <div class="form-group">
+          <label>Slug <span style="font-weight:400;text-transform:none;color:var(--text3)">(URL path)</span></label>
+          <input type="text" name="slug" value="{{ post.slug if post else '' }}" placeholder="Auto-generated from title" />
+          <div class="form-hint">Preview: /blog/<span id="slugPreview">{{ post.slug if post else '' }}</span></div>
+        </div>
+        <div class="form-group">
+          <label>Excerpt</label>
+          <textarea name="excerpt" rows="3" placeholder="Brief description for preview cards...">{{ post.excerpt if post else '' }}</textarea>
+        </div>
+        <div class="form-group">
+          <label>Content</label>
+          <textarea id="contentEditor" name="content" rows="20">{{ post.content if post else '' }}</textarea>
+        </div>
+      </div>
+
+      <div class="editor-side">
+        <div class="form-group">
+          <label>Status</label>
+          <select name="status">
+            <option value="draft" {% if post and post.status=='draft' %}selected{% endif %}>Draft</option>
+            <option value="published" {% if post and post.status=='published' %}selected{% endif %}>Published</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <input type="text" name="category" value="{{ post.category if post else '' }}" placeholder="e.g. AI, Design, Marketing" />
+        </div>
+        <div class="form-group">
+          <label>Tags <span style="font-weight:400;text-transform:none;color:var(--text3)">(comma separated)</span></label>
+          <input type="text" name="tags" value="{{ post.tags if post else '' }}" placeholder="e.g. content, strategy, AI" />
+        </div>
+        <div class="form-group">
+          <label>Author</label>
+          <input type="text" name="author" value="{{ post.author if post else 'Siam Munkasir' }}" />
+        </div>
+        <div class="form-group">
+          <label>Featured Image URL</label>
+          <input type="text" name="featured_image" value="{{ post.featured_image if post else '' }}" placeholder="https://..." />
+          <div class="form-hint"><a href="/admin/media" target="_blank" style="color:var(--accent1)">Open Media Library</a> to get URLs</div>
+        </div>
+
+        <div style="margin-top:24px;padding-top:24px;border-top:1px solid var(--border)">
+          <h3 style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text2)">SEO Settings</h3>
+          <div class="form-group">
+            <label>SEO Title</label>
+            <input type="text" name="seo_title" value="{{ post.seo_title if post else '' }}" placeholder="Leave blank to use post title" />
+          </div>
+          <div class="form-group">
+            <label>Meta Description</label>
+            <textarea name="seo_description" rows="3" placeholder="Brief description for search results...">{{ post.seo_description if post else '' }}</textarea>
+          </div>
+          <div class="form-group">
+            <label>Meta Keywords</label>
+            <input type="text" name="seo_keywords" value="{{ post.seo_keywords if post else '' }}" placeholder="comma separated" />
+          </div>
+        </div>
+
+        <div class="btn-group" style="flex-direction:column">
+          <button type="submit" class="btn btn-primary" style="justify-content:center"><i class="fas fa-save"></i> {% if post %}Update{% else %}Publish{% endif %}</button>
+          {% if post %}
+          <button type="button" class="btn btn-secondary" style="justify-content:center" onclick="saveDraft()"><i class="fas fa-file"></i> Save as Draft</button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+tinymce.init({
+  selector: '#contentEditor',
+  height: 500,
+  menubar: false,
+  plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen media table code help wordcount',
+  toolbar: 'undo redo | blocks | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code preview fullscreen',
+  skin: 'oxide-dark',
+  content_css: 'dark',
+  content_style: 'body { font-family: Inter, sans-serif; font-size: 15px; color: #e0e0e8; background: #12121f; } img { max-width: 100%; }',
+  relative_urls: false,
+  remove_script_host: false,
+  document_base_url: window.location.origin + '/',
+  setup: function(editor) {
+    editor.on('change', function() { editor.save(); });
+  }
+});
+
+function saveDraft() {
+  tinymce.triggerSave();
+  var form = document.getElementById('blogForm');
+  var fd = new FormData(form);
+  fd.set('status', 'draft');
+  fetch(window.location.href, { method: 'POST', body: fd }).then(function(r){
+    if (r.redirected) window.location.href = r.url;
+  });
+}
+</script>
+</body>
+</html>

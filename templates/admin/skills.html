@@ -13,7 +13,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex
 .sidebar h2{font-size:18px;font-weight:700;margin-bottom:32px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .sidebar a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;color:var(--text2);font-size:14px;margin-bottom:4px;transition:var(--transition);text-decoration:none}
 .sidebar a:hover,.sidebar a.active{background:rgba(59,130,246,.1);color:var(--accent1)}
-.main{flex:1;padding:32px 40px;min-width:0}
+.section-label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);padding:8px 12px 4px;margin-top:8px}
+.badge{background:var(--accent1);color:#fff;font-size:10px;padding:1px 6px;border-radius:100px;margin-left:auto}
+.main{flex:1;padding:28px 32px;min-width:0}
 h1{font-size:24px;font-weight:700;margin-bottom:24px}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:24px}
 .card h2{font-size:16px;font-weight:600;margin-bottom:16px}
@@ -23,10 +25,13 @@ h1{font-size:24px;font-weight:700;margin-bottom:24px}
 .form-group input,.form-group select{width:100%;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none;transition:var(--transition)}
 .form-group input:focus,.form-group select:focus{border-color:var(--accent1)}
 .btn{padding:10px 24px;border-radius:8px;border:none;font-size:14px;font-weight:600;cursor:pointer;transition:var(--transition);display:inline-flex;align-items:center;gap:8px}
+.btn-small{padding:4px 12px;font-size:12px}
 .btn-primary{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff}
 .btn-primary:hover{opacity:.9}
 .btn-danger{background:rgba(239,68,68,.15);color:#ef4444}
 .btn-danger:hover{background:rgba(239,68,68,.25)}
+.btn-edit{background:rgba(59,130,246,.15);color:var(--accent1)}
+.btn-edit:hover{background:rgba(59,130,246,.25)}
 table{width:100%;border-collapse:collapse}
 th,td{text-align:left;padding:12px 8px;font-size:13px;border-bottom:1px solid var(--border)}
 th{color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.5px;font-size:11px}
@@ -34,22 +39,24 @@ td{color:var(--text2)}
 .skill-bar{height:6px;background:#1E293B;border-radius:100px;overflow:hidden;max-width:150px}
 .skill-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,#3B82F6,#8B5CF6)}
 .alert{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:var(--accent1);padding:12px 16px;border-radius:var(--radius);margin-bottom:20px;font-size:13px}
+.editModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;justify-content:center;align-items:center}
+.modal-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+.modal-content{position:relative;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;z-index:1;margin:20px}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.modal-header h2{font-size:18px;font-weight:600;margin:0}
+.modal-close{background:none;border:none;color:var(--text2);font-size:24px;cursor:pointer;padding:4px;line-height:1;transition:var(--transition)}
+.modal-close:hover{color:var(--text)}
+@media(max-width:768px){
+  .sidebar{width:56px;padding:16px 8px}
+  .sidebar h2,.sidebar a span,.section-label{display:none}
+  .sidebar a{justify-content:center;padding:10px}
+  .main{padding:20px 16px}
+  .form-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div class="sidebar">
-  <h2>Siam Munkasir</h2>
-  <a href="/admin"><i class="fas fa-chart-pie"></i> Dashboard</a>
-  <a href="/admin/inquiries"><i class="fas fa-inbox"></i> Inquiries</a>
-  <a href="/admin/portfolio"><i class="fas fa-images"></i> Portfolio</a>
-  <a href="/admin/testimonials"><i class="fas fa-quote-right"></i> Testimonials</a>
-  <a href="/admin/reviews"><i class="fas fa-star"></i> Reviews</a>
-  <a href="/admin/faqs"><i class="fas fa-question-circle"></i> FAQs</a>
-  <a href="/admin/skills" class="active"><i class="fas fa-chart-bar"></i> Skills</a>
-  <a href="/admin/services"><i class="fas fa-cog"></i> Services</a>
-  <a href="/admin/settings"><i class="fas fa-sliders-h"></i> Settings</a>
-  <a href="/admin/logout" style="margin-top:32px;color:var(--accent1)"><i class="fas fa-sign-out-alt"></i> Logout</a>
-</div>
+{% include 'admin/_sidebar.html' %}
 <div class="main">
   <h1><i class="fas fa-chart-bar" style="color:var(--accent1);margin-right:10px"></i> Skills Management</h1>
 
@@ -115,6 +122,7 @@ td{color:var(--text2)}
             <td><div class="skill-bar"><div class="skill-fill" style="width:{{ item.percentage }}%"></div></div></td>
             <td>{{ item.sort_order or 0 }}</td>
             <td>
+              <button type="button" class="btn btn-edit btn-small" data-id="{{ item.id }}" data-name="{{ item.name }}" data-percentage="{{ item.percentage }}" data-category="{{ item.category or '' }}" data-icon="{{ item.icon or '' }}" data-sort-order="{{ item.sort_order or 0 }}" onclick="editSkill(this)"><i class="fas fa-edit"></i></button>
               <form method="POST" action="/admin/skills/{{ item.id }}/delete" style="display:inline" onsubmit="return confirm('Delete this skill?')">
                 <button type="submit" class="btn btn-danger btn-small" style="padding:4px 12px;font-size:12px"><i class="fas fa-trash"></i></button>
               </form>
@@ -129,5 +137,66 @@ td{color:var(--text2)}
     </div>
   </div>
 </div>
+
+<div class="editModal" id="editModal">
+  <div class="modal-overlay" onclick="closeEdit()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Edit Skill</h2>
+      <button onclick="closeEdit()" class="modal-close">&times;</button>
+    </div>
+    <form method="POST" id="editForm">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Skill Name *</label>
+          <input type="text" name="name" id="edit_name" required placeholder="e.g. After Effects">
+        </div>
+        <div class="form-group">
+          <label>Percentage *</label>
+          <input type="number" name="percentage" id="edit_percentage" min="0" max="100" required>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select name="category" id="edit_category">
+            <option value="Design">Design</option>
+            <option value="Video Editing">Video Editing</option>
+            <option value="3D & Animation">3D & Animation</option>
+            <option value="Tools">Tools</option>
+            <option value="Creative">Creative</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Icon (FontAwesome)</label>
+          <input type="text" name="icon" id="edit_icon" placeholder="fas fa-star">
+        </div>
+        <div class="form-group">
+          <label>Sort Order</label>
+          <input type="number" name="sort_order" id="edit_sort_order">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Skill</button>
+      <button type="button" class="btn" onclick="closeEdit()" style="background:var(--bg);color:var(--text2)">Cancel</button>
+    </form>
+  </div>
+</div>
+
+<script>
+function editSkill(btn){
+  var d=btn.dataset;
+  document.getElementById('editForm').action='/admin/skills/'+d.id+'/edit';
+  document.getElementById('edit_name').value=d.name;
+  document.getElementById('edit_percentage').value=d.percentage;
+  document.getElementById('edit_category').value=d.category;
+  document.getElementById('edit_icon').value=d.icon;
+  document.getElementById('edit_sort_order').value=d.sortOrder;
+  document.getElementById('editModal').style.display='flex';
+}
+function closeEdit(){
+  document.getElementById('editModal').style.display='none';
+}
+document.getElementById('editModal').addEventListener('click',function(e){
+  if(e.target===this) closeEdit();
+});
+</script>
 </body>
 </html>

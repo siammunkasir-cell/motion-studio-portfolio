@@ -246,6 +246,79 @@ def init_db():
         CREATE INDEX IF NOT EXISTS idx_page_views_visit ON page_views(visit_id);
         CREATE INDEX IF NOT EXISTS idx_page_views_time ON page_views(view_time);
         CREATE INDEX IF NOT EXISTS idx_live_heartbeat ON live_visitors(last_heartbeat);
+
+        -- CMS tables
+        CREATE TABLE IF NOT EXISTS blog_posts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            slug TEXT UNIQUE NOT NULL,
+            content TEXT DEFAULT '',
+            excerpt TEXT DEFAULT '',
+            category TEXT DEFAULT '',
+            tags TEXT DEFAULT '',
+            featured_image TEXT DEFAULT '',
+            author TEXT DEFAULT 'Siam Munkasir',
+            status TEXT DEFAULT 'draft',
+            seo_title TEXT DEFAULT '',
+            seo_description TEXT DEFAULT '',
+            seo_keywords TEXT DEFAULT '',
+            published_at TIMESTAMP,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS pricing_plans (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            price TEXT NOT NULL DEFAULT '0',
+            currency TEXT DEFAULT '$',
+            period TEXT DEFAULT '/mo',
+            description TEXT DEFAULT '',
+            features TEXT DEFAULT '', -- JSON array
+            icon TEXT DEFAULT 'fas fa-star',
+            button_text TEXT DEFAULT 'Get Started',
+            button_link TEXT DEFAULT '#contact',
+            highlighted INTEGER DEFAULT 0,
+            popular_badge TEXT DEFAULT '',
+            tier TEXT DEFAULT 'bundle',
+            sort_order INTEGER DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS navigation_items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            label TEXT NOT NULL,
+            link TEXT NOT NULL DEFAULT '#',
+            parent_id INTEGER DEFAULT 0,
+            icon TEXT DEFAULT '',
+            sort_order INTEGER DEFAULT 0,
+            is_visible INTEGER DEFAULT 1,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS media_files (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            filename TEXT NOT NULL,
+            original_name TEXT NOT NULL,
+            filepath TEXT NOT NULL,
+            filetype TEXT DEFAULT '',
+            filesize INTEGER DEFAULT 0,
+            alt_text TEXT DEFAULT '',
+            folder TEXT DEFAULT '/',
+            uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS homepage_sections (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            section_key TEXT UNIQUE NOT NULL,
+            content TEXT DEFAULT '{}',
+            is_active INTEGER DEFAULT 1,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS activity_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            admin_username TEXT DEFAULT '',
+            action TEXT NOT NULL,
+            details TEXT DEFAULT '',
+            ip_address TEXT DEFAULT '',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
         ''')
         # Create default admin if not exists
         existing = db.execute("SELECT id FROM admin WHERE username='admin'").fetchone()
@@ -333,6 +406,114 @@ def init_db():
         ]
         for sk in skills:
             db.execute('''INSERT OR IGNORE INTO skills (name, percentage, category, icon, sort_order) VALUES (?,?,?,?,?)''', sk)
+
+        # ─── CMS DEFAULTS ───
+        # Navigation
+        nav_items = [
+            ('Home', '/', 0, '', 1, 1),
+            ('Services', '/#services', 0, '', 2, 1),
+            ('Portfolio', '/#portfolio', 0, '', 3, 1),
+            ('Testimonials', '/#testimonials', 0, '', 4, 1),
+            ('Reviews', '/#reviews', 0, '', 5, 1),
+            ('Pricing', '/#pricing', 0, '', 6, 1),
+            ('Contact', '/#contact', 0, '', 7, 1),
+        ]
+        for n in nav_items:
+            db.execute('''INSERT OR IGNORE INTO navigation_items (label, link, parent_id, icon, sort_order, is_visible) VALUES (?,?,?,?,?,?)''', n)
+
+        # Pricing plans (bundle packages)
+        bundles = [
+            ('Launch', '$799', '$', '/mo', 'Perfect for startups testing the waters', '["1x Short-Form Edit","2x Revisions","3-Day Delivery","Basic Captions","Social Media Export"]', 'fa-rocket', 'Get Started', '#contact', 0, 'Most Popular', 'bundle', 1),
+            ('Growth', '$1,299', '$', '/mo', 'For growing brands ready to scale', '["2x Short-Form Edits","3x Revisions","2-Day Delivery","Advanced Captions","Social Media Export","1x Motion Graphics Clip","Source Files"]', 'fa-chart-line', 'Get Started', '#contact', 1, 'Best Value', 'bundle', 2),
+            ('Empire', '$1,999', '$', '/mo', 'Full-service content domination', '["4x Short-Form Edits","Unlimited Revisions","1-Day Delivery","Premium Captions","Social Media Export","3x Motion Graphics Clips","Source Files","Strategy Call","Priority Support"]', 'fa-crown', 'Get Started', '#contact', 0, '', 'bundle', 3),
+        ]
+        for b in bundles:
+            db.execute('''INSERT OR IGNORE INTO pricing_plans (name, price, currency, period, description, features, icon, button_text, button_link, highlighted, popular_badge, tier, sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)''', b)
+
+        # Homepage sections (defaults)
+        default_sections = {
+            'hero': json.dumps({
+                'headline': 'AI Content Strategist & UGC Specialist',
+                'subheadline': 'Crafting high-impact digital content that drives real business results',
+                'description': 'I help brands scale their content production with AI-powered strategy and authentic UGC that converts.',
+                'cta_text': 'Get in Touch',
+                'cta_link': '#contact',
+                'secondary_cta_text': 'View Portfolio',
+                'secondary_cta_link': '#portfolio',
+                'background_image': '',
+                'hero_image': ''
+            }),
+            'stats': json.dumps([
+                {'label': 'Projects Completed', 'value': '150+', 'icon': 'fa-check-circle'},
+                {'label': 'Happy Clients', 'value': '50+', 'icon': 'fa-smile'},
+                {'label': 'Years Experience', 'value': '5+', 'icon': 'fa-clock'},
+                {'label': 'Content Pieces', 'value': '500+', 'icon': 'fa-file-alt'}
+            ]),
+            'about_preview': json.dumps({
+                'title': 'About Me',
+                'content': 'I am a passionate content creator and AI strategist dedicated to helping brands tell their stories through compelling visual content.',
+                'image': '',
+                'button_text': 'Learn More',
+                'button_link': '#about'
+            }),
+            'services_heading': json.dumps({
+                'title': 'Services',
+                'subtitle': 'What I Can Do For You',
+                'description': 'From AI-powered content strategy to cinematic motion design — I offer end-to-end content solutions.'
+            })
+        }
+        for key, val in default_sections.items():
+            db.execute("INSERT OR IGNORE INTO homepage_sections (section_key, content) VALUES (?,?)", (key, val))
+
+        # Additional settings defaults
+        extra_settings = {
+            'site_logo': '',
+            'site_favicon': '',
+            'footer_logo': '',
+            'footer_copyright': '© 2026 Siam Munkasir. All rights reserved.',
+            'footer_address': '',
+            'footer_email': 'hello@siammunkasir.com',
+            'footer_phone': '',
+            'social_instagram': '#',
+            'social_linkedin': '#',
+            'social_youtube': '#',
+            'social_twitter': '#',
+            'social_github': '#',
+            'seo_home_title': 'Siam Munkasir — AI Content Strategist & UGC Specialist',
+            'seo_home_description': 'AI Content Strategist & UGC Specialist crafting high-impact digital content that drives real business results.',
+            'seo_home_keywords': 'content strategy, UGC, motion graphics, video editing, AI content',
+            'og_image': '',
+            'primary_color': '#ff6b6b',
+            'secondary_color': '#ffd93d',
+            'accent_color': '#6c5ce7',
+            'font_heading': 'Inter',
+            'font_body': 'Inter',
+            'border_radius': '12px',
+            'shadow_intensity': '20',
+            'button_style': 'gradient',
+            'theme_mode': 'dark',
+            'smtp_user': '',
+            'smtp_pass': '',
+            'admin_email': '',
+            'blog_enabled': '1',
+            'contact_email_to': '',
+            'form_captcha_enabled': '1',
+            'ga_tracking_id': '',
+        }
+        for k, v in extra_settings.items():
+            db.execute("INSERT OR IGNORE INTO site_settings (key, value) VALUES (?,?)", (k, v))
+
+@app.context_processor
+def inject_admin_globals():
+    """Inject new_inquiries count into all admin templates."""
+    if session.get('admin_logged_in'):
+        try:
+            with get_db() as db:
+                count = db.execute("SELECT COUNT(*) as c FROM inquiries WHERE status='new'").fetchone()['c']
+            return {'new_inquiries': count}
+        except:
+            pass
+    return {'new_inquiries': 0}
 
 def admin_required(f):
     @wraps(f)
@@ -559,10 +740,17 @@ def admin_dashboard():
         total_reviews = db.execute("SELECT COUNT(*) as c FROM reviews").fetchone()['c']
         total_faqs = db.execute("SELECT COUNT(*) as c FROM faqs").fetchone()['c']
         total_skills = db.execute("SELECT COUNT(*) as c FROM skills").fetchone()['c']
+        total_services = db.execute("SELECT COUNT(*) as c FROM services").fetchone()['c']
+        total_pricing = db.execute("SELECT COUNT(*) as c FROM pricing_plans").fetchone()['c']
+        total_blog = db.execute("SELECT COUNT(*) as c FROM blog_posts").fetchone()['c']
+        total_nav = db.execute("SELECT COUNT(*) as c FROM navigation_items").fetchone()['c']
+        total_media = db.execute("SELECT COUNT(*) as c FROM media_files").fetchone()['c']
         recent = db.execute("SELECT id, full_name, email, project_type, status, created_at FROM inquiries ORDER BY created_at DESC LIMIT 10").fetchall()
     return render_template('admin/dashboard.html', new_inquiries=new_inquiries, total_inquiries=total_inquiries,
                          total_portfolio=total_portfolio, total_testimonials=total_testimonials,
-                         total_reviews=total_reviews, total_faqs=total_faqs, total_skills=total_skills, recent=recent)
+                         total_reviews=total_reviews, total_faqs=total_faqs, total_skills=total_skills,
+                         total_services=total_services, total_pricing=total_pricing, total_blog=total_blog,
+                         total_nav=total_nav, total_media=total_media, recent=recent)
 
 @app.route('/admin/inquiries')
 @admin_required
@@ -750,6 +938,17 @@ def admin_testimonials_delete(id):
         db.execute("DELETE FROM testimonials WHERE id=?", (id,))
     return jsonify({'success': True})
 
+@app.route('/admin/testimonials/<int:id>/edit', methods=['POST'])
+@admin_required
+def admin_testimonials_edit(id):
+    data = request.form
+    with get_db() as db:
+        db.execute('''UPDATE testimonials SET client_name=?, company=?, role=?, content=?, rating=?, featured=? WHERE id=?''', (
+            data.get('client_name',''), data.get('company',''), data.get('role',''),
+            data.get('content',''), int(data.get('rating', 5)), 1 if data.get('featured') else 0, id
+        ))
+    return redirect(url_for('admin_testimonials'))
+
 # ─── ADMIN SERVICES CRUD ───
 
 @app.route('/admin/services')
@@ -764,10 +963,10 @@ def admin_services():
 def admin_services_add():
     data = request.form
     with get_db() as db:
-        db.execute('''INSERT INTO services (title, description, icon, price, features)
-                    VALUES (?,?,?,?,?)''', (
+        db.execute('''INSERT INTO services (title, description, icon, price, features, sort_order)
+                    VALUES (?,?,?,?,?,?)''', (
             data.get('title',''), data.get('description',''), data.get('icon',''),
-            data.get('price',''), data.get('features','')
+            data.get('price',''), data.get('features',''), int(data.get('sort_order', 0))
         ))
     return redirect(url_for('admin_services'))
 
@@ -777,6 +976,17 @@ def admin_services_delete(id):
     with get_db() as db:
         db.execute("DELETE FROM services WHERE id=?", (id,))
     return jsonify({'success': True})
+
+@app.route('/admin/services/<int:id>/edit', methods=['POST'])
+@admin_required
+def admin_services_edit(id):
+    data = request.form
+    with get_db() as db:
+        db.execute('''UPDATE services SET title=?, description=?, icon=?, price=?, features=?, sort_order=? WHERE id=?''', (
+            data.get('title',''), data.get('description',''), data.get('icon',''),
+            data.get('price',''), data.get('features',''), int(data.get('sort_order', 0)), id
+        ))
+    return redirect(url_for('admin_services'))
 
 # ─── ADMIN SETTINGS ───
 
@@ -836,6 +1046,17 @@ def admin_reviews_delete(id):
         db.execute("DELETE FROM reviews WHERE id=?", (id,))
     return jsonify({'success': True})
 
+@app.route('/admin/reviews/<int:id>/edit', methods=['POST'])
+@admin_required
+def admin_reviews_edit(id):
+    data = request.form
+    with get_db() as db:
+        db.execute('''UPDATE reviews SET client_name=?, country=?, rating=?, service=?, review_text=?, is_verified=? WHERE id=?''', (
+            data.get('client_name',''), data.get('country',''), int(data.get('rating', 5)),
+            data.get('service',''), data.get('review_text',''), 1 if data.get('is_verified') else 0, id
+        ))
+    return redirect(url_for('admin_reviews'))
+
 # ─── ADMIN FAQS CRUD ───
 
 @app.route('/admin/faqs')
@@ -864,6 +1085,17 @@ def admin_faqs_delete(id):
         db.execute("DELETE FROM faqs WHERE id=?", (id,))
     return jsonify({'success': True})
 
+@app.route('/admin/faqs/<int:id>/edit', methods=['POST'])
+@admin_required
+def admin_faqs_edit(id):
+    data = request.form
+    with get_db() as db:
+        db.execute('''UPDATE faqs SET question=?, answer=?, category=?, sort_order=?, is_published=? WHERE id=?''', (
+            data.get('question',''), data.get('answer',''), data.get('category','General'),
+            int(data.get('sort_order', 0)), 1 if data.get('is_published') else 0, id
+        ))
+    return redirect(url_for('admin_faqs'))
+
 # ─── ADMIN SKILLS CRUD ───
 
 @app.route('/admin/skills')
@@ -891,6 +1123,17 @@ def admin_skills_delete(id):
     with get_db() as db:
         db.execute("DELETE FROM skills WHERE id=?", (id,))
     return jsonify({'success': True})
+
+@app.route('/admin/skills/<int:id>/edit', methods=['POST'])
+@admin_required
+def admin_skills_edit(id):
+    data = request.form
+    with get_db() as db:
+        db.execute('''UPDATE skills SET name=?, percentage=?, category=?, icon=?, sort_order=? WHERE id=?''', (
+            data.get('name',''), int(data.get('percentage', 50)), data.get('category','Design'),
+            data.get('icon','fas fa-star'), int(data.get('sort_order', 0)), id
+        ))
+    return redirect(url_for('admin_skills'))
 
 # ─── API ENDPOINTS (for frontend) ───
 
@@ -1133,6 +1376,377 @@ def api_track():
 
 # ─── ADMIN ANALYTICS ───
 
+def log_activity(action, details=''):
+    try:
+        with get_db() as db:
+            ip = request.headers.get('X-Forwarded-For', request.remote_addr or '')
+            db.execute("INSERT INTO activity_logs (admin_username, action, details, ip_address) VALUES (?,?,?,?)",
+                      (session.get('admin_username',''), action, details[:500], ip))
+    except: pass
+
+# ─── MEDIA LIBRARY ───
+
+@app.route('/admin/media')
+@admin_required
+def admin_media():
+    folder = request.args.get('folder', '/')
+    with get_db() as db:
+        files = db.execute("SELECT * FROM media_files WHERE folder=? ORDER BY uploaded_at DESC", (folder,)).fetchall()
+        folders = db.execute("SELECT DISTINCT folder FROM media_files ORDER BY folder").fetchall()
+    return render_template('admin/media.html', files=files, folders=[r['folder'] for r in folders], current_folder=folder)
+
+@app.route('/admin/media/upload', methods=['POST'])
+@admin_required
+def admin_media_upload():
+    folder = request.form.get('folder', '/')
+    uploaded = []
+    for f in request.files.getlist('files[]'):
+        if f and f.filename and allowed_file(f.filename):
+            safe = secure_filename(f.filename)
+            unique = f"{uuid.uuid4().hex[:8]}_{safe}"
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique)
+            f.save(filepath)
+            fsize = os.path.getsize(filepath)
+            ext = safe.rsplit('.', 1)[1].lower() if '.' in safe else ''
+            ftype = {'png':'image','jpg':'image','jpeg':'image','gif':'image','webp':'image','mp4':'video','mov':'video','avi':'video','pdf':'document'}.get(ext, 'other')
+            with get_db() as db:
+                db.execute("INSERT INTO media_files (filename, original_name, filepath, filetype, filesize, folder) VALUES (?,?,?,?,?,?)",
+                          (unique, safe, f'/uploads/{unique}', ftype, fsize, folder))
+            uploaded.append(unique)
+    log_activity('Media Upload', f'Uploaded {len(uploaded)} files to {folder}')
+    return jsonify({'success': True, 'uploaded': len(uploaded)})
+
+@app.route('/admin/media/<int:id>/delete', methods=['POST'])
+@admin_required
+def admin_media_delete(id):
+    with get_db() as db:
+        f = db.execute("SELECT * FROM media_files WHERE id=?", (id,)).fetchone()
+        if f:
+            fpath = os.path.join(app.config['UPLOAD_FOLDER'], f['filename'])
+            if os.path.exists(fpath): os.remove(fpath)
+            db.execute("DELETE FROM media_files WHERE id=?", (id,))
+            log_activity('Media Delete', f'Deleted {f["original_name"]}')
+    return jsonify({'success': True})
+
+@app.route('/admin/media/update-alt', methods=['POST'])
+@admin_required
+def admin_media_update_alt():
+    data = request.json
+    with get_db() as db:
+        db.execute("UPDATE media_files SET alt_text=? WHERE id=?", (data.get('alt_text',''), data.get('id')))
+    return jsonify({'success': True})
+
+@app.route('/api/media')
+def api_media():
+    with get_db() as db:
+        files = db.execute("SELECT * FROM media_files ORDER BY uploaded_at DESC LIMIT 50").fetchall()
+    return jsonify([dict(f) for f in files])
+
+# ─── NAVIGATION MANAGER ───
+
+@app.route('/admin/navigation')
+@admin_required
+def admin_navigation():
+    with get_db() as db:
+        items = db.execute("SELECT * FROM navigation_items ORDER BY sort_order ASC, id ASC").fetchall()
+    return render_template('admin/navigation.html', items=items)
+
+@app.route('/admin/navigation/add', methods=['POST'])
+@admin_required
+def admin_navigation_add():
+    data = request.form
+    with get_db() as db:
+        db.execute("INSERT INTO navigation_items (label, link, parent_id, icon, sort_order, is_visible) VALUES (?,?,?,?,?,?)",
+                  (data.get('label',''), data.get('link','#'), int(data.get('parent_id',0)),
+                   data.get('icon',''), int(data.get('sort_order',0)), 1 if data.get('is_visible') else 0))
+    log_activity('Navigation Add', f'Added nav: {data.get("label")}')
+    return redirect(url_for('admin_navigation'))
+
+@app.route('/admin/navigation/<int:id>/edit', methods=['POST'])
+@admin_required
+def admin_navigation_edit(id):
+    data = request.form
+    with get_db() as db:
+        db.execute("UPDATE navigation_items SET label=?, link=?, parent_id=?, icon=?, sort_order=?, is_visible=? WHERE id=?",
+                  (data.get('label',''), data.get('link','#'), int(data.get('parent_id',0)),
+                   data.get('icon',''), int(data.get('sort_order',0)), 1 if data.get('is_visible') else 0, id))
+    log_activity('Navigation Edit', f'Edited nav: {data.get("label")}')
+    return redirect(url_for('admin_navigation'))
+
+@app.route('/admin/navigation/<int:id>/delete', methods=['POST'])
+@admin_required
+def admin_navigation_delete(id):
+    with get_db() as db:
+        db.execute("DELETE FROM navigation_items WHERE id=?", (id,))
+    return jsonify({'success': True})
+
+@app.route('/admin/navigation/reorder', methods=['POST'])
+@admin_required
+def admin_navigation_reorder():
+    data = request.json
+    with get_db() as db:
+        for item in data.get('order', []):
+            db.execute("UPDATE navigation_items SET sort_order=? WHERE id=?", (item.get('order',0), item.get('id')))
+    return jsonify({'success': True})
+
+# ─── PRICING PLANS ───
+
+@app.route('/admin/pricing')
+@admin_required
+def admin_pricing():
+    with get_db() as db:
+        plans = db.execute("SELECT * FROM pricing_plans ORDER BY sort_order ASC, id ASC").fetchall()
+    return render_template('admin/pricing.html', plans=plans)
+
+@app.route('/admin/pricing/add', methods=['POST'])
+@admin_required
+def admin_pricing_add():
+    data = request.form
+    features = json.dumps([f.strip() for f in data.get('features','').split('\n') if f.strip()])
+    with get_db() as db:
+        db.execute('''INSERT INTO pricing_plans (name, price, currency, period, description, features, icon, button_text, button_link, highlighted, popular_badge, tier, sort_order)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)''', (
+            data.get('name',''), data.get('price','0'), data.get('currency','$'), data.get('period','/mo'),
+            data.get('description',''), features, data.get('icon','fas fa-star'),
+            data.get('button_text','Get Started'), data.get('button_link','#contact'),
+            1 if data.get('highlighted') else 0, data.get('popular_badge',''),
+            data.get('tier','bundle'), int(data.get('sort_order',0))
+        ))
+    log_activity('Pricing Add', f'Added plan: {data.get("name")}')
+    return redirect(url_for('admin_pricing'))
+
+@app.route('/admin/pricing/<int:id>/edit', methods=['POST'])
+@admin_required
+def admin_pricing_edit(id):
+    data = request.form
+    features = json.dumps([f.strip() for f in data.get('features','').split('\n') if f.strip()])
+    with get_db() as db:
+        db.execute('''UPDATE pricing_plans SET name=?, price=?, currency=?, period=?, description=?, features=?, icon=?,
+            button_text=?, button_link=?, highlighted=?, popular_badge=?, tier=?, sort_order=? WHERE id=?''', (
+            data.get('name',''), data.get('price','0'), data.get('currency','$'), data.get('period','/mo'),
+            data.get('description',''), features, data.get('icon','fas fa-star'),
+            data.get('button_text','Get Started'), data.get('button_link','#contact'),
+            1 if data.get('highlighted') else 0, data.get('popular_badge',''),
+            data.get('tier','bundle'), int(data.get('sort_order',0)), id
+        ))
+    log_activity('Pricing Edit', f'Edited plan: {data.get("name")}')
+    return redirect(url_for('admin_pricing'))
+
+@app.route('/admin/pricing/<int:id>/delete', methods=['POST'])
+@admin_required
+def admin_pricing_delete(id):
+    with get_db() as db:
+        db.execute("DELETE FROM pricing_plans WHERE id=?", (id,))
+    return jsonify({'success': True})
+
+# ─── BLOG / CMS ───
+
+@app.route('/admin/blog')
+@admin_required
+def admin_blog():
+    status = request.args.get('status', '')
+    page = int(request.args.get('page', 1))
+    per_page = 20
+    offset = (page - 1) * per_page
+    with get_db() as db:
+        conditions = []
+        params = []
+        if status:
+            conditions.append("status=?")
+            params.append(status)
+        where = " WHERE " + " AND ".join(conditions) if conditions else ""
+        total = db.execute(f"SELECT COUNT(*) as c FROM blog_posts{where}", params).fetchone()['c']
+        posts = db.execute(f"SELECT * FROM blog_posts{where} ORDER BY created_at DESC LIMIT ? OFFSET ?", params + [per_page, offset]).fetchall()
+    return render_template('admin/blog.html', posts=posts, total=total, page=page, per_page=per_page, status_filter=status)
+
+@app.route('/admin/blog/new', methods=['GET', 'POST'])
+@admin_required
+def admin_blog_new():
+    if request.method == 'POST':
+        data = request.form
+        slug = re.sub(r'[^a-z0-9-]', '', data.get('slug','') or data.get('title','').lower().replace(' ','-')[:60])
+        with get_db() as db:
+            db.execute('''INSERT INTO blog_posts (title, slug, content, excerpt, category, tags, featured_image, author, status, seo_title, seo_description, seo_keywords)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?)''', (
+                data.get('title',''), slug, data.get('content',''), data.get('excerpt',''),
+                data.get('category',''), data.get('tags',''), data.get('featured_image',''),
+                data.get('author','Siam Munkasir'), data.get('status','draft'),
+                data.get('seo_title',''), data.get('seo_description',''), data.get('seo_keywords','')
+            ))
+        log_activity('Blog Created', f'Created post: {data.get("title")}')
+        return redirect(url_for('admin_blog'))
+    return render_template('admin/blog_edit.html', post=None)
+
+@app.route('/admin/blog/<int:id>/edit', methods=['GET', 'POST'])
+@admin_required
+def admin_blog_edit(id):
+    with get_db() as db:
+        post = db.execute("SELECT * FROM blog_posts WHERE id=?", (id,)).fetchone()
+        if not post: abort(404)
+        if request.method == 'POST':
+            data = request.form
+            slug = re.sub(r'[^a-z0-9-]', '', data.get('slug','') or post['slug'])
+            db.execute('''UPDATE blog_posts SET title=?, slug=?, content=?, excerpt=?, category=?, tags=?,
+                featured_image=?, author=?, status=?, seo_title=?, seo_description=?, seo_keywords=? WHERE id=?''', (
+                data.get('title',''), slug, data.get('content',''), data.get('excerpt',''),
+                data.get('category',''), data.get('tags',''), data.get('featured_image',''),
+                data.get('author','Siam Munkasir'), data.get('status','draft'),
+                data.get('seo_title',''), data.get('seo_description',''), data.get('seo_keywords',''), id
+            ))
+            log_activity('Blog Updated', f'Updated post: {data.get("title")}')
+            return redirect(url_for('admin_blog'))
+    return render_template('admin/blog_edit.html', post=post)
+
+@app.route('/admin/blog/<int:id>/delete', methods=['POST'])
+@admin_required
+def admin_blog_delete(id):
+    with get_db() as db:
+        db.execute("DELETE FROM blog_posts WHERE id=?", (id,))
+    return jsonify({'success': True})
+
+# ─── ACTIVITY LOG ───
+
+@app.route('/admin/activity-log')
+@admin_required
+def admin_activity_log():
+    page = int(request.args.get('page', 1))
+    per_page = 30
+    offset = (page - 1) * per_page
+    with get_db() as db:
+        total = db.execute("SELECT COUNT(*) as c FROM activity_logs").fetchone()['c']
+        logs = db.execute("SELECT * FROM activity_logs ORDER BY created_at DESC LIMIT ? OFFSET ?", (per_page, offset)).fetchall()
+    return render_template('admin/activity_log.html', logs=logs, total=total, page=page, per_page=per_page)
+
+# ─── CMS SETTINGS API ───
+
+@app.route('/admin/settings/update', methods=['POST'])
+@admin_required
+def admin_settings_update():
+    data = request.form
+    with get_db() as db:
+        for key, value in data.items():
+            db.execute("INSERT OR REPLACE INTO site_settings (key, value) VALUES (?, ?)", (key, value))
+    log_activity('Settings Update', f'Updated {len(data)} settings')
+    return jsonify({'success': True})
+
+@app.route('/admin/homepage')
+@admin_required
+def admin_homepage():
+    with get_db() as db:
+        sections = {}
+        for r in db.execute("SELECT * FROM homepage_sections").fetchall():
+            try: sections[r['section_key']] = json.loads(r['content'])
+            except: sections[r['section_key']] = r['content']
+        settings = {r['key']: r['value'] for r in db.execute("SELECT * FROM site_settings").fetchall()}
+    return render_template('admin/homepage.html', sections=sections, settings=settings)
+
+@app.route('/admin/homepage/update', methods=['POST'])
+@admin_required
+def admin_homepage_update():
+    data = request.json
+    with get_db() as db:
+        for key, value in data.items():
+            db.execute("INSERT OR REPLACE INTO homepage_sections (section_key, content) VALUES (?,?)",
+                      (key, json.dumps(value) if isinstance(value, (dict, list)) else value))
+    log_activity('Homepage Update', f'Updated {len(data)} sections')
+    return jsonify({'success': True})
+
+@app.route('/api/settings')
+def api_settings():
+    with get_db() as db:
+        settings = {r['key']: r['value'] for r in db.execute("SELECT * FROM site_settings").fetchall()}
+    return jsonify(settings)
+
+@app.route('/api/pricing-plans')
+def api_pricing_plans():
+    with get_db() as db:
+        plans = db.execute("SELECT * FROM pricing_plans ORDER BY sort_order ASC, id ASC").fetchall()
+    result = []
+    for p in plans:
+        d = dict(p)
+        try: d['features'] = json.loads(d['features'])
+        except: d['features'] = []
+        result.append(d)
+    return jsonify(result)
+
+@app.route('/api/navigation')
+def api_navigation():
+    with get_db() as db:
+        items = db.execute("SELECT * FROM navigation_items WHERE is_visible=1 ORDER BY sort_order ASC, id ASC").fetchall()
+    return jsonify([dict(i) for i in items])
+
+@app.route('/api/blog-posts')
+def api_blog_posts():
+    with get_db() as db:
+        posts = db.execute("SELECT * FROM blog_posts WHERE status='published' ORDER BY published_at DESC LIMIT 10").fetchall()
+    return jsonify([dict(p) for p in posts])
+
+@app.route('/api/homepage-sections')
+def api_homepage_sections():
+    with get_db() as db:
+        sections = {r['section_key']: r['content'] for r in db.execute("SELECT * FROM homepage_sections WHERE is_active=1").fetchall()}
+    result = {}
+    for k, v in sections.items():
+        try: result[k] = json.loads(v)
+        except: result[k] = v
+    return jsonify(result)
+
+# ─── BACKUP ───
+
+@app.route('/admin/backup')
+@admin_required
+def admin_backup():
+    return render_template('admin/backup.html')
+
+@app.route('/admin/backup/create', methods=['POST'])
+@admin_required
+def admin_backup_create():
+    backup_dir = os.path.join(os.path.dirname(__file__), 'backups')
+    os.makedirs(backup_dir, exist_ok=True)
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    backup_file = os.path.join(backup_dir, f'backup_{timestamp}.db')
+    try:
+        import shutil
+        shutil.copy2(app.config['DATABASE'], backup_file)
+        log_activity('Backup Created', f'Backup saved: backup_{timestamp}.db')
+        return jsonify({'success': True, 'file': f'backup_{timestamp}.db', 'size': os.path.getsize(backup_file)})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/admin/backup/list')
+@admin_required
+def admin_backup_list():
+    backup_dir = os.path.join(os.path.dirname(__file__), 'backups')
+    os.makedirs(backup_dir, exist_ok=True)
+    backups = []
+    for f in sorted(os.listdir(backup_dir), reverse=True):
+        fpath = os.path.join(backup_dir, f)
+        if os.path.isfile(fpath) and f.endswith('.db'):
+            backups.append({'file': f, 'size': os.path.getsize(fpath), 'date': datetime.fromtimestamp(os.path.getmtime(fpath)).strftime('%Y-%m-%d %H:%M:%S')})
+    return jsonify(backups)
+
+@app.route('/admin/backup/restore', methods=['POST'])
+@admin_required
+def admin_backup_restore():
+    file = request.json.get('file', '')
+    backup_dir = os.path.join(os.path.dirname(__file__), 'backups')
+    fpath = os.path.join(backup_dir, file)
+    if not os.path.exists(fpath) or not file.endswith('.db'):
+        return jsonify({'error': 'Invalid backup file'}), 400
+    try:
+        import shutil
+        shutil.copy2(fpath, app.config['DATABASE'])
+        log_activity('Backup Restored', f'Restored from: {file}')
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/admin/backup/download/<filename>')
+@admin_required
+def admin_backup_download(filename):
+    backup_dir = os.path.join(os.path.dirname(__file__), 'backups')
+    return send_from_directory(backup_dir, filename, as_attachment=True)
+
 @app.route('/admin/analytics')
 @admin_required
 def admin_analytics():
@@ -1267,7 +1881,7 @@ def api_analytics_browsers():
 @admin_required
 def api_analytics_countries():
     with get_db() as db:
-        rows = db.execute('''SELECT country, COUNT(DISTINCT visitor_id) as c FROM visitors
+        rows = db.execute('''SELECT country, COUNT(*) as c FROM visitors
             WHERE country != '' GROUP BY country ORDER BY c DESC LIMIT 20''').fetchall()
     total = sum(r['c'] for r in rows)
     return jsonify([{'country': r['country'], 'count': r['c'], 'percentage': round(r['c']/total*100,1) if total else 0} for r in rows])

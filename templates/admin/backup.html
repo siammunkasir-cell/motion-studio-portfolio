@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backup — Siam Munkasir Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#3B82F6;--accent2:#8B5CF6;--accent3:#06B6D4;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex}
+.sidebar{width:240px;min-height:100vh;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed;left:0;top:0;overflow-y:auto;z-index:10}
+.sidebar h2{font-size:18px;font-weight:800;margin-bottom:28px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar .section-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:16px 0 6px 14px}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:var(--radius);color:var(--text2);font-size:13px;text-decoration:none;transition:.3s;margin-bottom:2px}
+.sidebar a:hover,.sidebar a.active{background:rgba(59,130,246,.1);color:var(--accent1)}
+.sidebar a i{width:18px;text-align:center;font-size:14px}
+.sidebar .logout{margin-top:20px;border-top:1px solid var(--border);padding-top:16px;color:var(--accent1)!important}
+.main{flex:1;padding:28px 32px;min-width:0;max-width:calc(100% - 240px)}
+.main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.main-header h1{font-size:22px;font-weight:700}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;text-align:center}
+.card i{font-size:48px;color:var(--accent1);margin-bottom:16px}
+.card h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.card p{color:var(--text2);font-size:13px;margin-bottom:20px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;border-radius:var(--radius);font-size:13px;font-weight:600;font-family:var(--font);cursor:pointer;transition:.3s;border:none;text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff}
+.btn-primary:hover{opacity:.9}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-secondary{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.btn-secondary:hover{background:rgba(59,130,246,.1);color:var(--accent1)}
+.btn-danger{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:auto;margin-top:28px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px 14px;font-size:12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+th{color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.5px;font-size:10px;background:var(--bg2)}
+td{color:var(--text2)}
+.empty-state{text-align:center;padding:60px;color:var(--text3)}
+#restoreModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center}
+#restoreModal.show{display:flex}
+#restoreModal .modal{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;max-width:400px;width:90%;text-align:center}
+#restoreModal .modal p{margin:16px 0 24px;color:var(--text2);font-size:14px}
+.loading{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:768px){
+  .sidebar{width:56px;padding:16px 6px}
+  .sidebar h2,.sidebar a span,.sidebar .section-label{display:none}
+  .sidebar a{justify-content:center;padding:8px}
+  .main{margin-left:56px;padding:16px}
+  .grid-2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+{% include 'admin/_sidebar.html' %}
+<div class="main">
+  <div class="main-header">
+    <h1><i class="fas fa-database" style="color:var(--accent1);margin-right:8px"></i>Backup &amp; Restore</h1>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <i class="fas fa-hdd"></i>
+      <h3>Create Backup</h3>
+      <p>Create a complete database backup. Your website will continue running normally during backup.</p>
+      <button class="btn btn-primary" id="createBackupBtn" onclick="createBackup()"><i class="fas fa-plus"></i> Create Backup Now</button>
+    </div>
+    <div class="card">
+      <i class="fas fa-undo"></i>
+      <h3>Restore Backup</h3>
+      <p>Restore your website from a previous backup. Select a backup file from the list below.</p>
+      <button class="btn btn-secondary" onclick="refreshList()"><i class="fas fa-sync"></i> Refresh List</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Backup File</th><th>Date Created</th><th>Size</th><th></th></tr></thead>
+      <tbody id="backupList">
+        <tr><td colspan="4" class="loading-overlay" style="text-align:center;padding:32px;color:var(--text3)"><i class="fas fa-spinner fa-spin"></i> Loading backups...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div id="restoreModal">
+  <div class="modal">
+    <i class="fas fa-exclamation-triangle" style="font-size:40px;color:var(--accent2);margin-bottom:12px"></i>
+    <h3>Restore Backup?</h3>
+    <p>This will replace all current data with the selected backup. This cannot be undone.</p>
+    <p style="font-size:13px;color:var(--text3)" id="restoreFileName"></p>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button class="btn btn-secondary" onclick="closeRestoreModal()">Cancel</button>
+      <button class="btn btn-danger" id="confirmRestoreBtn" onclick="confirmRestore()">Restore Backup</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function createBackup() {
+  var btn = document.getElementById('createBackupBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"></span> Creating...';
+  fetch('/admin/backup/create', { method: 'POST' }).then(function(r){return r.json()}).then(function(d){
+    if (d.success) {
+      refreshList();
+      btn.innerHTML = '<i class="fas fa-check"></i> Backup Created!';
+      setTimeout(function(){ btn.innerHTML = '<i class="fas fa-plus"></i> Create Backup Now'; btn.disabled = false; }, 2000);
+    } else {
+      btn.innerHTML = '<i class="fas fa-times"></i> Failed';
+      setTimeout(function(){ btn.innerHTML = '<i class="fas fa-plus"></i> Create Backup Now'; btn.disabled = false; }, 2000);
+    }
+  });
+}
+
+function refreshList() {
+  var tbody = document.getElementById('backupList');
+  tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--text3)"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
+  fetch('/admin/backup/list').then(function(r){return r.json()}).then(function(backups){
+    if (backups.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="empty-state"><i class="fas fa-database" style="font-size:36px;display:block;margin-bottom:12px;opacity:.3"></i><p>No backups yet</p></td></tr>';
+      return;
+    }
+    tbody.innerHTML = backups.map(function(b){
+      var size = b.size > 1048576 ? (b.size/1048576).toFixed(1)+' MB' : (b.size/1024).toFixed(1)+' KB';
+      return '<tr><td style="color:var(--text)">'+b.file+'</td><td>'+b.date+'</td><td>'+size+'</td>'+
+        '<td style="display:flex;gap:6px"><a href="/admin/backup/download/'+b.file+'" class="btn btn-secondary" style="padding:4px 12px;font-size:11px"><i class="fas fa-download"></i></a>'+
+        '<button class="btn btn-secondary" style="padding:4px 12px;font-size:11px" onclick="showRestore(\''+b.file+'\')"><i class="fas fa-undo"></i></button></td></tr>';
+    }).join('');
+  });
+}
+
+function showRestore(file) {
+  document.getElementById('restoreFileName').textContent = file;
+  document.getElementById('restoreModal').classList.add('show');
+  document.getElementById('confirmRestoreBtn').dataset.file = file;
+}
+
+function closeRestoreModal() {
+  document.getElementById('restoreModal').classList.remove('show');
+}
+
+function confirmRestore() {
+  var btn = document.getElementById('confirmRestoreBtn');
+  var file = btn.dataset.file;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading"></span> Restoring...';
+  fetch('/admin/backup/restore', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({file: file}) })
+  .then(function(r){return r.json()}).then(function(d){
+    if (d.success) {
+      btn.innerHTML = '✓ Restored!';
+      setTimeout(function(){ location.reload(); }, 1000);
+    } else {
+      alert('Restore failed: ' + (d.error || 'Unknown error'));
+      btn.disabled = false;
+      btn.innerHTML = 'Restore Backup';
+    }
+  });
+}
+
+refreshList();
+</script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Media Library — Siam Munkasir Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#3B82F6;--accent2:#8B5CF6;--accent3:#06B6D4;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex}
+.sidebar{width:240px;min-height:100vh;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed;left:0;top:0;overflow-y:auto;z-index:10}
+.sidebar h2{font-size:18px;font-weight:800;margin-bottom:28px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar .section-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:16px 0 6px 14px}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:var(--radius);color:var(--text2);font-size:13px;text-decoration:none;transition:.3s;margin-bottom:2px}
+.sidebar a:hover,.sidebar a.active{background:rgba(59,130,246,.1);color:var(--accent1)}
+.sidebar a i{width:18px;text-align:center;font-size:14px}
+.sidebar a .badge{margin-left:auto;background:var(--accent1);color:#fff;padding:1px 7px;border-radius:100px;font-size:10px;font-weight:600}
+.sidebar .logout{margin-top:20px;border-top:1px solid var(--border);padding-top:16px;color:var(--accent1)!important}
+.main{flex:1;padding:28px 32px;min-width:0;max-width:calc(100% - 240px)}
+.main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.main-header h1{font-size:22px;font-weight:700}
+.media-upload{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;text-align:center;margin-bottom:28px;border:2px dashed var(--border);transition:.3s;cursor:pointer}
+.media-upload:hover{border-color:var(--accent1);background:rgba(59,130,246,.03)}
+.media-upload i{font-size:40px;color:var(--text3);margin-bottom:12px}
+.media-upload h3{font-size:16px;font-weight:600;margin-bottom:4px}
+.media-upload p{font-size:13px;color:var(--text3)}
+.media-upload input[type=file]{display:none}
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.media-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:.3s;position:relative}
+.media-item:hover{border-color:rgba(59,130,246,.3);transform:translateY(-2px)}
+.media-item .thumb{height:140px;background:var(--bg2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.media-item .thumb img{width:100%;height:100%;object-fit:cover}
+.media-item .thumb i{font-size:36px;color:var(--text3)}
+.media-item .info{padding:10px 12px}
+.media-item .info .name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.media-item .info .size{font-size:10px;color:var(--text3);margin-top:2px}
+.media-item .hover-actions{position:absolute;top:6px;right:6px;display:none;gap:4px}
+.media-item:hover .hover-actions{display:flex}
+.media-item .hover-actions button{background:rgba(0,0,0,.7);border:none;color:#fff;width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:12px;transition:.3s}
+.media-item .hover-actions button:hover{background:var(--accent1)}
+.upload-progress{display:none;margin-top:12px}
+.upload-progress .bar{height:4px;background:var(--bg2);border-radius:100px;overflow:hidden}
+.upload-progress .bar .fill{height:100%;background:linear-gradient(90deg,var(--accent1),var(--accent2));border-radius:100px;width:0%;transition:.3s}
+.upload-progress .status{font-size:12px;color:var(--text3);margin-top:6px}
+.empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text3)}
+.empty-state i{font-size:48px;margin-bottom:16px;opacity:.3}
+@media(max-width:768px){
+  .sidebar{width:56px;padding:16px 6px}
+  .sidebar h2,.sidebar a span,.sidebar .section-label{display:none}
+  .sidebar a{justify-content:center;padding:8px}
+  .main{margin-left:56px;padding:16px}
+  .media-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+}
+</style>
+</head>
+<body>
+{% include 'admin/_sidebar.html' %}
+<div class="main">
+  <div class="main-header">
+    <h1><i class="fas fa-photo-video" style="color:var(--accent1);margin-right:8px"></i>Media Library</h1>
+  </div>
+
+  <div class="media-upload" id="dropZone" onclick="document.getElementById('fileInput').click()">
+    <i class="fas fa-cloud-upload-alt"></i>
+    <h3>Upload Files</h3>
+    <p>Drag & drop files here or click to browse (PNG, JPG, GIF, WebP, MP4, PDF)</p>
+    <input type="file" id="fileInput" multiple accept="image/*,video/*,.pdf" onchange="uploadFiles(this.files)" />
+    <div class="upload-progress" id="uploadProgress">
+      <div class="bar"><div class="fill" id="progressFill"></div></div>
+      <div class="status" id="uploadStatus"></div>
+    </div>
+  </div>
+
+  <div class="media-grid" id="mediaGrid">
+    {% if files %}
+      {% for f in files %}
+      <div class="media-item" data-id="{{ f.id }}">
+        <div class="thumb">
+          {% if f.filetype == 'image' %}
+          <img src="{{ f.filepath }}" alt="{{ f.alt_text or f.original_name }}" loading="lazy" />
+          {% else %}
+          <i class="fas fa-file-{% if f.filetype == 'video' %}video{% elif f.filetype == 'document' %}pdf{% else %}file{% endif %}"></i>
+          {% endif %}
+        </div>
+        <div class="hover-actions">
+          <button onclick="copyUrl('{{ f.filepath }}')" title="Copy URL"><i class="fas fa-link"></i></button>
+          <button onclick="deleteFile({{ f.id }})" title="Delete"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="info">
+          <div class="name" title="{{ f.original_name }}">{{ f.original_name }}</div>
+          <div class="size">{{ '%0.1f'|format(f.filesize/1024) }} KB</div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+    <div class="empty-state">
+      <i class="fas fa-photo-video"></i>
+      <p>No media files yet. Upload your first file above.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+function uploadFiles(files) {
+  if (!files.length) return;
+  var form = new FormData();
+  for (var i = 0; i < files.length; i++) form.append('files[]', files[i]);
+  form.append('folder', '/');
+
+  var prog = document.getElementById('uploadProgress');
+  var fill = document.getElementById('progressFill');
+  var status = document.getElementById('uploadStatus');
+  prog.style.display = 'block';
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/admin/media/upload', true);
+  xhr.upload.onprogress = function(e) {
+    if (e.lengthComputable) {
+      var pct = Math.round((e.loaded / e.total) * 100);
+      fill.style.width = pct + '%';
+      status.textContent = 'Uploading... ' + pct + '%';
+    }
+  };
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      status.textContent = 'Upload complete! Refreshing...';
+      setTimeout(function(){ location.reload(); }, 500);
+    } else {
+      status.textContent = 'Upload failed. Try again.';
+    }
+  };
+  xhr.send(form);
+}
+
+function copyUrl(path) {
+  navigator.clipboard.writeText(window.location.origin + path).then(function(){
+    alert('URL copied to clipboard!');
+  });
+}
+
+function deleteFile(id) {
+  if (!confirm('Delete this file?')) return;
+  fetch('/admin/media/' + id + '/delete', { method: 'POST' }).then(function(r){return r.json()}).then(function(d){
+    if (d.success) location.reload();
+  });
+
+</script>
+</body>
+</html>

@@ -3,19 +3,19 @@
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Inquiries — Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<style>:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#ff6b6b;--accent2:#ffd93d;--accent3:#6c5ce7;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
+<style>:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#3B82F6;--accent2:#8B5CF6;--accent3:#06B6D4;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex}
 .sidebar{width:240px;min-height:100vh;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed;left:0;top:0}
 .sidebar h2{font-size:18px;font-weight:800;margin-bottom:32px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .sidebar a{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius);color:var(--text2);font-size:14px;text-decoration:none;transition:.3s;margin-bottom:4px}
-.sidebar a:hover,.sidebar a.active{background:rgba(255,107,107,.1);color:var(--accent1)}.sidebar a i{width:20px;text-align:center}
-.main{flex:1;margin-left:240px;padding:32px}
+.sidebar a:hover,.sidebar a.active{background:rgba(59,130,246,.1);color:var(--accent1)}.sidebar a i{width:20px;text-align:center}
+.main{flex:1;padding:32px;min-width:0;max-width:calc(100% - 240px)}
 .main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:16px}
 .main-header h1{font-size:24px;font-weight:700}
 .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .filter-btn,.search-box{padding:8px 16px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:13px;cursor:pointer;transition:.3s;font-family:var(--font)}
-.filter-btn.active,.filter-btn:hover{border-color:var(--accent1);color:var(--accent1);background:rgba(255,107,107,.1)}
+.filter-btn.active,.filter-btn:hover{border-color:var(--accent1);color:var(--accent1);background:rgba(59,130,246,.1)}
 .search-box{flex:1;min-width:200px;color:var(--text)}
 .search-box:focus{border-color:var(--accent1);outline:none}
 .export-btn{padding:8px 16px;border-radius:100px;border:1px solid var(--accent2);background:transparent;color:var(--accent2);font-size:13px;cursor:pointer;transition:.3s;text-decoration:none;font-family:var(--font)}
@@ -30,7 +30,7 @@ td a:hover{text-decoration:underline}
 .status{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600}
 .status.new{background:rgba(108,92,231,.15);color:var(--accent3)}
 .status.contacted{background:rgba(255,217,61,.15);color:var(--accent2)}
-.status.closed{background:rgba(255,107,107,.15);color:var(--accent1)}
+.status.closed{background:rgba(59,130,246,.15);color:var(--accent1)}
 .status.archived{background:rgba(102,102,136,.15);color:var(--text3)}
 .pagination{display:flex;justify-content:center;gap:8px;margin-top:20px}
 .pagination a{padding:8px 16px;border-radius:var(--radius);border:1px solid var(--border);color:var(--text2);font-size:13px;text-decoration:none;transition:.3s}
@@ -38,19 +38,7 @@ td a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
-<div class="sidebar">
-  <h2>Siam Munkasir</h2>
-  <a href="/admin"><i class="fas fa-chart-pie"></i> Dashboard</a>
-  <a href="/admin/inquiries" class="active"><i class="fas fa-inbox"></i> Inquiries</a>
-  <a href="/admin/portfolio"><i class="fas fa-images"></i> Portfolio</a>
-  <a href="/admin/testimonials"><i class="fas fa-quote-right"></i> Testimonials</a>
-  <a href="/admin/reviews"><i class="fas fa-star"></i> Reviews</a>
-  <a href="/admin/faqs"><i class="fas fa-question-circle"></i> FAQs</a>
-  <a href="/admin/skills"><i class="fas fa-chart-bar"></i> Skills</a>
-  <a href="/admin/services"><i class="fas fa-cog"></i> Services</a>
-  <a href="/admin/settings"><i class="fas fa-sliders-h"></i> Settings</a>
-  <a href="/admin/logout" style="margin-top:32px;color:var(--accent1)"><i class="fas fa-sign-out-alt"></i> Logout</a>
-</div>
+{% include 'admin/_sidebar.html' %}
 <div class="main">
   <div class="main-header">
     <h1>Inquiries ({{ total }})</h1>

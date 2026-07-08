@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navigation — Siam Munkasir Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#3B82F6;--accent2:#8B5CF6;--accent3:#06B6D4;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex}
+.sidebar{width:240px;min-height:100vh;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed;left:0;top:0;overflow-y:auto;z-index:10}
+.sidebar h2{font-size:18px;font-weight:800;margin-bottom:28px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar .section-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:16px 0 6px 14px}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:var(--radius);color:var(--text2);font-size:13px;text-decoration:none;transition:.3s;margin-bottom:2px}
+.sidebar a:hover,.sidebar a.active{background:rgba(59,130,246,.1);color:var(--accent1)}
+.sidebar a i{width:18px;text-align:center;font-size:14px}
+.sidebar .logout{margin-top:20px;border-top:1px solid var(--border);padding-top:16px;color:var(--accent1)!important}
+.main{flex:1;padding:28px 32px;min-width:0;max-width:calc(100% - 240px)}
+.main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.main-header h1{font-size:22px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px}
+.card h2{font-size:15px;font-weight:600;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.form-group input,.form-group select{width:100%;padding:9px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;font-family:var(--font);outline:none}
+.form-group input:focus,.form-group select:focus{border-color:var(--accent1)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius);font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer;transition:.3s;border:none;text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff}
+.btn-secondary{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.btn-danger{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 12px;font-size:12px;text-align:left;border-bottom:1px solid var(--border)}
+th{color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.5px;font-size:10px;background:var(--bg2)}
+td{color:var(--text2)}
+@media(max-width:768px){
+  .sidebar{width:56px;padding:16px 6px}
+  .sidebar h2,.sidebar a span,.sidebar .section-label{display:none}
+  .sidebar a{justify-content:center;padding:8px}
+  .main{margin-left:56px;padding:16px;max-width:calc(100% - 56px)}
+  .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+{% include 'admin/_sidebar.html' %}
+<div class="main">
+  <div class="main-header">
+    <h1><i class="fas fa-bars" style="color:var(--accent1);margin-right:8px"></i>Navigation Manager</h1>
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-plus" style="color:var(--accent2)"></i> Add Menu Item</h2>
+    <form method="post" action="/admin/navigation/add">
+      <div class="form-grid">
+        <div class="form-group"><label>Label</label><input type="text" name="label" required /></div>
+        <div class="form-group"><label>Link</label><input type="text" name="link" value="#" /></div>
+        <div class="form-group"><label>Icon (FontAwesome class)</label><input type="text" name="icon" placeholder="fas fa-home" /></div>
+        <div class="form-group"><label>Sort Order</label><input type="number" name="sort_order" value="0" /></div>
+        <div class="form-group"><label>Parent ID</label><input type="number" name="parent_id" value="0" placeholder="0 = top level" /></div>
+        <div class="form-group"><label><input type="checkbox" name="is_visible" value="1" checked /> Visible on website</label></div>
+      </div>
+      <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add Item</button>
+    </form>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Label</th><th>Link</th><th>Order</th><th>Visible</th><th></th></tr></thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td style="color:var(--text);font-weight:600">{% if item.icon %}<i class="fas {{ item.icon }}"></i> {% endif %}{{ item.label }}</td>
+          <td style="color:var(--text3)">{{ item.link }}</td>
+          <td>{{ item.sort_order }}</td>
+          <td>{% if item.is_visible %}<span style="color:#10b981">✓</span>{% else %}<span style="color:var(--text3)">✗</span>{% endif %}</td>
+          <td>
+            <div style="display:flex;gap:4px">
+              <button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="editNav({{ item.id }},'{{ item.label|e }}','{{ item.link|e }}','{{ item.icon|e }}',{{ item.sort_order }},{{ item.parent_id }},{{ item.is_visible }})"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-danger" style="padding:4px 10px;font-size:11px" onclick="deleteNav({{ item.id }})"><i class="fas fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text3)">No navigation items yet</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="editModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;max-width:500px;width:95%">
+    <h2 style="font-size:16px;margin-bottom:20px">Edit Menu Item</h2>
+    <form id="editForm" method="post">
+      <div class="form-grid">
+        <div class="form-group"><label>Label</label><input type="text" name="label" id="edit_label" required /></div>
+        <div class="form-group"><label>Link</label><input type="text" name="link" id="edit_link" /></div>
+        <div class="form-group"><label>Icon</label><input type="text" name="icon" id="edit_icon" /></div>
+        <div class="form-group"><label>Sort Order</label><input type="number" name="sort_order" id="edit_sort_order" /></div>
+        <div class="form-group"><label>Parent ID</label><input type="number" name="parent_id" id="edit_parent_id" /></div>
+        <div class="form-group"><label><input type="checkbox" name="is_visible" value="1" id="edit_visible" /> Visible</label></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('editModal').style.display='none'">Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function editNav(id, label, link, icon, sort, parent, visible) {
+  document.getElementById('edit_label').value = label;
+  document.getElementById('edit_link').value = link;
+  document.getElementById('edit_icon').value = icon;
+  document.getElementById('edit_sort_order').value = sort;
+  document.getElementById('edit_parent_id').value = parent;
+  document.getElementById('edit_visible').checked = visible;
+  document.getElementById('editForm').action = '/admin/navigation/' + id + '/edit';
+  document.getElementById('editModal').style.display = 'flex';
+}
+function deleteNav(id) {
+  if (!confirm('Delete this nav item?')) return;
+  fetch('/admin/navigation/' + id + '/delete', { method: 'POST' }).then(function(r){return r.json()}).then(function(d){
+    if (d.success) location.reload();
+  });
+}
+</script>
+</body>
+</html>

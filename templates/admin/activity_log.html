@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activity Log — Siam Munkasir Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#3B82F6;--accent2:#8B5CF6;--accent3:#06B6D4;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex}
+.sidebar{width:240px;min-height:100vh;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed;left:0;top:0;overflow-y:auto;z-index:10}
+.sidebar h2{font-size:18px;font-weight:800;margin-bottom:28px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar .section-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:16px 0 6px 14px}
+.sidebar a{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:var(--radius);color:var(--text2);font-size:13px;text-decoration:none;transition:.3s;margin-bottom:2px}
+.sidebar a:hover,.sidebar a.active{background:rgba(59,130,246,.1);color:var(--accent1)}
+.sidebar a i{width:18px;text-align:center;font-size:14px}
+.sidebar .logout{margin-top:20px;border-top:1px solid var(--border);padding-top:16px;color:var(--accent1)!important}
+.main{flex:1;padding:28px 32px;min-width:0;max-width:calc(100% - 240px)}
+.main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.main-header h1{font-size:22px;font-weight:700}
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 14px;font-size:12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+th{color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.5px;font-size:10px;background:var(--bg2)}
+td{color:var(--text2)}
+.pagination{display:flex;justify-content:center;align-items:center;gap:8px;padding:16px;border-top:1px solid var(--border)}
+.pagination a{padding:6px 12px;border-radius:var(--radius);font-size:12px;text-decoration:none;color:var(--text2);background:var(--bg2);border:1px solid var(--border);transition:.3s}
+.pagination a:hover{background:rgba(59,130,246,.1);color:var(--accent1)}
+.pagination span{font-size:12px;color:var(--text3)}
+.empty-state{text-align:center;padding:60px;color:var(--text3)}
+@media(max-width:768px){
+  .sidebar{width:56px;padding:16px 6px}
+  .sidebar h2,.sidebar a span,.sidebar .section-label{display:none}
+  .sidebar a{justify-content:center;padding:8px}
+  .main{margin-left:56px;padding:16px}
+}
+</style>
+</head>
+<body>
+{% include 'admin/_sidebar.html' %}
+<div class="main">
+  <div class="main-header">
+    <h1><i class="fas fa-history" style="color:var(--accent1);margin-right:8px"></i>Activity Log</h1>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Date</th><th>Admin</th><th>Action</th><th>Details</th><th>IP</th></tr></thead>
+      <tbody>
+        {% for log in logs %}
+        <tr>
+          <td style="color:var(--text3);font-size:11px">{{ log.created_at[:19] }}</td>
+          <td>{{ log.admin_username }}</td>
+          <td style="font-weight:600;color:var(--text)">{{ log.action }}</td>
+          <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis">{{ log.details }}</td>
+          <td style="color:var(--text3)">{{ log.ip_address[:20] }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="empty-state"><i class="fas fa-history" style="font-size:36px;display:block;margin-bottom:12px;opacity:.3"></i><p>No activity recorded yet</p></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if total > per_page %}
+    <div class="pagination">
+      {% if page > 1 %}<a href="?page={{ page-1 }}">← Previous</a>{% endif %}
+      <span>Page {{ page }} of {{ (total/per_page)|round(0,'ceil')|int }}</span>
+      {% if page < (total/per_page)|round(0,'ceil')|int %}<a href="?page={{ page+1 }}">Next →</a>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+</body>
+</html>
