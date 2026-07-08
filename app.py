@@ -2079,7 +2079,10 @@ def seed_default_sections():
     except Exception as e:
         print(f'Seed sections: {e}')
 
-if __name__ == '__main__':
+# Run DB init at module level so gunicorn picks it up too
+with app.app_context():
     init_db()
     seed_default_sections()
+
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)), debug=False)
