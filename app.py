@@ -581,11 +581,14 @@ def index():
         testimonials = db.execute("SELECT * FROM testimonials WHERE featured=1 ORDER BY created_at DESC LIMIT 6").fetchall()
         services = db.execute("SELECT * FROM services ORDER BY id ASC").fetchall()
         settings = {row['key']: row['value'] for row in db.execute("SELECT * FROM site_settings").fetchall()}
+        sections_raw = db.execute("SELECT section_key, content FROM homepage_sections WHERE is_active=1").fetchall()
+    sections = {row['section_key']: json.loads(row['content']) for row in sections_raw}
     return render_template('index.html',
                          portfolio=portfolio_items,
                          testimonials=testimonials,
                          services=services,
-                         settings=settings)
+                         settings=settings,
+                         sections=sections)
 
 @app.route('/api/submit-inquiry', methods=['POST'])
 @rate_limit(max_per_minute=3)

@@ -9,9 +9,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#3B82F6;--accent2:#8B5CF6;--accent3:#06B6D4;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
-body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex}
-.sidebar{width:240px;min-height:100vh;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed;left:0;top:0;overflow-y:auto;z-index:10}
+:root{--bg:#09090B;--bg2:#111827;--card:#0F172A;--border:#1E293B;--text:#F8FAFC;--text2:#94A3B8;--text3:#64748B;--accent1:#3B82F6;--accent2:#8B5CF6;--accent3:#06B6D4;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;flex-shrink:0;height:100vh;position:sticky;top:0;overflow-y:auto;z-index:10}
 .sidebar h2{font-size:18px;font-weight:800;margin-bottom:28px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .sidebar .section-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:16px 0 6px 14px}
 .sidebar a{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:var(--radius);color:var(--text2);font-size:13px;text-decoration:none;transition:.3s;margin-bottom:2px}
@@ -19,35 +19,40 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex
 .sidebar a i{width:18px;text-align:center;font-size:14px}
 .sidebar .logout{margin-top:20px;border-top:1px solid var(--border);padding-top:16px;color:var(--accent1)!important}
 .main{flex:1;padding:28px 32px;min-width:0;max-width:calc(100% - 240px)}
-.main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.main-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
 .main-header h1{font-size:22px;font-weight:700}
 .section-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px}
 .section-card h2{font-size:16px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px}
-.form-group{margin-bottom:14px}
-.form-group label{display:block;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
-.form-group input,.form-group textarea{width:100%;padding:9px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;font-family:var(--font);outline:none;transition:.3s}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:10px;font-weight:600;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.form-group input,.form-group textarea{width:100%;padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;font-family:var(--font);outline:none;transition:.3s}
 .form-group input:focus,.form-group textarea:focus{border-color:var(--accent1)}
-.form-group textarea{min-height:60px;resize:vertical;font-size:12px}
-.stats-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
-.stats-item input{flex:1;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-size:12px;font-family:var(--font);outline:none}
-.stats-item input:focus{border-color:var(--accent1)}
-.stats-item .remove-btn{background:rgba(239,68,68,.15);border:none;color:#ef4444;width:24px;height:24px;border-radius:6px;cursor:pointer;font-size:12px}
+.form-group textarea{min-height:50px;resize:vertical;font-size:12px}
+.array-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.array-item input{flex:1;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-size:12px;font-family:var(--font);outline:none}
+.array-item input:focus{border-color:var(--accent1)}
+.array-item .remove-btn{background:rgba(239,68,68,.15);border:none;color:#ef4444;width:24px;height:24px;border-radius:6px;cursor:pointer;font-size:12px}
+.stat-editor{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;margin-bottom:8px;display:grid;grid-template-columns:1fr 80px 80px auto;gap:8px;align-items:center}
+.stat-editor input{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-size:12px;font-family:var(--font);outline:none}
+.stat-editor input:focus{border-color:var(--accent1)}
+.stat-editor .remove-btn{background:rgba(239,68,68,.15);border:none;color:#ef4444;width:28px;height:28px;border-radius:6px;cursor:pointer}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius);font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer;transition:.3s;border:none;text-decoration:none}
 .btn-primary{background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff}
 .btn-primary:hover{opacity:.9}
 .btn-secondary{background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
 .btn-secondary:hover{background:rgba(59,130,246,.1);color:var(--accent1)}
 .btn-sm{padding:5px 12px;font-size:11px}
-.top-actions{display:flex;gap:8px;margin-bottom:20px}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
 @media(max-width:768px){
   .sidebar{width:56px;padding:16px 6px}
   .sidebar h2,.sidebar a span,.sidebar .section-label{display:none}
   .sidebar a{justify-content:center;padding:8px}
-  .main{margin-left:56px;padding:16px}
+  .main{padding:16px}
   .form-row{grid-template-columns:1fr}
+  .stat-editor{grid-template-columns:1fr 60px 60px auto}
 }
-.toast{position:fixed;bottom:24px;right:24px;background:#10b981;color:#fff;padding:12px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;z-index:100;display:none;animation:fadeIn .3s}
+.toast{position:fixed;bottom:24px;right:24px;background:#10b981;color:#fff;padding:12px 20px;border-radius:var(--radius);font-size:13px;z-index:100;display:none;animation:fadeIn .3s}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
@@ -62,178 +67,231 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex
     </div>
   </div>
 
-  <div id="heroSection" class="section-card">
-    <h2><i class="fas fa-star" style="color:var(--accent2)"></i> Hero Section</h2>
-    <div class="form-group">
-      <label>Headline</label>
-      <input type="text" id="hero_headline" value="" />
-    </div>
-    <div class="form-group">
-      <label>Subheadline</label>
-      <input type="text" id="hero_subheadline" value="" />
-    </div>
-    <div class="form-group">
-      <label>Description</label>
-      <textarea id="hero_description" rows="3"></textarea>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>CTA Button Text</label><input type="text" id="hero_cta_text" /></div>
-      <div class="form-group"><label>CTA Link</label><input type="text" id="hero_cta_link" /></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>Secondary CTA Text</label><input type="text" id="hero_secondary_cta_text" /></div>
-      <div class="form-group"><label>Secondary CTA Link</label><input type="text" id="hero_secondary_cta_link" /></div>
-    </div>
-    <div class="form-group">
-      <label>Hero Image URL</label>
-      <input type="text" id="hero_hero_image" placeholder="https://..." />
-      <div style="margin-top:4px"><a href="/admin/media" target="_blank" style="color:var(--accent1);font-size:11px">Choose from Media Library</a></div>
-    </div>
-  </div>
-
+  <!-- HERO SECTION -->
   <div class="section-card">
-    <h2><i class="fas fa-chart-bar" style="color:var(--accent3)"></i> Statistics Bar</h2>
-    <div id="statsList"></div>
-    <button class="btn btn-secondary btn-sm" onclick="addStatItem()"><i class="fas fa-plus"></i> Add Stat</button>
-  </div>
-
-  <div class="section-card">
-    <h2><i class="fas fa-cog" style="color:var(--accent1)"></i> Services Section Heading</h2>
+    <h2><i class="fas fa-star" style="color:#f59e0b"></i> Hero Section</h2>
     <div class="form-group">
-      <label>Title</label>
-      <input type="text" id="services_title" />
+      <label>Badge Text</label>
+      <input type="text" id="hero_badge_text" />
+    </div>
+    <div class="form-group">
+      <label>Main Title</label>
+      <input type="text" id="hero_title" />
     </div>
     <div class="form-group">
       <label>Subtitle</label>
-      <input type="text" id="services_subtitle" />
+      <textarea id="hero_subtitle" rows="2"></textarea>
     </div>
     <div class="form-group">
-      <label>Description</label>
-      <textarea id="services_description" rows="2"></textarea>
+      <label>Roles (one per line)</label>
+      <textarea id="hero_roles" rows="4" placeholder="AI Content Strategist&#10;UGC Specialist&#10;Creative Director"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Primary CTA Text</label><input type="text" id="cta1_text" /></div>
+      <div class="form-group"><label>Primary CTA Link</label><input type="text" id="cta1_href" /></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Secondary CTA Text</label><input type="text" id="cta2_text" /></div>
+      <div class="form-group"><label>Secondary CTA Link</label><input type="text" id="cta2_href" /></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Tertiary CTA Text</label><input type="text" id="cta3_text" /></div>
+      <div class="form-group"><label>Tertiary CTA Link</label><input type="text" id="cta3_href" /></div>
     </div>
   </div>
 
+  <!-- HERO STATS -->
   <div class="section-card">
-    <h2><i class="fas fa-info-circle" style="color:var(--accent2)"></i> About Preview</h2>
-    <div class="form-group">
-      <label>Title</label>
-      <input type="text" id="about_title" />
-    </div>
-    <div class="form-group">
-      <label>Content</label>
-      <textarea id="about_content" rows="4"></textarea>
-    </div>
-    <div class="form-group">
-      <label>Image URL</label>
-      <input type="text" id="about_image" placeholder="https://..." />
-    </div>
+    <h2><i class="fas fa-chart-bar" style="color:var(--accent3)"></i> Hero Stats</h2>
+    <div id="heroStatsList"></div>
+    <button class="btn btn-secondary btn-sm" onclick="addHeroStat()"><i class="fas fa-plus"></i> Add Stat</button>
+  </div>
+
+  <!-- ABOUT SECTION -->
+  <div class="section-card">
+    <h2><i class="fas fa-user" style="color:var(--accent2)"></i> About Section</h2>
     <div class="form-row">
-      <div class="form-group"><label>Button Text</label><input type="text" id="about_button_text" /></div>
-      <div class="form-group"><label>Button Link</label><input type="text" id="about_button_link" /></div>
+      <div class="form-group"><label>Tag</label><input type="text" id="about_tag" /></div>
+      <div class="form-group"><label>Title</label><input type="text" id="about_title" /></div>
     </div>
+    <div class="form-group"><label>Subtitle</label><textarea id="about_subtitle" rows="2"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Name</label><input type="text" id="about_name" /></div>
+      <div class="form-group"><label>Initials</label><input type="text" id="about_initials" /></div>
+    </div>
+    <div class="form-group"><label>Bio Paragraph 1</label><textarea id="about_bio1" rows="3"></textarea></div>
+    <div class="form-group"><label>Bio Paragraph 2</label><textarea id="about_bio2" rows="3"></textarea></div>
+    <div class="form-group"><label>Mission Statement</label><textarea id="about_mission" rows="2"></textarea></div>
+    <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">
+      <label style="font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:8px">Process Steps</label>
+      <div id="processStepsList"></div>
+      <button class="btn btn-secondary btn-sm" onclick="addProcessStep()"><i class="fas fa-plus"></i> Add Step</button>
+    </div>
+  </div>
+
+  <!-- MARQUEE -->
+  <div class="section-card">
+    <h2><i class="fas fa-bullhorn" style="color:var(--accent3)"></i> Marquee Banner</h2>
+    <div class="form-row">
+      <div class="form-group"><label>Top Separator</label><input type="text" id="marquee_sep_top" /></div>
+      <div class="form-group"><label>Bottom Separator</label><input type="text" id="marquee_sep_bottom" /></div>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Top Row Items</label>
+      <div id="marqueeTopList"></div>
+      <button class="btn btn-secondary btn-sm" onclick="addMarqueeItem('top')"><i class="fas fa-plus"></i> Add Item</button>
+    </div>
+    <div>
+      <label style="font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Bottom Row Items</label>
+      <div id="marqueeBottomList"></div>
+      <button class="btn btn-secondary btn-sm" onclick="addMarqueeItem('bottom')"><i class="fas fa-plus"></i> Add Item</button>
+    </div>
+  </div>
+
+  <!-- SERVICES HEADING -->
+  <div class="section-card">
+    <h2><i class="fas fa-cog" style="color:var(--accent1)"></i> Services Section Heading</h2>
+    <div class="form-group"><label>Title</label><input type="text" id="services_title" /></div>
+    <div class="form-group"><label>Description</label><textarea id="services_desc" rows="2"></textarea></div>
   </div>
 </div>
 
 <div id="toast" class="toast">✓ Changes saved!</div>
 
 <script>
-// Data from server
-var INIT_DATA = {{ sections|tojson }};
+var D = {{ sections|tojson }};
+
+function v(obj, path, fallback) {
+  try { return obj[path] !== undefined && obj[path] !== null ? obj[path] : (fallback || ''); } catch(e) { return fallback || ''; }
+}
 
 function initForm() {
-  // Hero
-  var hero = INIT_DATA.hero || {};
-  try { if (typeof hero === 'string') hero = JSON.parse(hero); } catch(e) { hero = {}; }
-  document.getElementById('hero_headline').value = hero.headline || '';
-  document.getElementById('hero_subheadline').value = hero.subheadline || '';
-  document.getElementById('hero_description').value = hero.description || '';
-  document.getElementById('hero_cta_text').value = hero.cta_text || '';
-  document.getElementById('hero_cta_link').value = hero.cta_link || '';
-  document.getElementById('hero_secondary_cta_text').value = hero.secondary_cta_text || '';
-  document.getElementById('hero_secondary_cta_link').value = hero.secondary_cta_link || '';
-  document.getElementById('hero_hero_image').value = hero.hero_image || '';
-
-  // Stats
-  var stats = INIT_DATA.stats || [];
-  try { if (typeof stats === 'string') stats = JSON.parse(stats); } catch(e) { stats = []; }
-  var container = document.getElementById('statsList');
-  container.innerHTML = '';
-  if (stats.length === 0) { stats = [{label:'Projects Completed',value:'150+',icon:'fa-check-circle'},{label:'Happy Clients',value:'50+',icon:'fa-smile'}]; }
-  stats.forEach(function(s) { addStatItem(s.label, s.value, s.icon); });
-
-  // Services heading
-  var svc = INIT_DATA.services_heading || {};
-  try { if (typeof svc === 'string') svc = JSON.parse(svc); } catch(e) { svc = {}; }
-  document.getElementById('services_title').value = svc.title || '';
-  document.getElementById('services_subtitle').value = svc.subtitle || '';
-  document.getElementById('services_description').value = svc.description || '';
-
+  var hero = D.hero || {};
+  document.getElementById('hero_badge_text').value = v(hero, 'badge_text', 'Available for Projects');
+  document.getElementById('hero_title').value = v(hero, 'title', 'AI-Powered Content That Captivates & Converts');
+  document.getElementById('hero_subtitle').value = v(hero, 'subtitle', '');
+  document.getElementById('hero_roles').value = (hero.roles || []).join('\n');
+  var c1 = hero.cta_primary || {}, c2 = hero.cta_secondary || {}, c3 = hero.cta_tertiary || {};
+  document.getElementById('cta1_text').value = v(c1, 'text', 'View Portfolio');
+  document.getElementById('cta1_href').value = v(c1, 'href', '#portfolio');
+  document.getElementById('cta2_text').value = v(c2, 'text', 'Hire Me');
+  document.getElementById('cta2_href').value = v(c2, 'href', '#contact');
+  document.getElementById('cta3_text').value = v(c3, 'text', 'Book a Call');
+  document.getElementById('cta3_href').value = v(c3, 'href', 'https://wa.me/8801989430474');
+  // Hero stats
+  var hstats = hero.stats || [{label:'Projects Completed',value:200,suffix:'+'},{label:'Clients Served',value:50,suffix:'+'},{label:'Years Experience',value:3,suffix:'+'},{label:'Client Satisfaction',value:98,suffix:'%'}];
+  hstats.forEach(function(s) { addHeroStat(s.label, s.value, s.suffix); });
   // About
-  var about = INIT_DATA.about_preview || {};
-  try { if (typeof about === 'string') about = JSON.parse(about); } catch(e) { about = {}; }
-  document.getElementById('about_title').value = about.title || '';
-  document.getElementById('about_content').value = about.content || '';
-  document.getElementById('about_image').value = about.image || '';
-  document.getElementById('about_button_text').value = about.button_text || '';
-  document.getElementById('about_button_link').value = about.button_link || '';
+  var about = D.about || {};
+  document.getElementById('about_tag').value = v(about, 'tag', 'About Me');
+  document.getElementById('about_title').value = v(about, 'title', 'Creative Content Strategist & AI UGC Specialist');
+  document.getElementById('about_subtitle').value = v(about, 'subtitle', '');
+  document.getElementById('about_name').value = v(about, 'name', 'Siam Munkasir');
+  document.getElementById('about_initials').value = v(about, 'initials', 'SM');
+  document.getElementById('about_bio1').value = v(about, 'bio_1', '');
+  document.getElementById('about_bio2').value = v(about, 'bio_2', '');
+  document.getElementById('about_mission').value = v(about, 'mission', '');
+  (about.process_steps || []).forEach(function(s) { addProcessStep(s.title, s.desc); });
+  // Marquee
+  var mq = D.marquee || {};
+  document.getElementById('marquee_sep_top').value = v(mq, 'separator_top', '✦');
+  document.getElementById('marquee_sep_bottom').value = v(mq, 'separator_bottom', '◆');
+  (mq.items_top || []).forEach(function(i) { addMarqueeItem('top', i); });
+  (mq.items_bottom || []).forEach(function(i) { addMarqueeItem('bottom', i); });
+  // Services heading
+  var svc = D.services_heading || {};
+  document.getElementById('services_title').value = v(svc, 'title', 'My Services');
+  document.getElementById('services_desc').value = v(svc, 'description', '');
 }
 initForm();
 
-function addStatItem(label, value, icon) {
-  var container = document.getElementById('statsList');
-  var i = container.children.length;
-  var div = document.createElement('div');
-  div.className = 'stats-item';
-  div.innerHTML = '<input type="text" class="stat-label" placeholder="Label" value="' + (label||'') + '" />' +
-    '<input type="text" class="stat-value" placeholder="Value" value="' + (value||'') + '" style="max-width:100px" />' +
-    '<input type="text" class="stat-icon" placeholder="Icon class" value="' + (icon||'fa-star') + '" style="max-width:120px" />' +
+function addHeroStat(label, value, suffix) {
+  var c = document.getElementById('heroStatsList');
+  var d = document.createElement('div');
+  d.className = 'stat-editor';
+  d.innerHTML = '<input class="hs-label" placeholder="Label" value="'+(label||'')+'"/>' +
+    '<input class="hs-value" placeholder="Number" value="'+(value||'')+'" style="max-width:80px"/>' +
+    '<input class="hs-suffix" placeholder="+" value="'+(suffix||'')+'" style="max-width:80px"/>' +
     '<button class="remove-btn" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>';
-  container.appendChild(div);
+  c.appendChild(d);
+}
+
+function addProcessStep(title, desc) {
+  var c = document.getElementById('processStepsList');
+  var d = document.createElement('div');
+  d.className = 'array-item';
+  d.innerHTML = '<input class="ps-title" placeholder="Step title" value="'+(title||'')+'"/>' +
+    '<input class="ps-desc" placeholder="Description" value="'+(desc||'')+'" style="flex:2"/>' +
+    '<button class="remove-btn" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>';
+  c.appendChild(d);
+}
+
+function addMarqueeItem(which, val) {
+  var listId = which === 'top' ? 'marqueeTopList' : 'marqueeBottomList';
+  var c = document.getElementById(listId);
+  var d = document.createElement('div');
+  d.className = 'array-item';
+  d.innerHTML = '<input class="mi-val" placeholder="Item text" value="'+(val||'')+'"/>' +
+    '<button class="remove-btn" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>';
+  c.appendChild(d);
+}
+
+function collectList(containerId, fieldClass) {
+  var items = [];
+  document.querySelectorAll('#' + containerId + ' .' + fieldClass).forEach(function(el) { items.push(el.value); });
+  return items;
 }
 
 function saveAll() {
-  var data = {};
-
-  // Hero
-  data.hero = {
-    headline: document.getElementById('hero_headline').value,
-    subheadline: document.getElementById('hero_subheadline').value,
-    description: document.getElementById('hero_description').value,
-    cta_text: document.getElementById('hero_cta_text').value,
-    cta_link: document.getElementById('hero_cta_link').value,
-    secondary_cta_text: document.getElementById('hero_secondary_cta_text').value,
-    secondary_cta_link: document.getElementById('hero_secondary_cta_link').value,
-    hero_image: document.getElementById('hero_hero_image').value
+  var hero = {
+    badge_text: document.getElementById('hero_badge_text').value,
+    title: document.getElementById('hero_title').value,
+    subtitle: document.getElementById('hero_subtitle').value,
+    roles: document.getElementById('hero_roles').value.split('\n').map(function(s){return s.trim()}).filter(function(s){return s}),
+    cta_primary: { text: document.getElementById('cta1_text').value, href: document.getElementById('cta1_href').value },
+    cta_secondary: { text: document.getElementById('cta2_text').value, href: document.getElementById('cta2_href').value },
+    cta_tertiary: { text: document.getElementById('cta3_text').value, href: document.getElementById('cta3_href').value },
+    stats: []
   };
-
-  // Stats
-  var stats = [];
-  document.querySelectorAll('.stats-item').forEach(function(el) {
+  document.querySelectorAll('#heroStatsList .stat-editor').forEach(function(el) {
     var inputs = el.querySelectorAll('input');
-    stats.push({ label: inputs[0].value, value: inputs[1].value, icon: inputs[2].value });
+    hero.stats.push({ label: inputs[0].value, value: parseInt(inputs[1].value) || 0, suffix: inputs[2].value });
   });
-  data.stats = stats;
 
-  // Services heading
-  data.services_heading = {
-    title: document.getElementById('services_title').value,
-    subtitle: document.getElementById('services_subtitle').value,
-    description: document.getElementById('services_description').value
-  };
-
-  // About
-  data.about_preview = {
+  var about = {
+    tag: document.getElementById('about_tag').value,
     title: document.getElementById('about_title').value,
-    content: document.getElementById('about_content').value,
-    image: document.getElementById('about_image').value,
-    button_text: document.getElementById('about_button_text').value,
-    button_link: document.getElementById('about_button_link').value
+    subtitle: document.getElementById('about_subtitle').value,
+    name: document.getElementById('about_name').value,
+    initials: document.getElementById('about_initials').value,
+    bio_1: document.getElementById('about_bio1').value,
+    bio_2: document.getElementById('about_bio2').value,
+    mission: document.getElementById('about_mission').value,
+    process_steps: []
   };
+  document.querySelectorAll('#processStepsList .array-item').forEach(function(el) {
+    var inputs = el.querySelectorAll('input');
+    about.process_steps.push({ title: inputs[0].value, desc: inputs[1].value });
+  });
+
+  var marquee = {
+    items_top: collectList('marqueeTopList', 'mi-val'),
+    items_bottom: collectList('marqueeBottomList', 'mi-val'),
+    separator_top: document.getElementById('marquee_sep_top').value,
+    separator_bottom: document.getElementById('marquee_sep_bottom').value,
+  };
+
+  var services_heading = {
+    title: document.getElementById('services_title').value,
+    description: document.getElementById('services_desc').value,
+  };
+
+  var payload = { hero: hero, about: about, marquee: marquee, services_heading: services_heading };
 
   fetch('/admin/homepage/update', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
+    body: JSON.stringify(payload)
   }).then(function(r){return r.json()}).then(function(d){
     if (d.success) {
       var toast = document.getElementById('toast');

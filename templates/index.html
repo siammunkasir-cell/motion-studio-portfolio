@@ -952,31 +952,42 @@ body.nav-open { overflow: hidden; }
     <canvas class="hero-particles" id="heroParticles"></canvas>
   </div>
   <div class="hero-content" id="heroContent">
+    {% set hero = sections.get('hero', {}) %}
     <div class="hero-badge">
       <span class="badge-dot"></span>
-      <span>Available for Projects</span>
+      <span>{{ hero.get('badge_text', 'Available for Projects') }}</span>
     </div>
     <h1 class="hero-title split-reveal">
-      AI-Powered Content That Captivates &amp; Converts
+      {{ hero.get('title', "AI-Powered Content That Captivates &amp; Converts") }}
     </h1>
     <div class="hero-role-wrapper">
       <span class="hero-role-label">✦</span>
-      <span class="hero-role" id="heroRole" data-roles='["AI Content Strategist","UGC Specialist","Creative Director","Motion Designer","Brand Storyteller"]'>
+      {% set roles = hero.get('roles', ["AI Content Strategist","UGC Specialist","Creative Director","Motion Designer","Brand Storyteller"]) %}
+      <span class="hero-role" id="heroRole" data-roles='{{ roles | tojson | safe }}'>
         <span class="role-text"></span><span class="role-cursor">|</span>
       </span>
     </div>
-    <p class="hero-subtitle">Crafting high-impact digital content and AI-powered solutions that drive real business results for brands worldwide — from UGC strategy to full AI automation systems.</p>
+    <p class="hero-subtitle">{{ hero.get('subtitle', "Crafting high-impact digital content and AI-powered solutions that drive real business results for brands worldwide — from UGC strategy to full AI automation systems.") }}</p>
     <div class="hero-actions">
-      <a href="#portfolio" class="btn-primary btn-ripple">View Portfolio <i class="fas fa-arrow-right"></i></a>
-      <a href="#contact" class="btn-secondary btn-ripple">Hire Me <i class="fas fa-long-arrow-alt-right"></i></a>
-      <a href="https://wa.me/8801989430474" target="_blank" class="btn-secondary btn-ripple">Book a Call <i class="fab fa-whatsapp"></i></a>
+      {% set cta1 = hero.get('cta_primary', {}) %}
+      {% set cta2 = hero.get('cta_secondary', {}) %}
+      {% set cta3 = hero.get('cta_tertiary', {}) %}
+      <a href="{{ cta1.get('href', '#portfolio') }}" class="btn-primary btn-ripple">{{ cta1.get('text', 'View Portfolio') }} <i class="fas fa-arrow-right"></i></a>
+      <a href="{{ cta2.get('href', '#contact') }}" class="btn-secondary btn-ripple">{{ cta2.get('text', 'Hire Me') }} <i class="fas fa-long-arrow-alt-right"></i></a>
+      <a href="{{ cta3.get('href', 'https://wa.me/8801989430474') }}" target="_blank" class="btn-secondary btn-ripple">{{ cta3.get('text', 'Book a Call') }} {% if cta3.get('icon') %}<i class="{{ cta3.get('icon') }}"></i>{% else %}<i class="fab fa-whatsapp"></i>{% endif %}</a>
     </div>
   </div>
+  {% set hero_stats = hero.get('stats', [
+    {'label':'Projects Completed','value':200,'suffix':'+'},
+    {'label':'Clients Served','value':50,'suffix':'+'},
+    {'label':'Years Experience','value':3,'suffix':'+'},
+    {'label':'Client Satisfaction','value':98,'suffix':'%'},
+  ]) %}
+  {% set stat_suffix_class = {'+':'stat-plus','%':'stat-percent'} %}
   <div class="hero-stats">
-    <div class="stat"><span class="stat-num" data-target="200">0</span><span class="stat-plus">+</span><p class="stat-label">Projects Completed</p></div>
-    <div class="stat"><span class="stat-num" data-target="50">0</span><span class="stat-plus">+</span><p class="stat-label">Clients Served</p></div>
-    <div class="stat"><span class="stat-num" data-target="3">0</span><span class="stat-plus">+</span><p class="stat-label">Years Experience</p></div>
-    <div class="stat"><span class="stat-num" data-target="98">0</span><span class="stat-percent">%</span><p class="stat-label">Client Satisfaction</p></div>
+    {% for s in hero_stats %}
+    <div class="stat"><span class="stat-num" data-target="{{ s.get('value',0) }}">0</span><span class="{{ stat_suffix_class.get(s.get('suffix','+'), 'stat-plus') }}">{{ s.get('suffix','+') }}</span><p class="stat-label">{{ s.get('label','') }}</p></div>
+    {% endfor %}
   </div>
   <div class="scroll-indicator">
     <div class="mouse"><div class="wheel"></div></div>
@@ -984,70 +995,63 @@ body.nav-open { overflow: hidden; }
 </section>
 
 <!-- ===== MARQUEE BANNER ===== -->
+{% set marquee = sections.get('marquee', {}) %}
+{% set items_top = marquee.get('items_top', ['AI Content Strategy','UGC Production','Motion Design','Brand Storytelling','AI Automation']) %}
+{% set items_bottom = marquee.get('items_bottom', ['ChatGPT & Gemini Expert','Short-Form Video Editor','Content Strategist','SaaS Builder','Creative Director']) %}
+{% set sep_top = marquee.get('separator_top', '✦') %}
+{% set sep_bottom = marquee.get('separator_bottom', '◆') %}
 <section class="marquee-section">
   <div class="marquee-track">
-    <span class="marquee-item"><span class="m-icon">✦</span> AI Content Strategy <span class="m-icon">✦</span> UGC Production <span class="m-icon">✦</span> Motion Design <span class="m-icon">✦</span> Brand Storytelling <span class="m-icon">✦</span> AI Automation</span>
-    <span class="marquee-item"><span class="m-icon">✦</span> AI Content Strategy <span class="m-icon">✦</span> UGC Production <span class="m-icon">✦</span> Motion Design <span class="m-icon">✦</span> Brand Storytelling <span class="m-icon">✦</span> AI Automation</span>
+    <span class="marquee-item">{% for item in items_top %}<span class="m-icon">{{ sep_top }}</span> {{ item }} {% endfor %}</span>
+    <span class="marquee-item">{% for item in items_top %}<span class="m-icon">{{ sep_top }}</span> {{ item }} {% endfor %}</span>
   </div>
   <div class="marquee-track2">
-    <span class="marquee-item"><span class="m-icon">◆</span> ChatGPT &amp; Gemini Expert <span class="m-icon">◆</span> Short-Form Video Editor <span class="m-icon">◆</span> Content Strategist <span class="m-icon">◆</span> SaaS Builder <span class="m-icon">◆</span> Creative Director</span>
-    <span class="marquee-item"><span class="m-icon">◆</span> ChatGPT &amp; Gemini Expert <span class="m-icon">◆</span> Short-Form Video Editor <span class="m-icon">◆</span> Content Strategist <span class="m-icon">◆</span> SaaS Builder <span class="m-icon">◆</span> Creative Director</span>
+    <span class="marquee-item">{% for item in items_bottom %}<span class="m-icon">{{ sep_bottom }}</span> {{ item }} {% endfor %}</span>
+    <span class="marquee-item">{% for item in items_bottom %}<span class="m-icon">{{ sep_bottom }}</span> {{ item }} {% endfor %}</span>
   </div>
 </section>
 
 <!-- ===== ABOUT SECTION ===== -->
 <section id="about" class="section">
   <div class="container">
+    {% set about = sections.get('about', {}) %}
     <div class="section-header reveal fade-up">
-      <span class="section-tag">About Me</span>
-      <h2 class="section-title">Creative Content Strategist & AI UGC Specialist</h2>
-      <p class="section-desc">Bridging creative storytelling with cutting-edge AI technology to deliver content that drives real business results.</p>
+      <span class="section-tag">{{ about.get('tag', 'About Me') }}</span>
+      <h2 class="section-title">{{ about.get('title', "Creative Content Strategist & AI UGC Specialist") }}</h2>
+      <p class="section-desc">{{ about.get('subtitle', "Bridging creative storytelling with cutting-edge AI technology to deliver content that drives real business results.") }}</p>
     </div>
     <div class="about-wrapper">
       <div class="about-image reveal fade-up">
         <div class="about-img-ring"></div>
         <div class="about-img-placeholder">
-          <span class="profile-initials">SM</span>
+          <span class="profile-initials">{{ about.get('initials', 'SM') }}</span>
         </div>
       </div>
       <div class="about-content reveal fade-up">
-        <h2>Hi, I'm <span class="gradient-text">Siam Munkasir</span></h2>
-        <p>I'm a Creative Content Strategist and AI UGC Specialist based in Dhaka, Bangladesh. With 3+ years of experience, I help brands craft high-impact digital content and AI-powered solutions — from UGC strategy for e-commerce brands to short-form video production and full AI automation systems.</p>
-        <p>My expertise spans User Generated Content (UGC) strategy for beauty and lifestyle brands, short-form video production across TikTok, Instagram, and YouTube, and AI-driven marketing automation. I combine creative storytelling with cutting-edge AI tools to deliver content that drives real business results.</p>
+        <h2>Hi, I'm <span class="gradient-text">{{ about.get('name', 'Siam Munkasir') }}</span></h2>
+        <p>{{ about.get('bio_1', "I'm a Creative Content Strategist and AI UGC Specialist based in Dhaka, Bangladesh. With 3+ years of experience, I help brands craft high-impact digital content and AI-powered solutions — from UGC strategy for e-commerce brands to short-form video production and full AI automation systems.") }}</p>
+        <p>{{ about.get('bio_2', "My expertise spans User Generated Content (UGC) strategy for beauty and lifestyle brands, short-form video production across TikTok, Instagram, and YouTube, and AI-driven marketing automation.") }}</p>
         <div class="about-mission">
-          <p><i class="fas fa-quote-left"></i> My mission is to bridge creative storytelling with cutting-edge AI technology — delivering content that not only looks authentic but also converts viewers into loyal customers.</p>
+          <p><i class="fas fa-quote-left"></i> {{ about.get('mission', "My mission is to bridge creative storytelling with cutting-edge AI technology — delivering content that not only looks authentic but also converts viewers into loyal customers.") }}</p>
         </div>
 
+        {% set process_steps = about.get('process_steps', [
+          {'title':'Discovery & Strategy','desc':'Understanding your brand, goals, audience, and analyzing what content works best for your niche.'},
+          {'title':'AI-Powered Research','desc':'Using AI tools to research trends, analyze competitors, and generate data-backed content concepts.'},
+          {'title':'Script & Storyboard','desc':'Crafting viral hooks and narrative structures optimized for each platform and audience.'},
+          {'title':'Production & Filming','desc':'Creating authentic UGC content or directing professional shoots tailored to your brand.'},
+          {'title':'AI-Enhanced Editing','desc':'Editing with CapCut, Premiere Pro, and AI tools — optimized for each platform\'s algorithm.'},
+          {'title':'Review & Optimization','desc':'Collaborative review process with data-driven refinements for maximum performance.'},
+          {'title':'Delivery & Analytics','desc':'Final delivery with performance tracking and analytics to measure real business impact.'},
+        ]) %}
         <h4 style="font-family:var(--font2);font-size:1.1rem;font-weight:600;margin-top:2rem;margin-bottom:1rem;">My Working Process</h4>
         <div class="process-steps">
+          {% for step in process_steps %}
           <div class="process-step">
-            <div class="process-num">01</div>
-            <div class="process-info"><h4>Discovery & Strategy</h4><p>Understanding your brand, goals, audience, and analyzing what content works best for your niche.</p></div>
+            <div class="process-num">{{ '%02d' % (loop.index, ) }}</div>
+            <div class="process-info"><h4>{{ step.get('title','') }}</h4><p>{{ step.get('desc','') }}</p></div>
           </div>
-          <div class="process-step">
-            <div class="process-num">02</div>
-            <div class="process-info"><h4>AI-Powered Research</h4><p>Using AI tools to research trends, analyze competitors, and generate data-backed content concepts.</p></div>
-          </div>
-          <div class="process-step">
-            <div class="process-num">03</div>
-            <div class="process-info"><h4>Script & Storyboard</h4><p>Crafting viral hooks and narrative structures optimized for each platform and audience.</p></div>
-          </div>
-          <div class="process-step">
-            <div class="process-num">04</div>
-            <div class="process-info"><h4>Production & Filming</h4><p>Creating authentic UGC content or directing professional shoots tailored to your brand.</p></div>
-          </div>
-          <div class="process-step">
-            <div class="process-num">05</div>
-            <div class="process-info"><h4>AI-Enhanced Editing</h4><p>Editing with CapCut, Premiere Pro, and AI tools — optimized for each platform's algorithm.</p></div>
-          </div>
-          <div class="process-step">
-            <div class="process-num">06</div>
-            <div class="process-info"><h4>Review & Optimization</h4><p>Collaborative review process with data-driven refinements for maximum performance.</p></div>
-          </div>
-          <div class="process-step">
-            <div class="process-num">07</div>
-            <div class="process-info"><h4>Delivery & Analytics</h4><p>Final delivery with performance tracking and analytics to measure real business impact.</p></div>
-          </div>
+          {% endfor %}
         </div>
 
         <h4 style="font-family:var(--font2);font-size:1.1rem;font-weight:600;margin-top:2rem;margin-bottom:1rem;">My Journey</h4>
