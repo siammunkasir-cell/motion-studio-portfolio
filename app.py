@@ -6,6 +6,7 @@ from functools import wraps
 from pathlib import Path
 
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_from_directory, abort, flash, Response
+from flask_compress import Compress
 from werkzeug.utils import secure_filename
 import sqlite3
 
@@ -14,6 +15,32 @@ app.secret_key = os.urandom(32).hex()
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), 'uploads')
 app.config['DATABASE'] = os.path.join(os.path.dirname(__file__), 'portfolio.db')
+app.config['COMPRESS_ALGORITHM'] = 'br'
+app.config['COMPRESS_BR_LEVEL'] = 4
+Compress(app)
+
+# ─── Performance: cache headers for static assets ───
+@app.after_request
+def add_cache_headers(response):
+    if request.path.startswith('/static/'):
+        response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+    elif request.path.startswith('/uploads/'):
+        response.headers['Cache-Control'] = 'public, max-age=86400, immutable'
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    return response
+
+# ─── Image URL optimizer (adds WebP + quality to Unsplash URLs) ───
+@app.template_filter('optimize_img')
+def optimize_img_url(url):
+    if not url:
+        return url
+    if 'images.unsplash.com' in url or 'unsplash.com' in url:
+        sep = '&' if '?' in url else '?'
+        if 'fm=' not in url:
+            url = f'{url}{sep}fm=webp&q=80'
+        elif 'q=' not in url:
+            url = f'{url}&q=80'
+    return url
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'pdf', 'doc', 'docx', 'mp4', 'mov', 'avi', 'zip', 'rar'}
 

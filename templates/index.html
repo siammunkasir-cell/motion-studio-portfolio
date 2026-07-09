@@ -12,11 +12,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ settings.get('site_name', 'BrandFit Media') }} — AI Content Strategist &amp; UGC Specialist">
 <link rel="canonical" href="{{ request.url }}">
+{% if portfolio and portfolio[0].image_url %}<link rel="preload" as="image" href="{{ portfolio[0].image_url | optimize_img }}" imagesrcset="{{ portfolio[0].image_url | optimize_img }}">{% endif %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://images.unsplash.com">
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="dns-prefetch" href="https://images.unsplash.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -1417,7 +1420,7 @@ body.nav-open { overflow: hidden; }
           <video src="{{ item.video_url }}" muted loop poster="{{ item.image_url or '' }}"></video>
           {% elif item.image_url %}
           <div class="portfolio-media-loading"><span></span></div>
-          <img src="{{ item.image_url }}" alt="{{ item.title }}" loading="lazy" decoding="async"{% if loop is defined and loop.first %} fetchpriority="high"{% endif %}>
+          <img src="{{ item.image_url | optimize_img }}" alt="{{ item.title }}" width="600" height="375" loading="lazy" decoding="async"{% if loop is defined and loop.first %} fetchpriority="high"{% endif %}>
           {% else %}
           <div class="portfolio-placeholder"><i class="fas fa-image"></i></div>
           {% endif %}
@@ -1439,7 +1442,7 @@ body.nav-open { overflow: hidden; }
       <!-- MOTION GRAPHICS -->
       <div class="portfolio-item reveal fade-up" data-category="motion-graphics">
         <div class="portfolio-media">
-          <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&amp;h=375&amp;fit=crop" alt="Brand Launch Reel" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&amp;h=375&amp;fit=crop&amp;fm=webp&amp;q=80" alt="Brand Launch Reel" width="600" height="375" loading="lazy">
           <span class="portfolio-category-badge">Motion Graphics</span>
           <div class="portfolio-overlay">
             <h3>Brand Launch Reel</h3>
@@ -1452,7 +1455,7 @@ body.nav-open { overflow: hidden; }
 
       <div class="portfolio-item reveal fade-up" data-category="motion-graphics">
         <div class="portfolio-media">
-          <img src="https://images.unsplash.com/photo-1504711434969-e33886168d8c?w=600&amp;h=375&amp;fit=crop" alt="Kinetic Typography Showcase" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1504711434969-e33886168d8c?w=600&amp;h=375&amp;fit=crop&amp;fm=webp&amp;q=80" width="600" height="375" alt="Kinetic Typography Showcase" loading="lazy">
           <span class="portfolio-category-badge">Motion Graphics</span>
           <div class="portfolio-overlay">
             <h3>Kinetic Typography Showcase</h3>
@@ -1466,7 +1469,7 @@ body.nav-open { overflow: hidden; }
       <!-- SOCIAL MEDIA ADS -->
       <div class="portfolio-item reveal fade-up" data-category="social-media-ads">
         <div class="portfolio-media">
-          <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&amp;h=375&amp;fit=crop" alt="Instagram Ad Campaign" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&amp;h=375&amp;fit=crop&amp;fm=webp&amp;q=80" width="600" height="375" alt="Instagram Ad Campaign" loading="lazy">
           <span class="portfolio-category-badge">Social Media Ads</span>
           <div class="portfolio-overlay">
             <h3>Instagram Ad Campaign</h3>
@@ -1479,7 +1482,7 @@ body.nav-open { overflow: hidden; }
 
       <div class="portfolio-item reveal fade-up" data-category="social-media-ads">
         <div class="portfolio-media">
-          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&amp;h=375&amp;fit=crop" alt="TikTok Viral Series" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&amp;h=375&amp;fit=crop&amp;fm=webp&amp;q=80" width="600" height="375" alt="TikTok Viral Series" loading="lazy">
           <span class="portfolio-category-badge">Social Media Ads</span>
           <div class="portfolio-overlay">
             <h3>TikTok Viral Series</h3>
@@ -1493,7 +1496,7 @@ body.nav-open { overflow: hidden; }
       <!-- AI / AUTOMATION -->
       <div class="portfolio-item reveal fade-up" data-category="ai-automation">
         <div class="portfolio-media">
-          <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&amp;h=375&amp;fit=crop" alt="AI Chatbot Demo" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&amp;h=375&amp;fit=crop&amp;fm=webp&amp;q=80" width="600" height="375" alt="AI Chatbot Demo" loading="lazy">
           <span class="portfolio-category-badge">AI/Automation</span>
           <div class="portfolio-overlay">
             <h3>AI Chatbot Demo</h3>
@@ -1506,7 +1509,7 @@ body.nav-open { overflow: hidden; }
 
       <div class="portfolio-item reveal fade-up" data-category="ai-automation">
         <div class="portfolio-media">
-          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&amp;h=375&amp;fit=crop" alt="Automated Content Pipeline" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&amp;h=375&amp;fit=crop&amp;fm=webp&amp;q=80" width="600" height="375" alt="Automated Content Pipeline" loading="lazy">
           <span class="portfolio-category-badge">AI/Automation</span>
           <div class="portfolio-overlay">
             <h3>Automated Content Pipeline</h3>
@@ -1520,7 +1523,7 @@ body.nav-open { overflow: hidden; }
       <!-- UGC STRATEGY -->
       <div class="portfolio-item reveal fade-up" data-category="ugc-strategy">
         <div class="portfolio-media">
-          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&amp;h=375&amp;fit=crop" alt="Beauty Brand UGC Campaign" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&amp;h=375&amp;fit=crop&amp;fm=webp&amp;q=80" width="600" height="375" alt="Beauty Brand UGC Campaign" loading="lazy">
           <span class="portfolio-category-badge">UGC Strategy</span>
           <div class="portfolio-overlay">
             <h3>Beauty Brand UGC Campaign</h3>
@@ -1533,7 +1536,7 @@ body.nav-open { overflow: hidden; }
 
       <div class="portfolio-item reveal fade-up" data-category="ugc-strategy">
         <div class="portfolio-media">
-          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&amp;h=375&amp;fit=crop" alt="Skincare Routine Series" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&amp;h=375&amp;fit=crop&amp;fm=webp&amp;q=80" width="600" height="375" alt="Skincare Routine Series" loading="lazy">
           <span class="portfolio-category-badge">UGC Strategy</span>
           <div class="portfolio-overlay">
             <h3>Skincare Routine Series</h3>
@@ -1547,7 +1550,7 @@ body.nav-open { overflow: hidden; }
       <!-- VIDEO PRODUCTION -->
       <div class="portfolio-item reveal fade-up" data-category="video-production">
         <div class="portfolio-media">
-          <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&amp;h=375&amp;fit=crop" alt="Product Launch Film" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&amp;h=375&amp;fit=crop&amp;fm=webp&amp;q=80" width="600" height="375" alt="Product Launch Film" loading="lazy">
           <span class="portfolio-category-badge">Video Production</span>
           <div class="portfolio-overlay">
             <h3>Product Launch Film</h3>
@@ -1560,7 +1563,7 @@ body.nav-open { overflow: hidden; }
 
       <div class="portfolio-item reveal fade-up" data-category="video-production">
         <div class="portfolio-media">
-          <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?w=600&amp;h=375&amp;fit=crop" alt="Corporate Brand Story" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?w=600&amp;h=375&amp;fit=crop&amp;fm=webp&amp;q=80" width="600" height="375" alt="Corporate Brand Story" loading="lazy">
           <span class="portfolio-category-badge">Video Production</span>
           <div class="portfolio-overlay">
             <h3>Corporate Brand Story</h3>
@@ -1574,7 +1577,7 @@ body.nav-open { overflow: hidden; }
       <!-- BRAND IDENTITY (hidden initially, shown via Load More) -->
       <div class="portfolio-item reveal fade-up hidden" data-category="brand-identity">
         <div class="portfolio-media">
-          <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&amp;h=375&amp;fit=crop" alt="Brand Identity Package" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&amp;h=375&amp;fit=crop&amp;fm=webp&amp;q=80" width="600" height="375" alt="Brand Identity Package" loading="lazy">
           <span class="portfolio-category-badge">Brand Identity</span>
           <div class="portfolio-overlay">
             <h3>Brand Identity Package</h3>
@@ -1587,7 +1590,7 @@ body.nav-open { overflow: hidden; }
 
       <div class="portfolio-item reveal fade-up hidden" data-category="brand-identity">
         <div class="portfolio-media">
-          <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?w=600&amp;h=375&amp;fit=crop" alt="Visual Identity System" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?w=600&amp;h=375&amp;fit=crop&amp;fm=webp&amp;q=80" width="600" height="375" alt="Visual Identity System" loading="lazy">
           <span class="portfolio-category-badge">Brand Identity</span>
           <div class="portfolio-overlay">
             <h3>Visual Identity System</h3>
