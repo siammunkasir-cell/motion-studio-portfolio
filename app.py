@@ -15,6 +15,7 @@ app.secret_key = os.urandom(32).hex()
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), 'uploads')
 app.config['DATABASE'] = os.path.join(os.path.dirname(__file__), 'portfolio.db')
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 31536000  # 1yr cache for static files
 app.config['COMPRESS_ALGORITHM'] = 'br'
 app.config['COMPRESS_BR_LEVEL'] = 4
 Compress(app)
