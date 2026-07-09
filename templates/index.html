@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ settings.get('site_name', 'Siam Munkasir') }} — Creative Content Strategist &amp; AI UGC Specialist</title>
+<title>{{ settings.get('site_name', 'BrandFit Media') }} — Creative Content Strategist &amp; AI UGC Specialist</title>
 <meta name="description" content="AI Content Strategist &amp; UGC Specialist — crafting high-impact digital content and AI-powered solutions that drive real business results for brands worldwide.">
-<meta property="og:title" content="{{ settings.get('site_name', 'Siam Munkasir') }} — Creative Content Strategist &amp; AI UGC Specialist">
+<meta property="og:title" content="{{ settings.get('site_name', 'BrandFit Media') }} — Creative Content Strategist &amp; AI UGC Specialist">
 <meta property="og:description" content="Creative Content Strategist and AI UGC Specialist based in Dhaka, Bangladesh. 3+ years crafting high-impact content and AI-powered solutions for global brands.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ request.url }}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ settings.get('site_name', 'Siam Munkasir') }} — AI Content Strategist &amp; UGC Specialist">
+<meta name="twitter:title" content="{{ settings.get('site_name', 'BrandFit Media') }} — AI Content Strategist &amp; UGC Specialist">
 <link rel="canonical" href="{{ request.url }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -919,8 +919,9 @@ body.nav-open { overflow: hidden; }
 <!-- ===== NAVIGATION ===== -->
 <nav id="navbar" class="navbar">
   <div class="nav-container">
-    <a href="#" class="nav-logo">Siam Munkasir<span class="logo-dot">*</span></a>
+    <a href="#" class="nav-logo">BrandFit Media<span class="logo-dot">*</span></a>
     <div class="nav-links" id="navLinks">
+      <button class="nav-close-btn" id="navClose" aria-label="Close menu">✕</button>
       <a href="#hero" class="nav-link">Home</a>
       <a href="#about" class="nav-link">About</a>
       <a href="#services" class="nav-link">Services</a>
@@ -932,9 +933,9 @@ body.nav-open { overflow: hidden; }
       <a href="#contact" class="nav-link">Contact</a>
       <a href="#contact" class="nav-link nav-cta">Hire Me</a>
     </div>
-    <div class="nav-toggle" id="navToggle">
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
-    </div>
+    </button>
   </div>
 </nav>
 <div class="nav-overlay"></div>
@@ -1028,7 +1029,7 @@ body.nav-open { overflow: hidden; }
         </div>
       </div>
       <div class="about-content reveal fade-up">
-        <h2>Hi, I'm <span class="gradient-text">{{ about.get('name', 'Siam Munkasir') }}</span></h2>
+        <h2>Hi, I'm <span class="gradient-text">{{ about.get('name', 'BrandFit Media') }}</span></h2>
         <p>{{ about.get('bio_1', "I'm a Creative Content Strategist and AI UGC Specialist based in Dhaka, Bangladesh. With 3+ years of experience, I help brands craft high-impact digital content and AI-powered solutions — from UGC strategy for e-commerce brands to short-form video production and full AI automation systems.") }}</p>
         <p>{{ about.get('bio_2', "My expertise spans User Generated Content (UGC) strategy for beauty and lifestyle brands, short-form video production across TikTok, Instagram, and YouTube, and AI-driven marketing automation.") }}</p>
         <div class="about-mission">
@@ -1415,7 +1416,8 @@ body.nav-open { overflow: hidden; }
           {% if item.video_url %}
           <video src="{{ item.video_url }}" muted loop poster="{{ item.image_url or '' }}"></video>
           {% elif item.image_url %}
-          <img src="{{ item.image_url }}" alt="{{ item.title }}" loading="lazy">
+          <div class="portfolio-media-loading"><span></span></div>
+          <img src="{{ item.image_url }}" alt="{{ item.title }}" loading="lazy" decoding="async"{% if loop is defined and loop.first %} fetchpriority="high"{% endif %}>
           {% else %}
           <div class="portfolio-placeholder"><i class="fas fa-image"></i></div>
           {% endif %}
@@ -2471,7 +2473,7 @@ body.nav-open { overflow: hidden; }
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <h3>Siam Munkasir<span class="logo-dot">*</span></h3>
+        <h3>BrandFit Media<span class="logo-dot">*</span></h3>
         <p>AI Content Strategist &amp; UGC Specialist — crafting high-impact digital content and AI-powered solutions that drive real business results for brands worldwide.</p>
         <div class="footer-social">
           <a href="https://www.instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -2520,7 +2522,7 @@ body.nav-open { overflow: hidden; }
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 Siam Munkasir. All rights reserved.</p>
+      <p>&copy; 2026 BrandFit Media. All rights reserved.</p>
       <div class="footer-bottom-links">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
@@ -2600,15 +2602,36 @@ document.getElementById('navToggle').addEventListener('click', function() {
   document.body.classList.toggle('nav-open');
 });
 
-document.querySelectorAll('.nav-link').forEach(function(link) {
-  link.addEventListener('click', function() {
-    document.getElementById('navToggle').classList.remove('active');
-    document.getElementById('navLinks').classList.remove('active');
-    const overlay = document.querySelector('.nav-overlay');
-    if (overlay) overlay.classList.remove('active');
-    document.body.classList.remove('nav-open');
+document.getElementById('navLinks').addEventListener('click', function(e) {
+  if (e.target.classList.contains('nav-link') || e.target.classList.contains('nav-close-btn') || e.target === this) {
+    closeNavMenu();
+  }
+});
+
+function closeNavMenu(){
+  document.getElementById('navToggle').classList.remove('active');
+  document.getElementById('navLinks').classList.remove('active');
+  const overlay = document.querySelector('.nav-overlay');
+  if (overlay) overlay.classList.remove('active');
+  document.body.classList.remove('nav-open');
+}
+
+// --- IMAGE LOADING ---
+document.querySelectorAll('.portfolio-media img, .portfolio-media video').forEach(function(el){
+  if(el.complete) el.classList.add('loaded');
+  else el.addEventListener('load', function(){this.classList.add('loaded')});
+  if(el.tagName==='IMG') el.addEventListener('error', function(){this.classList.add('loaded')});
+});
+// Watch for dynamically loaded portfolio images
+const imgObserver = new MutationObserver(function(){
+  document.querySelectorAll('.portfolio-media img:not([data-load-watched])').forEach(function(el){
+    el.setAttribute('data-load-watched','1');
+    if(el.complete) el.classList.add('loaded');
+    else el.addEventListener('load', function(){this.classList.add('loaded')});
+    el.addEventListener('error', function(){this.classList.add('loaded')});
   });
 });
+imgObserver.observe(document.getElementById('portfolioGrid')||document.body, {childList:true,subtree:true});
 
 // --- SCROLL REVEAL ---
 function isInViewport(el) {
@@ -3101,7 +3124,8 @@ checkReveals();
     var nav = document.querySelector('.nav-links');
     if (!nav) return;
     nav.innerHTML = items.map(function(item){
-      return '<a href="'+item.link+'" style="text-decoration:none">'+item.label+'</a>';
+      var cls = item.label === 'Hire Me' ? 'nav-link nav-cta' : 'nav-link';
+      return '<a href="'+item.link+'" class="'+cls+'">'+item.label+'</a>';
     }).join('');
   }).catch(function(){});
 

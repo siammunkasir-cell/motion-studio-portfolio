@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Settings — Siam Munkasir Admin</title>
+<title>Settings — BrandFit Media Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0a12;--bg2:#0f0f1a;--card:#12121f;--border:#2a2a3e;--text:#e0e0e8;--text2:#a0a0b8;--text3:#666688;--accent1:#3B82F6;--accent2:#8B5CF6;--accent3:#06B6D4;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
+:root{--bg:#09090B;--bg2:#111827;--card:#0F172A;--border:#1E293B;--text:#F8FAFC;--text2:#94A3B8;--text3:#64748B;--accent1:#3B82F6;--accent2:#8B5CF6;--accent3:#06B6D4;--font:'Inter',sans-serif;--radius:12px;--radius-lg:20px}
 body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex}
 .sidebar{width:240px;min-height:100vh;background:var(--card);border-right:1px solid var(--border);padding:24px 16px;position:fixed;left:0;top:0;overflow-y:auto;z-index:10}
 .sidebar h2{font-size:18px;font-weight:800;margin-bottom:28px;background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -61,7 +61,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex
   <div class="section-card">
     <h2><i class="fas fa-info-circle" style="color:var(--text2)"></i> General</h2>
     <div class="form-grid">
-      <div class="form-group"><label>Site Name</label><input type="text" id="site_name" value="{{ settings.get('site_name','Siam Munkasir') }}" /></div>
+      <div class="form-group"><label>Site Name</label><input type="text" id="site_name" value="{{ settings.get('site_name','BrandFit Media') }}" /></div>
       <div class="form-group"><label>Site Tagline</label><input type="text" id="site_tagline" value="{{ settings.get('site_tagline','Premium Creative Agency') }}" /></div>
       <div class="form-group"><label>Site Logo URL</label><input type="text" id="site_logo" value="{{ settings.get('site_logo','') }}" placeholder="https://..." /><div class="hint"><a href="/admin/media" target="_blank" style="color:var(--accent1)">Media Library</a></div></div>
       <div class="form-group"><label>Favicon URL</label><input type="text" id="site_favicon" value="{{ settings.get('site_favicon','') }}" placeholder="https://..." /></div>
@@ -88,9 +88,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex
   <div class="section-card">
     <h2><i class="fas fa-foot" style="color:var(--text2)"></i> Footer</h2>
     <div class="form-grid">
-      <div class="form-group full"><label>Copyright Text</label><input type="text" id="footer_copyright" value="{{ settings.get('footer_copyright','© 2026 Siam Munkasir. All rights reserved.') }}" /></div>
+      <div class="form-group full"><label>Copyright Text</label><input type="text" id="footer_copyright" value="{{ settings.get('footer_copyright','© 2026 BrandFit Media. All rights reserved.') }}" /></div>
       <div class="form-group"><label>Address</label><input type="text" id="footer_address" value="{{ settings.get('footer_address','') }}" /></div>
-      <div class="form-group"><label>Email</label><input type="email" id="footer_email" value="{{ settings.get('footer_email','hello@siammunkasir.com') }}" /></div>
+      <div class="form-group"><label>Email</label><input type="email" id="footer_email" value="{{ settings.get('footer_email','hello@brandfitmedia.com') }}" /></div>
       <div class="form-group"><label>Phone</label><input type="text" id="footer_phone" value="{{ settings.get('footer_phone','') }}" /></div>
       <div class="form-group"><label>Footer Logo URL</label><input type="text" id="footer_logo" value="{{ settings.get('footer_logo','') }}" placeholder="https://..." /></div>
     </div>
@@ -112,7 +112,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);display:flex
   <div class="section-card">
     <h2><i class="fas fa-search" style="color:var(--accent2)"></i> SEO &amp; Analytics</h2>
     <div class="form-grid">
-      <div class="form-group full"><label>Home Page Title</label><input type="text" id="seo_home_title" value="{{ settings.get('seo_home_title','Siam Munkasir — AI Content Strategist & UGC Specialist') }}" /></div>
+      <div class="form-group full"><label>Home Page Title</label><input type="text" id="seo_home_title" value="{{ settings.get('seo_home_title','BrandFit Media — AI Content Strategist & UGC Specialist') }}" /></div>
       <div class="form-group full"><label>Meta Description</label><textarea id="seo_home_description" rows="2">{{ settings.get('seo_home_description','') }}</textarea></div>
       <div class="form-group full"><label>Meta Keywords</label><input type="text" id="seo_home_keywords" value="{{ settings.get('seo_home_keywords','') }}" placeholder="comma separated" /></div>
       <div class="form-group"><label>OG Image URL</label><input type="text" id="og_image" value="{{ settings.get('og_image','') }}" placeholder="https://..." /></div>

@@ -25,7 +25,7 @@ def build_service_card(s):
 
 # Default testimonials
 testimonials = [
-    {'name':'Sarah Johnson', 'role':'Marketing Director', 'company':'TechFlow Inc.', 'text':'"Working with Siam Munkasir transformed our brand presence. The animations they created captured exactly what we wanted to communicate — and the results speak for themselves."', 'rating':5},
+    {'name':'Sarah Johnson', 'role':'Marketing Director', 'company':'TechFlow Inc.', 'text':'"Working with BrandFit Media transformed our brand presence. The animations they created captured exactly what we wanted to communicate — and the results speak for themselves."', 'rating':5},
     {'name':'David Chen', 'role':'CEO', 'company':'Creative Labs', 'text':'"The AI-generated visuals blew us away. We saved months of production time and got even better results than traditional methods. Absolutely game-changing."', 'rating':5},
     {'name':'Emily Rodriguez', 'role':'Content Strategist', 'company':'MediaPulse', 'text':'"Our social media engagement doubled after we started using their UGC content strategy. They truly understand what authentic content looks like."', 'rating':5},
     {'name':'Marcus Williams', 'role':'Founder', 'company':'StartupBoost', 'text':'"Professional, creative, and incredibly responsive. The script writing service alone was worth it — they nailed our brand voice from the first draft."', 'rating':5},

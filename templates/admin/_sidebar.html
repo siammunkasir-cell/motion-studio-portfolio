@@ -1,7 +1,10 @@
 <!-- ===== SHARED ADMIN SIDEBAR ===== -->
 {% set current = request.path %}
-<div class="sidebar">
-  <h2>Siam Munkasir</h2>
+<link rel="stylesheet" href="/static/css/admin.css">
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleAdminSidebar()"></div>
+<button class="nav-toggle-admin" id="navToggle" onclick="toggleAdminSidebar()"><i class="fas fa-bars"></i></button>
+<div class="sidebar" id="adminSidebar">
+  <h2>BrandFit Media</h2>
 
   <div class="section-label">Overview</div>
   <a href="/admin" class="{% if current == '/admin' %}active{% endif %}"><i class="fas fa-chart-pie"></i> <span>Dashboard</span></a>
@@ -32,3 +35,9 @@
 
   <a href="/admin/logout" class="logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
 </div>
+<script>
+function toggleAdminSidebar(){
+  document.getElementById('adminSidebar').classList.toggle('active');
+  document.getElementById('sidebarOverlay').classList.toggle('active');
+}
+</script>

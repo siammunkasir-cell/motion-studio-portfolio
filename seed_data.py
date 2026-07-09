@@ -1,5 +1,5 @@
 """
-Seed data script for Siam Munkasir Portfolio
+Seed data script for BrandFit Media Portfolio
 Inserts 30 testimonials, 50 reviews, 20 FAQs, and 17 skills into the database.
 Run: python seed_data.py
 """
@@ -188,7 +188,7 @@ def seed_skills():
     print(f"✓ Inserted {count} skills")
 
 def main():
-    print("🌱 Seeding Siam Munkasir Portfolio Database...")
+    print("🌱 Seeding BrandFit Media Portfolio Database...")
     print(f"Database: {DB_PATH}")
     seed_testimonials()
     seed_reviews()

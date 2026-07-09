@@ -189,6 +189,6 @@ function escHtml(str) {
 }
 
 // ─── CONSOLE BRANDING ───
-console.log('%c Motion Studio %c by Siam Munkasir ',
+console.log('%c BrandFit Media %c by BrandFit Media ',
   'background:#3B82F6;color:#09090B;padding:4px 8px;border-radius:4px 0 0 4px;font-weight:bold;font-size:14px;',
   'background:#0F172A;color:#94A3B8;padding:4px 8px;border-radius:0 4px 4px 0;font-size:14px;');

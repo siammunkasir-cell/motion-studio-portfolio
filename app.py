@@ -257,7 +257,7 @@ def init_db():
             category TEXT DEFAULT '',
             tags TEXT DEFAULT '',
             featured_image TEXT DEFAULT '',
-            author TEXT DEFAULT 'Siam Munkasir',
+            author TEXT DEFAULT 'BrandFit Media',
             status TEXT DEFAULT 'draft',
             seo_title TEXT DEFAULT '',
             seo_description TEXT DEFAULT '',
@@ -326,7 +326,7 @@ def init_db():
             pw = hashlib.sha256('admin123'.encode()).hexdigest()
             db.execute("INSERT INTO admin (username, password_hash) VALUES (?, ?)", ('admin', pw))
         # Default settings
-        defaults = {'site_name': 'Siam Munkasir', 'site_tagline': 'AI Content Strategist & UGC Specialist — crafting high-impact digital content that drives real business results.', 'admin_email': ''}
+        defaults = {'site_name': 'BrandFit Media', 'site_tagline': 'AI Content Strategist & UGC Specialist — crafting high-impact digital content that drives real business results.', 'admin_email': ''}
         for k, v in defaults.items():
             db.execute("INSERT OR IGNORE INTO site_settings (key, value) VALUES (?, ?)", (k, v))
 
@@ -411,12 +411,15 @@ def init_db():
         # Navigation
         nav_items = [
             ('Home', '/', 0, '', 1, 1),
-            ('Services', '/#services', 0, '', 2, 1),
-            ('Portfolio', '/#portfolio', 0, '', 3, 1),
-            ('Testimonials', '/#testimonials', 0, '', 4, 1),
-            ('Reviews', '/#reviews', 0, '', 5, 1),
-            ('Pricing', '/#pricing', 0, '', 6, 1),
-            ('Contact', '/#contact', 0, '', 7, 1),
+            ('About', '/#about', 0, '', 2, 1),
+            ('Services', '/#services', 0, '', 3, 1),
+            ('Portfolio', '/#portfolio', 0, '', 4, 1),
+            ('Workflow', '/#workflow', 0, '', 5, 1),
+            ('Testimonials', '/#testimonials', 0, '', 6, 1),
+            ('Reviews', '/#reviews', 0, '', 7, 1),
+            ('FAQ', '/#faq', 0, '', 8, 1),
+            ('Pricing', '/#pricing', 0, '', 9, 1),
+            ('Contact', '/#contact', 0, '', 10, 1),
         ]
         for n in nav_items:
             db.execute('''INSERT OR IGNORE INTO navigation_items (label, link, parent_id, icon, sort_order, is_visible) VALUES (?,?,?,?,?,?)''', n)
@@ -446,7 +449,7 @@ def init_db():
                 'tag': 'About Me',
                 'title': 'Creative Content Strategist & AI UGC Specialist',
                 'subtitle': 'Bridging creative storytelling with cutting-edge AI technology to deliver content that drives real business results.',
-                'name': 'Siam Munkasir',
+                'name': 'BrandFit Media',
                 'initials': 'SM',
                 'bio_1': "I'm a Creative Content Strategist and AI UGC Specialist based in Dhaka, Bangladesh.",
                 'bio_2': 'My expertise spans UGC strategy, short-form video production, and AI-driven marketing automation.',
@@ -488,7 +491,7 @@ def init_db():
             'site_logo': '',
             'site_favicon': '',
             'footer_logo': '',
-            'footer_copyright': '© 2026 Siam Munkasir. All rights reserved.',
+            'footer_copyright': '© 2026 BrandFit Media. All rights reserved.',
             'footer_address': '',
             'footer_email': 'hello@siammunkasir.com',
             'footer_phone': '',
@@ -497,7 +500,7 @@ def init_db():
             'social_youtube': '#',
             'social_twitter': '#',
             'social_github': '#',
-            'seo_home_title': 'Siam Munkasir — AI Content Strategist & UGC Specialist',
+            'seo_home_title': 'BrandFit Media — AI Content Strategist & UGC Specialist',
             'seo_home_description': 'AI Content Strategist & UGC Specialist crafting high-impact digital content that drives real business results.',
             'seo_home_keywords': 'content strategy, UGC, motion graphics, video editing, AI content',
             'og_image': '',
@@ -686,7 +689,7 @@ def submit_inquiry():
             <hr style="border-color:#2a2a3e;margin:24px 0;">
             <p style="color:#666688;font-size:12px;">This is an automated confirmation. We'll reach out to you at <strong style="color:#a0a0b8;">{sanitize(data.get('email',''))}</strong>.</p>
         </div>"""
-        send_email_async(data.get('email'), f'Thank you for reaching out — Siam Munkasir', confirm_html)
+        send_email_async(data.get('email'), f'Thank you for reaching out — BrandFit Media', confirm_html)
 
         # Send notification to admin (async)
         notif_admin_email = ''
@@ -725,9 +728,15 @@ def submit_inquiry():
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    resp = send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    resp.headers['Cache-Control'] = 'public, max-age=86400, immutable'
+    return resp
 
 # ─── ADMIN ROUTES ───
+
+@app.route('/admin.html')
+def admin_html_redirect():
+    return redirect(url_for('admin_login'))
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
@@ -823,12 +832,12 @@ def admin_inquiry_detail(id):
                 # Email reply to visitor
                 reply_html = f"""
                 <div style="font-family:'Inter',sans-serif;max-width:600px;margin:0 auto;padding:40px;background:linear-gradient(135deg,#0f0f1a,#1a1a2e);border-radius:16px;color:#fff;">
-                    <h2 style="font-size:24px;background:linear-gradient(135deg,#ff6b6b,#ffd93d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Response from Siam Munkasir</h2>
+                    <h2 style="font-size:24px;background:linear-gradient(135deg,#ff6b6b,#ffd93d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Response from BrandFit Media</h2>
                     <p style="color:#a0a0b8;font-size:16px;line-height:1.6;">{admin_reply}</p>
                     <hr style="border-color:#2a2a3e;margin:24px 0;">
                     <p style="color:#666688;font-size:12px;">Regarding inquiry #{inquiry['id']}</p>
                 </div>"""
-                send_email(inquiry['email'], 'Response from Siam Munkasir', reply_html)
+                send_email(inquiry['email'], 'Response from BrandFit Media', reply_html)
                 db.execute("INSERT INTO email_log (inquiry_id, recipient, subject, body) VALUES (?,?,?,?)",
                           (id, inquiry['email'], 'Admin Reply', admin_reply[:500]))
             if request.is_json:
@@ -1591,7 +1600,7 @@ def admin_blog_new():
                 VALUES (?,?,?,?,?,?,?,?,?,?,?,?)''', (
                 data.get('title',''), slug, data.get('content',''), data.get('excerpt',''),
                 data.get('category',''), data.get('tags',''), data.get('featured_image',''),
-                data.get('author','Siam Munkasir'), data.get('status','draft'),
+                data.get('author','BrandFit Media'), data.get('status','draft'),
                 data.get('seo_title',''), data.get('seo_description',''), data.get('seo_keywords','')
             ))
         log_activity('Blog Created', f'Created post: {data.get("title")}')
@@ -1611,7 +1620,7 @@ def admin_blog_edit(id):
                 featured_image=?, author=?, status=?, seo_title=?, seo_description=?, seo_keywords=? WHERE id=?''', (
                 data.get('title',''), slug, data.get('content',''), data.get('excerpt',''),
                 data.get('category',''), data.get('tags',''), data.get('featured_image',''),
-                data.get('author','Siam Munkasir'), data.get('status','draft'),
+                data.get('author','BrandFit Media'), data.get('status','draft'),
                 data.get('seo_title',''), data.get('seo_description',''), data.get('seo_keywords',''), id
             ))
             log_activity('Blog Updated', f'Updated post: {data.get("title")}')
@@ -2053,7 +2062,7 @@ def seed_default_sections():
                     'tag': 'About Me',
                     'title': 'Creative Content Strategist & AI UGC Specialist',
                     'subtitle': 'Bridging creative storytelling with cutting-edge AI technology to deliver content that drives real business results.',
-                    'name': 'Siam Munkasir',
+                    'name': 'BrandFit Media',
                     'initials': 'SM',
                     'bio_1': "I'm a Creative Content Strategist and AI UGC Specialist based in Dhaka, Bangladesh. With 3+ years of experience, I help brands craft high-impact digital content and AI-powered solutions — from UGC strategy for e-commerce brands to short-form video production and full AI automation systems.",
                     'bio_2': 'My expertise spans User Generated Content (UGC) strategy for beauty and lifestyle brands, short-form video production across TikTok, Instagram, and YouTube, and AI-driven marketing automation. I combine creative storytelling with cutting-edge AI tools to deliver content that drives real business results.',
